@@ -82,6 +82,8 @@ p{margin:0}
 .devices{position:relative;height:560px}
 .phone{position:absolute;width:230px;border-radius:40px;padding:9px;background:linear-gradient(160deg,#2a3b52,#0b1624);box-shadow:var(--shadow-lg),inset 0 0 0 1px rgba(255,255,255,.08)}
 .phone img{border-radius:32px;width:100%}
+.phone.panel{background:none;padding:0;box-shadow:none}
+.phone.panel img{border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.4)}
 .phone.p1{left:4%;top:60px;transform:rotate(-7deg);animation:float 7s ease-in-out infinite}
 .phone.p2{left:34%;top:0;z-index:2;width:250px;animation:float 7s ease-in-out -2.3s infinite}
 .phone.p3{right:0;top:80px;transform:rotate(7deg);animation:float 7s ease-in-out -4.6s infinite}
@@ -170,6 +172,7 @@ section{padding:96px 0}
 .split .art.pair{display:flex;gap:18px;align-items:flex-end}
 .split .art.pair img:first-child{width:62%}
 .split .art.pair img:last-child{width:34%;border-radius:40px}
+.split .art.pair.panels img{width:50%;border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.4)}
 @media (max-width:900px){.split{grid-template-columns:1fr;gap:32px}}
 
 /* links list */
