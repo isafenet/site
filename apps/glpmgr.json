@@ -15,9 +15,23 @@
     "Weight, side effects, water, protein and blood glucose, gently",
     "No account and no tracking: everything stays on your device"
   ],
-  "chips": ["iPhone", "iPad", "Apple Watch", "Mac", "Widgets", "Apple Health"],
-  "colors": ["#0b6b62", "#0a1d33"],
-  "card_shots": ["glpmgr-at-a-glance", "glpmgr-trends", "glpmgr-injection-areas"],
+  "chips": [
+    "iPhone",
+    "iPad",
+    "Apple Watch",
+    "Mac",
+    "Widgets",
+    "Apple Health"
+  ],
+  "colors": [
+    "#0b6b62",
+    "#0a1d33"
+  ],
+  "card_shots": [
+    "glpmgr-at-a-glance",
+    "glpmgr-trends",
+    "glpmgr-injection-areas"
+  ],
   "home_shot": "glpmgr-at-a-glance",
   "screens": {
     "glpmgr-at-a-glance": "GLPMGR Today screen with next dose, goal, water and protein",
@@ -33,47 +47,166 @@
     "glpmgr-watch": "GLPMGR on Apple Watch"
   },
   "footer": [
-    ["GLPMGR user guide", "guide.html"],
-    ["Injection sites by medicine", "site-guidance.html"],
-    ["GLP-1 words explained", "glossary.html"]
+    [
+      "Choosing a GLP-1 app",
+      "glp-1-app.html"
+    ],
+    [
+      "GLPMGR user guide",
+      "guide.html"
+    ],
+    [
+      "Injection sites by medicine",
+      "site-guidance.html"
+    ],
+    [
+      "GLP-1 words explained",
+      "glossary.html"
+    ]
   ],
   "page": {
-    "title": "GLPMGR by iSafeNet: Private GLP-1 Tracker for iPhone & Apple Watch",
-    "description": "GLPMGR is a private GLP-1 tracker for iPhone, iPad and Apple Watch: doses, dose steps, reminders, injection sites, weight and side effects for Mounjaro, Wegovy, Ozempic and more.",
+    "title": "GLPMGR by iSafeNet: Private GLP-1 Tracker App",
+    "description": "GLPMGR is a free, private GLP-1 tracker app for iPhone, iPad and Apple Watch: doses, dose steps, injection sites, weight and side effects.",
     "lead": "GLPMGR helps people on GLP-1 medicines keep track of their doses, dose steps, weight and how they feel, without an account and without their data leaving their device. It's written in plain English, with a gentle tone and no judgement, for Mounjaro, Wegovy, Ozempic and other GLP-1 medicines.",
-    "second_button": ["glossary.html", "GLP-1 words explained"],
-    "hero": ["glpmgr-titration", "glpmgr-at-a-glance", "glpmgr-trends"],
-    "features": [
-      ["bell", "Doses & reminders", "Record injections or tablets in a few taps, with reminders when a dose is due and when supply runs low."],
-      ["chart", "Dose steps", "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, up to your maintenance dose."],
-      ["map", "Injection sites", "Only the areas each manufacturer lists for your region, with a body map of where you've injected before."],
-      ["heart", "Weight & side effects", "A gentle view of your progress, and a diary for how you feel, ready to share with your doctor or nurse."],
-      ["camera", "Water, protein & labels", "Log water and protein, and read the protein figure straight from a food label with your camera."],
-      ["lock", "Private by design", "No account, no ads, no tracking. Progress photos are encrypted and locked behind Face ID."]
+    "second_button": [
+      "glossary.html",
+      "GLP-1 words explained"
     ],
-    "gallery": ["glpmgr-at-a-glance", "glpmgr-trends", "glpmgr-daily-habits", "glpmgr-scan-a-label", "glpmgr-private-photos", "glpmgr-titration", "glpmgr-injection-areas", "glpmgr-reminders", "glpmgr-on-your-wrist"],
+    "hero": [
+      "glpmgr-titration",
+      "glpmgr-at-a-glance",
+      "glpmgr-trends"
+    ],
+    "features": [
+      [
+        "bell",
+        "Doses & reminders",
+        "Record injections or tablets in a few taps, with reminders when a dose is due and when supply runs low."
+      ],
+      [
+        "chart",
+        "Dose steps",
+        "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, up to your maintenance dose."
+      ],
+      [
+        "map",
+        "Injection sites",
+        "Only the areas each manufacturer lists for your region, with a body map of where you've injected before."
+      ],
+      [
+        "heart",
+        "Weight & side effects",
+        "A gentle view of your progress, and a diary for how you feel, ready to share with your doctor or nurse."
+      ],
+      [
+        "camera",
+        "Water, protein & labels",
+        "Log water and protein, and read the protein figure straight from a food label with your camera."
+      ],
+      [
+        "lock",
+        "Private by design",
+        "No account, no ads, no tracking. Progress photos are encrypted and locked behind Face ID."
+      ]
+    ],
+    "gallery": [
+      "glpmgr-at-a-glance",
+      "glpmgr-trends",
+      "glpmgr-daily-habits",
+      "glpmgr-scan-a-label",
+      "glpmgr-private-photos",
+      "glpmgr-titration",
+      "glpmgr-injection-areas",
+      "glpmgr-reminders",
+      "glpmgr-on-your-wrist"
+    ],
     "platforms_heading": "Native on every screen it runs on.",
     "platforms": [
-      ["iPhone, iPad & Mac", "Native layouts for each, from one Swift codebase."],
-      ["Apple Watch", "Your next dose, weight trend and quick logging on your wrist."],
-      ["Widgets & Live Activities", "Your next dose on the Home Screen and Lock Screen."],
-      ["Built with", "Swift 6, SwiftUI, SwiftData, HealthKit, WidgetKit, ActivityKit, Vision, CryptoKit and StoreKit 2."]
+      [
+        "iPhone, iPad & Mac",
+        "Native layouts for each, from one Swift codebase."
+      ],
+      [
+        "Apple Watch",
+        "Your next dose, weight trend and quick logging on your wrist."
+      ],
+      [
+        "Widgets & Live Activities",
+        "Your next dose on the Home Screen and Lock Screen."
+      ],
+      [
+        "Built with",
+        "Swift 6, SwiftUI, SwiftData, HealthKit, WidgetKit, ActivityKit, Vision, CryptoKit and StoreKit 2."
+      ]
     ],
     "pricing": "Free to use, with no time limits: doses and dose steps, reminders, weight, side effects, water, blood glucose, the Apple Watch app and backups. Premium adds more ways to see your progress, with a 7-day free trial on the yearly plan.",
     "good_to_know": "GLPMGR is a personal tracking tool, not a medical device, and it never suggests a dose or where to inject. Always follow the advice of your doctor, nurse or pharmacist.",
-    "art": ["glpmgr-ipad", "glpmgr-watch"],
+    "art": [
+      "glpmgr-ipad",
+      "glpmgr-watch"
+    ],
     "learn_more": "GLPMGR has its own website, with a full user guide, support and policies.",
     "links": [
-      ["", "GLPMGR website", "Features, screens, privacy and pricing."],
-      ["guide.html", "User guide", "How to use GLPMGR, one step at a time."],
-      ["glossary.html", "GLP-1 words explained", "Titration, half-life, mg, mmol/L and more, in plain English."],
-      ["site-guidance.html", "Injection sites by medicine", "What each manufacturer says, for the UK, EU and US."],
-      ["faq.html", "Questions and answers", "Everything people ask about GLPMGR."],
-      ["support.html", "Support", "Help with subscriptions, backups and more."]
+      [
+        "",
+        "GLPMGR website",
+        "Features, screens, privacy and pricing."
+      ],
+      [
+        "glp-1-app.html",
+        "Choosing a GLP-1 app",
+        "What a good GLP-1 tracker should do, and how GLPMGR does it."
+      ],
+      [
+        "guide.html",
+        "User guide",
+        "How to use GLPMGR, one step at a time."
+      ],
+      [
+        "glossary.html",
+        "GLP-1 words explained",
+        "Titration, half-life, mg, mmol/L and more, in plain English."
+      ],
+      [
+        "site-guidance.html",
+        "Injection sites by medicine",
+        "What each manufacturer says, for the UK, EU and US."
+      ],
+      [
+        "faq.html",
+        "Questions and answers",
+        "Everything people ask about GLPMGR."
+      ],
+      [
+        "support.html",
+        "Support",
+        "Help with subscriptions, backups and more."
+      ]
     ],
     "links_note": {
       "text": "Injection sites by medicine:",
-      "links": [["mounjaro-injection-sites.html", "Mounjaro"], ["wegovy-injection-sites.html", "Wegovy"], ["ozempic-injection-sites.html", "Ozempic"], ["zepbound-injection-sites.html", "Zepbound"], ["saxenda-injection-sites.html", "Saxenda"]],
+      "links": [
+        [
+          "mounjaro-injection-sites.html",
+          "Mounjaro"
+        ],
+        [
+          "wegovy-injection-sites.html",
+          "Wegovy"
+        ],
+        [
+          "ozempic-injection-sites.html",
+          "Ozempic"
+        ],
+        [
+          "zepbound-injection-sites.html",
+          "Zepbound"
+        ],
+        [
+          "saxenda-injection-sites.html",
+          "Saxenda"
+        ]
+      ],
       "end": ", and more."
     }
   },

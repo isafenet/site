@@ -502,7 +502,7 @@ def build_privacy():
 </main>
 {footer()}'''
     extra = ld(breadcrumbs([("iSafeNet", ""), ("Website privacy", "privacy.html")]))
-    write("privacy.html", head("Website Privacy: iSafeNet", "The iSafeNet website has no cookies, analytics or tracking. Links to the "
+    write("privacy.html", head("Website Privacy Policy: iSafeNet", "The iSafeNet website has no cookies, analytics or tracking. Links to the "
                                + names(a["name"] for a in APPS) + " privacy policies.", "privacy.html", extra) + body)
 
 
@@ -551,7 +551,7 @@ def build_feedback():
     extra = ('<link rel="stylesheet" href="assets/feedback.css">\n'
              f'<link rel="alternate" type="application/atom+xml" title="iSafeNet feedback: roadmap updates" href="{FEEDBACK_API}/feed.xml">\n'
              + ld(breadcrumbs([("iSafeNet", ""), ("Feedback and ideas", "feedback.html")])))
-    write("feedback.html", head("Feedback and Ideas: iSafeNet", f"Suggest ideas for {names(a['name'] for a in APPS)}, "
+    write("feedback.html", head("Feedback and Ideas for Our Apps: iSafeNet", f"Suggest ideas for {names(a['name'] for a in APPS)}, "
                                 "vote for the ones you want, and see our roadmap. No account needed.", "feedback.html", extra) + body)
 
 
