@@ -6,7 +6,7 @@
   --navy:#0a1522;--navy-2:#0f1f33;--navy-3:#16304d;
   --cyan:#00b4fd;--blue:#0a7cff;--blue-deep:#0064d8;
   --grad:linear-gradient(135deg,#00b4fd 0%,#0a7cff 55%,#0058d6 100%);
-  --ink:#0d1b2a;--ink-2:#46586d;--ink-3:#6b7c90;
+  --ink:#0d1b2a;--ink-2:#46586d;--ink-3:#5f7085;--link:#0064d8;
   --bg:#f5f8fc;--card:#ffffff;--line:#e2e9f2;--chip:#eef4fb;
   --radius:22px;--shadow:0 1px 2px rgba(10,21,34,.04),0 12px 32px rgba(10,21,34,.08);
   --shadow-lg:0 30px 70px rgba(4,14,30,.35);
@@ -16,7 +16,7 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
-  :root{--ink:#e8eef6;--ink-2:#b2c0d0;--ink-3:#8a9bb0;--bg:#07111c;--card:#0e1c2c;--line:#1c2e44;--chip:#13263b;
+  :root{--ink:#e8eef6;--ink-2:#b2c0d0;--ink-3:#8a9bb0;--link:#4da3ff;--bg:#07111c;--card:#0e1c2c;--line:#1c2e44;--chip:#13263b;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.35);color-scheme:dark}
 }
 *{box-sizing:border-box}
@@ -24,7 +24,9 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 body{margin:0;font-family:var(--body);font-size:17px;line-height:1.6;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
 img{max-width:100%;height:auto;display:block}
-a{color:var(--blue);text-decoration:none}
+a{color:var(--link);text-decoration:none}
+/* links inside running text are underlined, so they don't rely on colour alone (WCAG 1.4.1) */
+main p a:not(.btn),.crumbs a{text-decoration:underline;text-underline-offset:2px}
 a:hover{text-decoration:underline}
 h1,h2,h3,h4{font-family:var(--head);font-weight:800;letter-spacing:-.02em;line-height:1.12;margin:0}
 p{margin:0}
@@ -64,7 +66,7 @@ p{margin:0}
 .chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
 .chips li{font-size:.85rem;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--chip);color:var(--ink-2)}
 .hero .chips li{background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.1)}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font:700 .8rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font:700 .8rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--link)}
 .pill{display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:.9rem;color:#cfe6ff;padding:7px 14px;border-radius:999px;background:rgba(0,180,253,.1);border:1px solid rgba(0,180,253,.3)}
 .pill i{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(0,180,253,.2)}
 
@@ -124,9 +126,7 @@ section{padding:96px 0}
 .app-card .chips{margin-bottom:26px}
 .app-card .actions{display:flex;flex-wrap:wrap;gap:10px}
 .app-card .shots{position:relative;display:flex;gap:18px;align-items:center;justify-content:center;padding:40px 30px;overflow:hidden}
-.app-card.air .shots{background:linear-gradient(160deg,#0a3d7a,#0a1522)}
-.app-card.glp .shots{background:linear-gradient(160deg,#0b6b62,#0a1d33)}
-.app-card.udp .shots{background:linear-gradient(160deg,#1f8f7a,#0e151a)}
+.app-card .shots{background:linear-gradient(160deg,var(--shots-from,#0a3d7a),var(--shots-to,#0a1522))} /* colours come from apps/<key>.json */
 .app-card .shots img{width:31%;border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.4)}
 .app-card .shots img:nth-child(2){transform:translateY(-18px) scale(1.06)}
 .app-card.flip{direction:rtl}.app-card.flip>*{direction:ltr}
@@ -212,8 +212,8 @@ section{padding:96px 0}
 
 /* ---------- footer ---------- */
 .footer{background:var(--navy);color:rgba(255,255,255,.72);padding:70px 0 34px;margin-top:0}
-.foot-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr 1fr 1fr;gap:30px}
-.footer h4{color:#fff;font-size:1rem;margin-bottom:14px;letter-spacing:0}
+.foot-grid{display:grid;grid-template-columns:1.1fr repeat(var(--cols,4),1fr);gap:30px} /* --cols: one per app, plus iSafeNet */
+.footer h2{color:#fff;font-size:1rem;margin-bottom:14px;letter-spacing:0}
 .footer ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
 .footer a{color:rgba(255,255,255,.72)}
 .footer a:hover{color:#fff}

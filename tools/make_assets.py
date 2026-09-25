@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Builds the site's images from the iSafeNet brand pack and the two app websites.
+"""Builds the site's images from the iSafeNet brand pack and each app's website (listed in apps/*.json).
 
     python3 tools/make_assets.py [--pack ~/Downloads/iSafeNet_Digital_Assets_Pack]
+    python3 tools/make_assets.py --apps-only [KEY ...]   # just the app icons and screens (no brand pack needed)
 
 Inputs (sibling folders of this repo, as on the build machine):
     the brand pack (logos, icons, favicons; PNGs with solid backgrounds)
-    ../glpmgr-legal     GLPMGR's website (icon, photo panels, iPad and Watch screens)
-    ../airreveal-legal  AirReveal's website (icon, photo panels, iPad screens)
+    each app's website, e.g. ../udapt-web: the folder and files are "images_from" in apps/<key>.json
+    ../glpmgr-legal     also the Plus Jakarta Sans fonts
 Outputs, all committed, in assets/:
     img/mark.png, img/mark@2x.png    the "S" phone mark, cut out onto transparency
     favicon-*.png, apple-touch-icon.png
@@ -25,7 +26,6 @@ APPS = os.path.dirname(ROOT)
 PACK = os.path.expanduser(sys.argv[sys.argv.index("--pack") + 1] if "--pack" in sys.argv
                           else "~/Downloads/iSafeNet_Digital_Assets_Pack")
 GLPMGR = os.path.join(APPS, "glpmgr-legal")
-AIRREVEAL = os.path.join(APPS, "airreveal-legal")
 OUT = os.path.join(ROOT, "assets")
 IMG = os.path.join(OUT, "img")
 
@@ -95,10 +95,10 @@ def og_image(mark):
     d.text((80 + m.width + 38, 262), "Create. Ship. Evolve.", font=font(34, 600), fill=(190, 205, 222))
     d.text((80, 370), "Apps for iPhone, iPad", font=font(46, 800), fill="white")
     d.text((80, 426), "and Apple Watch", font=font(46, 800), fill="white")
-    d.text((80, 500), "AirReveal  ·  GLPMGR", font=font(30, 600), fill=(150, 170, 195))
-    # Two phones, tilted slightly, at the right.
-    for i, src in enumerate([os.path.join(AIRREVEAL, "images", "panel-flight.webp"),
-                             os.path.join(GLPMGR, "assets", "panels", "01-at-a-glance.webp")]):
+    apps = load_apps()
+    d.text((80, 500), "  ·  ".join(a["name"] for a in apps), font=font(30, 600), fill=(150, 170, 195))
+    # The first two apps' home screens, tilted slightly, at the right.
+    for i, src in enumerate([os.path.join(IMG, "apps", f"{a['home_shot']}.webp") for a in apps[:2]]):
         shot = width(Image.open(src).convert("RGB"), 205)
         card = Image.new("RGBA", shot.size, (0, 0, 0, 0))
         card.paste(shot, (0, 0), rounded(shot.size, 30))
@@ -111,6 +111,9 @@ def main():
     os.makedirs(os.path.join(IMG, "apps"), exist_ok=True)
     os.makedirs(os.path.join(OUT, "fonts"), exist_ok=True)
 
+    if "--apps-only" in sys.argv:
+        return copy_app_images(only=sys.argv[sys.argv.index("--apps-only") + 1:] or None)
+
     mark = cut_mark()
     height(mark, 96).save(os.path.join(IMG, "mark.png"), optimize=True)
     height(mark, 192).save(os.path.join(IMG, "mark@2x.png"), optimize=True)
@@ -120,27 +123,42 @@ def main():
         shutil.copyfile(os.path.join(PACK, f"isafenet_favicon_dark_{size}x{size}.png"), os.path.join(OUT, f"favicon-{size}-dark.png"))
     shutil.copyfile(os.path.join(PACK, "isafenet_favicon_light_180x180.png"), os.path.join(OUT, "apple-touch-icon.png"))
 
+    copy_app_images()
     og_image(mark).save(os.path.join(IMG, "og.png"), optimize=True)
-
-    # App icons and screens. The panels already carry their own headline, so they're shown as-is.
-    copies = {
-        "airreveal-icon.png": os.path.join(AIRREVEAL, "images", "app-icon.png"),
-        "glpmgr-icon.png": os.path.join(GLPMGR, "assets", "icon-512.png"),
-        "glpmgr-watch.webp": os.path.join(GLPMGR, "assets", "shots", "watch-home.webp"),
-        "glpmgr-ipad.webp": os.path.join(GLPMGR, "assets", "shots", "ipad-today.webp"),
-        "airreveal-ipad.webp": os.path.join(AIRREVEAL, "images", "ipad-flight.webp"),
-    }
-    for name in ("flight", "discover", "journal", "collection", "plan", "profile"):
-        copies[f"airreveal-{name}.webp"] = os.path.join(AIRREVEAL, "images", f"panel-{name}.webp")
-    for name in ("01-at-a-glance", "02-trends", "03-daily-habits", "04-scan-a-label", "05-private-photos",
-                 "06-titration", "07-injection-areas", "08-reminders", "09-on-your-wrist"):
-        copies[f"glpmgr-{name[3:]}.webp"] = os.path.join(GLPMGR, "assets", "panels", f"{name}.webp")
-    for out, src in copies.items():
-        shutil.copyfile(src, os.path.join(IMG, "apps", out))
 
     for f in ("pjs-700.woff2", "pjs-800.woff2"):
         shutil.copyfile(os.path.join(GLPMGR, "assets", "fonts", f), os.path.join(OUT, "fonts", f))
     print("assets written to", OUT)
+
+
+def load_apps():
+    """The apps in apps/*.json, in site order, each with its "key"."""
+    import glob, json
+    apps = []
+    for path in glob.glob(os.path.join(ROOT, "apps", "*.json")):
+        with open(path, encoding="utf-8") as f:
+            apps.append({**json.load(f), "key": os.path.splitext(os.path.basename(path))[0]})
+    return sorted(apps, key=lambda a: (a["order"], a["key"]))
+
+
+def copy_app_images(only=None):
+    """Copies each app's icon and screens from its own website, as listed in apps/<key>.json ("images_from").
+    Icons larger than 512px are scaled down to 512, like the others. `only` limits it to some app keys."""
+    for app in load_apps():
+        key, source = app["key"], app["images_from"]
+        if only and key not in only:
+            continue
+        folder = os.path.normpath(os.path.join(ROOT, source["folder"]))
+        for out, src in source["files"].items():
+            src_path = os.path.join(folder, src)
+            if not os.path.exists(src_path):
+                sys.exit(f"apps/{key}.json: {src_path} doesn't exist")
+            dst = os.path.join(IMG, "apps", out)
+            if out.endswith("-icon.png") and Image.open(src_path).width > 512:
+                Image.open(src_path).resize((512, 512), Image.LANCZOS).save(dst, optimize=True)
+            else:
+                shutil.copyfile(src_path, dst)
+        print(f"{key}: {len(source['files'])} images copied from {source['folder']}")
 
 
 if __name__ == "__main__":

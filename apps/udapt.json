@@ -1,0 +1,185 @@
+{
+  "order": 3,
+  "name": "Udapt",
+  "site": "https://udapt.isafenet.app/",
+  "kind": "Health & Fitness · iPhone & Apple Watch",
+  "category": "HealthApplication",
+  "os": "iOS, watchOS",
+  "price": "6.99",
+  "tagline": "The fitness plan that adapts around you.",
+  "summary": "One adaptive Daily Plan that reads Apple Health each morning and adjusts today's training and today's food targets together, explaining every change in plain English.",
+  "blurb": "The fitness plan that adapts around you. One adaptive Daily Plan that reads Apple Health each morning and adjusts today's training and food targets together.",
+  "ticks": [
+    "A readiness score from Apple Health or a morning check-in",
+    "Training that eases off or progresses automatically",
+    "Food targets that shift with training days, plus photo and voice logging",
+    "Protects a joint by swapping out exercises that load it"
+  ],
+  "chips": [
+    "iPhone",
+    "Apple Watch",
+    "Widgets",
+    "Apple Health",
+    "On-device AI"
+  ],
+  "colors": [
+    "#1f8f7a",
+    "#0e151a"
+  ],
+  "framed_screens": [
+    "udapt-panel-ready-in-one-glance",
+    "udapt-panel-training-that-adapts",
+    "udapt-panel-food-that-moves-with-you",
+    "udapt-panel-log-food-your-way",
+    "udapt-panel-train-around-an-injury",
+    "udapt-panel-home-or-gym"
+  ],
+  "card_shots": [
+    "udapt-panel-ready-in-one-glance",
+    "udapt-panel-training-that-adapts",
+    "udapt-panel-food-that-moves-with-you"
+  ],
+  "home_shot": "udapt-today",
+  "screens": {
+    "udapt-panel-ready-in-one-glance": "Ready in one glance: readiness score 7, Go, with today's Full body A session",
+    "udapt-panel-training-that-adapts": "Training that adapts: today's sets with weights worked out from your last session",
+    "udapt-panel-food-that-moves-with-you": "Food that moves with you: calories and protein, carbs and fat eaten against today's targets on a training day",
+    "udapt-panel-log-food-your-way": "Log food your way: search, scan a barcode, or just say what you ate",
+    "udapt-panel-train-around-an-injury": "Train around an injury: protect a joint and Udapt swaps out the risky exercises",
+    "udapt-panel-home-or-gym": "Home or gym, your call: full programs either way",
+    "udapt-today": "Udapt Today screen: readiness score 7, Go, and today's Full body A session with progressed weights"
+  },
+  "footer": [
+    [
+      "Udapt support",
+      "support.html"
+    ],
+    [
+      "Udapt privacy policy",
+      "privacy.html"
+    ],
+    [
+      "Udapt terms of use",
+      "terms.html"
+    ]
+  ],
+  "page": {
+    "title": "Udapt by iSafeNet: The Fitness Plan That Adapts Around You",
+    "description": "Udapt is a private training and nutrition app for iPhone and Apple Watch: one adaptive Daily Plan that reads Apple Health each morning and adjusts today's training and food targets together.",
+    "lead": "Udapt reads Apple Health (or a quick morning check-in) every day and adjusts today's training and today's food targets together, as one connected plan, with a plain-English reason for every change. No spreadsheets, no separate apps to reconcile.",
+    "second_button": [
+      "#features",
+      "See how it works"
+    ],
+    "hero": [
+      "udapt-panel-training-that-adapts",
+      "udapt-panel-ready-in-one-glance",
+      "udapt-panel-food-that-moves-with-you"
+    ],
+    "features": [
+      [
+        "heart",
+        "Readiness that means something",
+        "Heart rate variability, resting heart rate and sleep from Apple Health, or a 5-question morning check-in if you don't wear your Watch to bed. Either way, you get a score and a plain reason why."
+      ],
+      [
+        "adapt",
+        "Training that eases off, not just logs",
+        "A rough night trims today's sets and caps effort automatically. A good run of days lets your program progress. You can always keep the original session, one tap."
+      ],
+      [
+        "cup",
+        "Food targets that move with training",
+        "More carbs on training days, a little less on rest days, and the week's total stays the same. After two weeks of logging, your calorie target adapts to what your body actually does, not a generic formula."
+      ],
+      [
+        "robot",
+        "Log food your way",
+        "Search thousands of foods, scan a barcode, or use on-device AI to log a meal from a photo or by describing it out loud. Nothing leaves your phone."
+      ],
+      [
+        "camera",
+        "Protect a joint",
+        "Flag a shoulder, knee or lower back you're being careful with, and Udapt automatically swaps exercises that load it for a like-for-like alternative that doesn't."
+      ],
+      [
+        "lock",
+        "Private by design",
+        "No ads, no third-party analytics. Health data stays in Apple Health; anything Udapt-only stays on your phone."
+      ]
+    ],
+    "gallery": [
+      "udapt-panel-ready-in-one-glance",
+      "udapt-panel-training-that-adapts",
+      "udapt-panel-food-that-moves-with-you",
+      "udapt-panel-log-food-your-way",
+      "udapt-panel-train-around-an-injury",
+      "udapt-panel-home-or-gym"
+    ],
+    "platforms_heading": "One plan, not three apps.",
+    "platforms": [
+      [
+        "iPhone",
+        "Today's readiness, training and food targets in one place, explained in plain English."
+      ],
+      [
+        "Apple Watch",
+        "A full companion app, included: today's plan at a glance, sets logged with the Digital Crown, and a rest timer on your wrist."
+      ],
+      [
+        "Widgets & Live Activities",
+        "Today's plan on the Home Screen and Lock Screen, and your rest timer live during a workout."
+      ],
+      [
+        "Siri & Shortcuts",
+        "Ask for your readiness or log your usual breakfast, hands-free."
+      ],
+      [
+        "Built with",
+        "Swift 6, SwiftUI, HealthKit, WidgetKit, ActivityKit, App Intents, Foundation Models (on-device AI), Speech and StoreKit 2."
+      ]
+    ],
+    "pricing": "Udapt is a subscription: £6.99/month or £39.99/year, with a 7-day free trial on both plans.",
+    "good_to_know": "Udapt is a wellness tool, not a medical device, and doesn't diagnose or treat anything. Always talk to your doctor about what's safe for you, especially around injuries.",
+    "art": [
+      "udapt-panel-train-around-an-injury",
+      "udapt-panel-home-or-gym"
+    ],
+    "learn_more": "Udapt has its own website, with full pricing, privacy and support information.",
+    "links": [
+      [
+        "",
+        "Udapt website",
+        "Features, screens, privacy and pricing."
+      ],
+      [
+        "support.html",
+        "Support",
+        "Help with subscriptions and the app."
+      ],
+      [
+        "privacy.html",
+        "Privacy Policy",
+        "What Udapt stores and where it stays."
+      ],
+      [
+        "terms.html",
+        "Terms of Use",
+        "Subscription terms and pricing."
+      ]
+    ]
+  },
+  "images_from": {
+    "folder": "../udapt-web",
+    "files": {
+      "udapt-icon.png": "images/app-icon.png",
+      "udapt-today.webp": "images/flat-today.webp",
+      "udapt-panel-ready-in-one-glance.webp": "images/01-ready-in-one-glance.webp",
+      "udapt-panel-training-that-adapts.webp": "images/02-training-that-adapts.webp",
+      "udapt-panel-food-that-moves-with-you.webp": "images/03-food-that-moves-with-you.webp",
+      "udapt-panel-log-food-your-way.webp": "images/04-log-food-your-way.webp",
+      "udapt-panel-train-around-an-injury.webp": "images/05-train-around-an-injury.webp",
+      "udapt-panel-home-or-gym.webp": "images/06-home-or-gym.webp"
+    }
+  }
+}

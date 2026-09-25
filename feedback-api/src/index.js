@@ -13,10 +13,13 @@
 // the browser makes; rate limits by an HMAC of IP + date that can't be reversed or linked across days.
 
 import { personalDetails } from "../../assets/feedback-personal.js";
-import ADMIN_HTML from "./admin.html";
+import { APPS as APP_LIST } from "../../assets/feedback-apps.js"; // generated from apps/*.json; redeploy after adding an app
+import ADMIN_TEMPLATE from "./admin.html";
 
-const APPS = ["airreveal", "glpmgr", "udapt", "general"];
-const APP_NAMES = { airreveal: "AirReveal", glpmgr: "GLPMGR", udapt: "Udapt", general: "iSafeNet" };
+const APPS = Object.keys(APP_LIST);
+const APP_NAMES = Object.fromEntries(APPS.map((k) => [k, k === "general" ? "iSafeNet" : APP_LIST[k].name]));
+const ADMIN_HTML = ADMIN_TEMPLATE.replace("__APPS__",
+  JSON.stringify(Object.fromEntries(APPS.map((k) => [k, k === "general" ? "General / iSafeNet" : APP_LIST[k].name]))));
 const STATUSES = ["open", "considering", "planned", "started", "shipped", "declined"];
 const STATUS_NAMES = {
   open: "Open", considering: "Under consideration", planned: "Planned",
@@ -277,7 +280,7 @@ async function feed(url, env) {
   <title>${xml(`${what}: ${i.title}`)}</title>
   <link href="${BOARD}#idea-${i.id}"/>
   <updated>${xml(i.at)}</updated>
-  <category term="${i.app}" label="${APP_NAMES[i.app]}"/>
+  <category term="${i.app}" label="${xml(APP_NAMES[i.app] || i.app)}"/>
   <content type="text">${xml(i.note || "")}</content>
 </entry>`;
   }).join("\n");

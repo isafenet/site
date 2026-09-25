@@ -58,7 +58,7 @@ h2{font-size:1.05rem;margin:0 0 4px}
 </main>
 <div id="msg" role="status" aria-live="polite"></div>
 <script>
-const APPS = {airreveal:"AirReveal", glpmgr:"GLPMGR", udapt:"Udapt", general:"General / iSafeNet"};
+const APPS = __APPS__; // filled in by the Worker from assets/feedback-apps.js
 const STATUSES = {open:"Open", considering:"Under consideration", planned:"Planned", started:"In progress", shipped:"Shipped", declined:"Not planned"};
 const STATES = {pending:"Waiting for review", published:"Published", rejected:"Rejected", merged:"Merged"};
 const FLAGS = {dose:"Looks like it mentions a dose", health:"May include personal health details", contact:"Contains an email address or phone number"};

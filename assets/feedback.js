@@ -2,18 +2,13 @@
 // No accounts and no tracking: this browser keeps a random voter ID, the ideas it follows and the ideas it
 // suggested, in localStorage only. Turnstile loads only when someone opens a form to post.
 import { personalDetails } from "./feedback-personal.js";
+import { APPS } from "./feedback-apps.js"; // generated from apps/*.json by tools/build.py
 
 const root = document.getElementById("board");
 const LOCAL = ["localhost", "127.0.0.1"].includes(location.hostname);
 const API = LOCAL ? "http://127.0.0.1:8787" : root.dataset.api;
 const SITEKEY = LOCAL ? "1x00000000000000000000AA" : root.dataset.sitekey; // Cloudflare's test key locally
 
-const APPS = {
-  airreveal: { name: "AirReveal", icon: "assets/img/apps/airreveal-icon.png" },
-  glpmgr: { name: "GLPMGR", icon: "assets/img/apps/glpmgr-icon.png" },
-  udapt: { name: "Udapt", icon: "assets/img/apps/udapt-icon.png" },
-  general: { name: "General", icon: "assets/img/mark.png" },
-};
 const STATUS = {
   open: "Open", considering: "Under consideration", planned: "Planned",
   started: "In progress", shipped: "Shipped", declined: "Not planned",
@@ -38,6 +33,9 @@ let mine = store.get("mine", []);         // ids this browser suggested, until t
 let voted = new Set();
 
 const state = { ideas: [], loaded: false, error: "", app: "all", sort: "top", status: "active", q: "" };
+// feedback.html?app=udapt (linked from each app's support page) opens the board filtered to that app.
+const linkedApp = new URLSearchParams(location.search).get("app");
+if (linkedApp && Object.hasOwn(APPS, linkedApp)) state.app = linkedApp;
 
 // ---------------------------------------------------------------- helpers
 

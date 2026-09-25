@@ -1,26 +1,34 @@
 #!/usr/bin/env python3
 """Builds the iSafeNet company website (https://isafenet.app) into this repository.
 
-    python3 tools/make_assets.py   # images, only when the brand pack or the app sites change
-    python3 tools/build.py         # every page, sitemap.xml, robots.txt, CNAME, 404.html
+    python3 tools/make_assets.py         # images, only when the brand pack or the app sites change
+    python3 tools/build.py               # every page, sitemap.xml, robots.txt, CNAME, 404.html
+    python3 tools/build.py --new-app KEY # start apps/KEY.json for a new app (see README.md)
 
-Every page shares one header, footer and set of links, so the company site, AirReveal's site
-(airreveal.isafenet.app) and GLPMGR's site (glpmgr.isafenet.app) always point at each other the same
-way: the company links to each app's page here and deep into each app's own site, and each app's
-structured data names https://isafenet.app/#organization as its publisher.
-Deterministic: the same inputs make the same files.
+Each app is one file, apps/<key>.json: its card, its page here, its screenshots and where make_assets.py
+copies its images from. Everything that lists the apps (the nav, footer, homepage, "More from iSafeNet",
+structured data, sitemap, 404 page, privacy page and the feedback board's app list) is built from those
+files, so adding an app never means editing this script.
+
+The company site and the app sites (e.g. udapt.isafenet.app) point at each other the same way: the company
+links to each app's page here and deep into each app's own site, and each app's structured data names
+https://isafenet.app/#organization as its publisher. The feedback board (feedback.html) is a static page
+here; its API is the Worker in feedback-api/.
+Needs Pillow (for image sizes). Deterministic: the same inputs make the same files.
 """
-import html, json, os
+import glob, html, json, os, re, sys
+from PIL import Image
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+APPS_DIR = os.path.join(ROOT, "apps")
 BASE = "https://isafenet.app/"
 EMAIL = "info@isafenet.app"
 ORG_ID = BASE + "#organization"
-LASTMOD = "2026-09-23"
+LASTMOD = "2026-09-25"
 YEAR = 2026
-
-AIR = "https://airreveal.isafenet.app/"
-GLP = "https://glpmgr.isafenet.app/"
+FEEDBACK_API = "https://isafenet-feedback.isafenet-feedback.workers.dev"
+TURNSTILE_SITE_KEY = "0x4AAAAAAFDmH6KTeIIm11HZ"
+NUMBER_WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
 
 # ---------------------------------------------------------------- icons (24px stroke)
 P = {
@@ -47,84 +55,105 @@ P = {
  "compass": '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
  "star": '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
  "camera": '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/>',
+ "adapt": '<path d="M6.5 6.5 4 4M6.5 17.5 4 20M17.5 6.5 20 4M17.5 17.5 20 20"/><rect x="7" y="7" width="10" height="10" rx="2"/>',
+ "cup": '<path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/>',
+ "robot": '<rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/>',
+ "plus": '<path d="M12 5v14M5 12h14"/>',
+ "rss": '<path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/>',
 }
 
 
 def icon(name, cls=""):
     c = f' class="{cls}"' if cls else ""
+    paths = name if name.startswith("<") else P[name]  # an app may give its own SVG paths
     return (f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
-            f'stroke-linejoin="round" aria-hidden="true"{c}>{P[name]}</svg>')
+            f'stroke-linejoin="round" aria-hidden="true"{c}>{paths}</svg>')
 
 
 def esc(s):
-    return html.escape(s, quote=True)
+    # Attributes are always double-quoted, so apostrophes can stay as they are.
+    return html.escape(s, quote=True).replace("&#x27;", "'")
 
 
 def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + "</script>\n"
 
 
-# ---------------------------------------------------------------- the two apps
-APPS = {
-    "airreveal": {
-        "name": "AirReveal",
-        "page": "airreveal.html",
-        "site": AIR,
-        "icon": "assets/img/apps/airreveal-icon.png",
-        "kind": "Travel · iPhone & iPad",
-        "category": "TravelApplication",
-        "os": "iOS, iPadOS",
-        "tagline": "See what you're flying over.",
-        "summary": ("A window-seat companion that names the landmarks, cities and natural wonders below your plane, "
-                    "tells you which side to look from, and keeps a journal of every flight, even in airplane mode."),
-        "ticks": ["Live flight map that works offline, using only GPS",
-                  "Landmarks named as you pass, and which window to look from",
-                  "Landmark quizzes, Discovery Bingo, achievements and a country passport",
-                  "A flight journal that turns your trips into a personal map of the world"],
-        "chips": ["iPhone", "iPad", "Widgets", "Live Activities", "Offline maps", "6 languages"],
-        "shots": ["airreveal-flight", "airreveal-discover", "airreveal-journal"],
-    },
-    "glpmgr": {
-        "name": "GLPMGR",
-        "page": "glpmgr.html",
-        "site": GLP,
-        "icon": "assets/img/apps/glpmgr-icon.png",
-        "kind": "Health & Fitness · iPhone, iPad & Apple Watch",
-        "category": "HealthApplication",
-        "os": "iOS, iPadOS, watchOS",
-        "tagline": "Your GLP-1 journey, tracked privately.",
-        "summary": ("A calm, private tracker for people taking GLP-1 medicines such as Mounjaro, Wegovy and Ozempic: "
-                    "doses and dose steps, reminders, injection sites, weight, side effects, water and protein."),
-        "ticks": ["Dose reminders, dose steps (titration) and low-supply alerts",
-                  "Injection areas taken only from each manufacturer's own leaflet",
-                  "Weight, side effects, water, protein and blood glucose, gently",
-                  "No account and no tracking: everything stays on your device"],
-        "chips": ["iPhone", "iPad", "Apple Watch", "Mac", "Widgets", "Apple Health"],
-        "shots": ["glpmgr-at-a-glance", "glpmgr-trends", "glpmgr-injection-areas"],
-    },
-}
+def names(items, last="and"):
+    items = list(items)
+    return items[0] if len(items) == 1 else ", ".join(items[:-1]) + f" {last} " + items[-1]
 
 
-def app_ld(key, with_page=True):
-    a = APPS[key]
+def count_word(n):
+    return NUMBER_WORDS[n] if n < len(NUMBER_WORDS) else str(n)
+
+
+# ---------------------------------------------------------------- the apps (apps/*.json)
+REQUIRED = ["order", "name", "site", "kind", "category", "os", "tagline", "summary", "blurb", "ticks", "chips",
+            "colors", "card_shots", "home_shot", "screens", "footer", "page", "images_from"]
+REQUIRED_PAGE = ["title", "description", "lead", "second_button", "hero", "features", "gallery", "platforms_heading",
+                 "platforms", "pricing", "good_to_know", "art", "learn_more", "links"]
+
+
+def load_apps():
+    apps = []
+    for path in sorted(glob.glob(os.path.join(APPS_DIR, "*.json"))):
+        key = os.path.splitext(os.path.basename(path))[0]
+        with open(path, encoding="utf-8") as f:
+            a = json.load(f)
+        a["key"] = key
+        a["page_file"] = f"{key}.html"
+        a["icon"] = f"assets/img/apps/{key}-icon.png"
+        check_app(a, os.path.relpath(path, ROOT))
+        apps.append(a)
+    if not apps:
+        sys.exit("No apps in apps/.")
+    return sorted(apps, key=lambda a: (a["order"], a["key"]))
+
+
+def check_app(a, where):
+    """Stops the build with a plain message if an app file is incomplete, so a half-filled one can't ship."""
+    problems = [f"missing \"{k}\"" for k in REQUIRED if k not in a]
+    problems += [f"missing \"page.{k}\"" for k in REQUIRED_PAGE if k not in a.get("page", {})]
+    if "TODO" in json.dumps(a):
+        problems.append("still has TODO placeholders")
+    if not problems:
+        p = a["page"]
+        used = a["card_shots"] + [a["home_shot"]] + p["hero"] + p["gallery"] + p["art"]
+        used += a.get("framed_screens", [])
+        problems += [f"screen \"{s}\" has no alt text in \"screens\"" for s in dict.fromkeys(used) if s not in a["screens"]]
+        files = [f"{a['key']}-icon.png"] + [f"{s}.webp" for s in a["screens"]]
+        problems += [f"image assets/img/apps/{f} not found (run tools/make_assets.py --apps-only)"
+                     for f in files if not os.path.exists(os.path.join(ROOT, "assets", "img", "apps", f))]
+        problems += [f"unknown icon \"{i}\"" for i, _, _ in p["features"] if not i.startswith("<") and i not in P]
+    if problems:
+        sys.exit(f"{where}:\n  " + "\n  ".join(problems))
+
+
+def link(a, path):
+    """A path in an app file is relative to that app's own website, unless it's a full URL."""
+    return path if path.startswith(("https://", "http://")) else a["site"] + path
+
+
+def app_ld(a, with_page=True):
     obj = {"@context": "https://schema.org", "@type": "MobileApplication", "name": a["name"],
            "url": a["site"], "image": BASE + a["icon"], "description": a["summary"],
            "applicationCategory": a["category"], "operatingSystem": a["os"], "inLanguage": "en-GB",
            "publisher": {"@id": ORG_ID}, "author": {"@id": ORG_ID},
-           "offers": {"@type": "Offer", "price": "0", "priceCurrency": "GBP"}}
+           "offers": {"@type": "Offer", "price": a.get("price", "0"), "priceCurrency": "GBP"}}
     if with_page:
-        obj["sameAs"] = [BASE + a["page"]]
+        obj["sameAs"] = [BASE + a["page_file"]]
     return obj
 
 
-ORG = {"@context": "https://schema.org", "@type": "Organization", "@id": ORG_ID, "name": "iSafeNet",
-       "url": BASE, "logo": BASE + "assets/favicon-192.png", "image": BASE + "assets/img/og.png",
-       "email": EMAIL, "slogan": "Create. Ship. Evolve.",
-       "description": "iSafeNet is an independent mobile app studio designing and building private, accessible apps for iPhone, iPad and Apple Watch.",
-       "sameAs": ["https://github.com/isafenet"],
-       "contactPoint": {"@type": "ContactPoint", "email": EMAIL, "contactType": "customer support", "availableLanguage": ["English"]},
-       "owns": [{"@type": "MobileApplication", "name": "AirReveal", "url": AIR},
-                {"@type": "MobileApplication", "name": "GLPMGR", "url": GLP}]}
+def org():
+    return {"@context": "https://schema.org", "@type": "Organization", "@id": ORG_ID, "name": "iSafeNet",
+            "url": BASE, "logo": BASE + "assets/favicon-192.png", "image": BASE + "assets/img/og.png",
+            "email": EMAIL, "slogan": "Create. Ship. Evolve.",
+            "description": "iSafeNet is an independent mobile app studio designing and building private, accessible apps for iPhone, iPad and Apple Watch.",
+            "sameAs": ["https://github.com/isafenet"],
+            "contactPoint": {"@type": "ContactPoint", "email": EMAIL, "contactType": "customer support", "availableLanguage": ["English"]},
+            "owns": [{"@type": "MobileApplication", "name": a["name"], "url": a["site"]} for a in APPS]}
 
 
 def breadcrumbs(trail):
@@ -135,6 +164,7 @@ def breadcrumbs(trail):
 # ---------------------------------------------------------------- shell
 def head(title, desc, path, extra="", image="assets/img/og.png"):
     url = BASE + path
+    title, desc = esc(title), esc(desc)
     return f'''<!doctype html>
 <html lang="en-GB">
 <head>
@@ -170,11 +200,10 @@ def head(title, desc, path, extra="", image="assets/img/og.png"):
 
 
 def nav(current=None):
-    links = [("Apps", "index.html#apps", None), ("AirReveal", "airreveal.html", "airreveal"),
-             ("GLPMGR", "glpmgr.html", "glpmgr"), ("What we build", "index.html#build", None),
-             ("Approach", "index.html#approach", None)]
+    links = [("Apps", "index.html#apps", None)] + [(a["name"], a["page_file"], a["key"]) for a in APPS] + \
+            [("What we build", "index.html#build", None), ("Approach", "index.html#approach", None)]
     here = ' aria-current="page"'
-    items = "".join(f'<a href="{h}"{here if current == k else ""}>{t}</a>' for t, h, k in links)
+    items = "".join(f'<a href="{h}"{here if k and current == k else ""}>{esc(t)}</a>' for t, h, k in links)
     return f'''<header class="nav" id="top"><div class="wrap">
   <a class="brand" href="index.html" aria-label="iSafeNet home"><img src="assets/img/mark.png" srcset="assets/img/mark@2x.png 2x" width="24" height="34" alt=""><span>iSafe<span class="net">Net</span></span></a>
   <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
@@ -184,32 +213,25 @@ def nav(current=None):
 
 
 def footer():
+    cols = "".join(f'''
+    <div><h2>{esc(a["name"])}</h2><ul>
+      <li><a href="{a["page_file"]}">About {esc(a["name"])}</a></li>
+      <li><a href="{a["site"]}">{esc(a["name"])} website</a></li>''' +
+                   "".join(f'\n      <li><a href="{link(a, u)}">{esc(t)}</a></li>' for t, u in a["footer"]) +
+                   "\n    </ul></div>" for a in APPS)
     return f'''<footer class="footer"><div class="wrap">
-  <div class="foot-grid">
+  <div class="foot-grid" style="--cols:{len(APPS) + 1}">
     <div>
       <a class="brand" href="index.html"><img src="assets/img/mark.png" srcset="assets/img/mark@2x.png 2x" width="24" height="34" alt=""><span>iSafe<span class="net">Net</span></span></a>
       <p class="tag">An independent mobile app studio. We design, build and look after private, accessible apps for iPhone, iPad and Apple Watch.</p>
       <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
-    </div>
-    <div><h4>AirReveal</h4><ul>
-      <li><a href="airreveal.html">About AirReveal</a></li>
-      <li><a href="{AIR}">AirReveal website</a></li>
-      <li><a href="{AIR}what-am-i-flying-over.html">What am I flying over?</a></li>
-      <li><a href="{AIR}user-guide.html">AirReveal user guide</a></li>
-      <li><a href="{AIR}support.html">AirReveal support</a></li>
-    </ul></div>
-    <div><h4>GLPMGR</h4><ul>
-      <li><a href="glpmgr.html">About GLPMGR</a></li>
-      <li><a href="{GLP}">GLPMGR website</a></li>
-      <li><a href="{GLP}guide.html">GLPMGR user guide</a></li>
-      <li><a href="{GLP}site-guidance.html">Injection sites by medicine</a></li>
-      <li><a href="{GLP}glossary.html">GLP-1 words explained</a></li>
-    </ul></div>
-    <div><h4>iSafeNet</h4><ul>
+    </div>{cols}
+    <div><h2>iSafeNet</h2><ul>
       <li><a href="index.html#apps">Our apps</a></li>
       <li><a href="index.html#build">What we build</a></li>
       <li><a href="index.html#approach">How we work</a></li>
       <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="feedback.html">Feedback and ideas</a></li>
       <li><a href="privacy.html">Website privacy</a></li>
     </ul></div>
   </div>
@@ -230,13 +252,30 @@ def footer():
 '''
 
 
-def shot(name, alt, cls="", eager=False, w=600, h=1260):
+_sizes = {}
+
+
+def img_size(name):
+    if name not in _sizes:
+        _sizes[name] = Image.open(os.path.join(ROOT, "assets", "img", "apps", f"{name}.webp")).size
+    return _sizes[name]
+
+
+def shot(a, name, cls="", eager=False):
     lazy = "" if eager else ' loading="lazy"'
-    return f'<img class="{cls}" src="assets/img/apps/{name}.webp" width="{w}" height="{h}" alt="{esc(alt)}"{lazy} decoding="async">'
+    w, h = img_size(name)
+    return f'<img class="{cls}" src="assets/img/apps/{name}.webp" width="{w}" height="{h}" alt="{esc(a["screens"][name])}"{lazy} decoding="async">'
 
 
-def phone(name, alt, cls, eager=True):
-    return f'<div class="phone {cls}">{shot(name, alt, eager=eager)}</div>'
+def framed(a, name):
+    """Screens listed in "framed_screens" already show a device frame, so they're shown as they are."""
+    return name in a.get("framed_screens", [])
+
+
+def phone(a, name, cls):
+    # Plain screenshots get the site's phone frame; framed ones don't.
+    panel = " panel" if framed(a, name) else ""
+    return f'<div class="phone{panel} {cls}">{shot(a, name, eager=True)}</div>'
 
 
 def write(name, content):
@@ -244,41 +283,21 @@ def write(name, content):
         f.write(content)
 
 
-SHOT_ALT = {
-    "airreveal-flight": "AirReveal live flight map showing a plane over Mongolia and the landmark below",
-    "airreveal-discover": "AirReveal Discover screen listing landmarks overhead now and coming up",
-    "airreveal-journal": "AirReveal flight journal with a live trip from London to Tokyo",
-    "airreveal-collection": "AirReveal collection of landmarks discovered on past flights",
-    "airreveal-plan": "AirReveal planning a flight from London Heathrow to Barcelona",
-    "airreveal-profile": "AirReveal profile with achievements, passport and flights",
-    "glpmgr-at-a-glance": "GLPMGR Today screen with next dose, goal, water and protein",
-    "glpmgr-trends": "GLPMGR weight trends chart with every dose marked",
-    "glpmgr-injection-areas": "GLPMGR injection body map showing the areas the manufacturer lists",
-    "glpmgr-titration": "GLPMGR dose steps in the dosing schedule",
-    "glpmgr-private-photos": "GLPMGR progress photos locked behind Face ID",
-    "glpmgr-reminders": "GLPMGR dose reminder on the lock screen",
-    "glpmgr-scan-a-label": "GLPMGR reading the protein figure from a food label",
-    "glpmgr-daily-habits": "GLPMGR daily protein totals against a goal",
-    "glpmgr-on-your-wrist": "GLPMGR on Apple Watch showing the next dose and weight trend",
-}
-
-
-def app_card(key, flip=False):
-    a = APPS[key]
-    cls = "air" if key == "airreveal" else "glp"
+def app_card(a, flip=False):
     ticks = "".join(f"<li>{icon('check')}<span>{esc(t)}</span></li>" for t in a["ticks"])
     chips = "".join(f"<li>{esc(c)}</li>" for c in a["chips"])
-    shots = "".join(shot(s, SHOT_ALT[s]) for s in a["shots"])
-    return f'''<article class="app-card {cls}{" flip" if flip else ""} rv" id="{key}">
+    shots = "".join(shot(a, s) for s in a["card_shots"])
+    c1, c2 = a["colors"]
+    return f'''<article class="app-card{" flip" if flip else ""} rv" id="{a["key"]}" style="--shots-from:{c1};--shots-to:{c2}">
   <div class="info">
-    <div class="top"><img src="{a["icon"]}" width="68" height="68" alt="{a["name"]} app icon"><div><h3>{a["name"]}</h3><span>{esc(a["kind"])}</span></div></div>
+    <div class="top"><img src="{a["icon"]}" width="68" height="68" alt="{esc(a["name"])} app icon"><div><h3>{esc(a["name"])}</h3><span>{esc(a["kind"])}</span></div></div>
     <p class="tagline">{esc(a["tagline"])}</p>
     <p class="desc">{esc(a["summary"])}</p>
     <ul class="ticks">{ticks}</ul>
     <ul class="chips" aria-label="Platforms and features">{chips}</ul>
-    <div class="actions"><a class="btn" href="{a["page"]}">Explore {a["name"]} {icon("arrow")}</a><a class="btn light" href="{a["site"]}">{a["name"]} website {icon("out")}</a></div>
+    <div class="actions"><a class="btn" href="{a["page_file"]}">Explore {esc(a["name"])} {icon("arrow")}</a><a class="btn light" href="{a["site"]}">{esc(a["name"])} website {icon("out")}</a></div>
   </div>
-  <div class="shots" aria-hidden="false">{shots}</div>
+  <div class="shots">{shots}</div>
 </article>'''
 
 
@@ -304,6 +323,10 @@ def build_index():
     ]
     prin_html = "".join(f'<article class="card rv"><div class="ico">{icon(i)}</div><h3>{t}</h3><p>{d}</p></article>' for i, t, d in principles)
 
+    n = len(APPS)
+    everyone = "it is" if n == 1 else "both are" if n == 2 else f"all {count_word(n).lower()} are"
+    hero = "\n    ".join(phone(a, a["home_shot"], f"p{i}") for i, a in enumerate(APPS[:3], 1))
+    cards = "\n  ".join(app_card(a, flip=i % 2 == 1) for i, a in enumerate(APPS))
     body = f'''{nav()}
 <main id="main">
 <section class="hero"><div class="wrap hero-grid">
@@ -315,23 +338,20 @@ def build_index():
     <ul class="chips" aria-label="What we work with"><li>Swift</li><li>SwiftUI</li><li>iPhone</li><li>iPad</li><li>Apple Watch</li><li>Mac</li></ul>
   </div>
   <div class="devices" aria-label="Screens from our apps">
-    {phone("airreveal-flight", SHOT_ALT["airreveal-flight"], "p1")}
-    {phone("glpmgr-at-a-glance", SHOT_ALT["glpmgr-at-a-glance"], "p2")}
-    {phone("airreveal-discover", SHOT_ALT["airreveal-discover"], "p3")}
+    {hero}
   </div>
 </div></section>
 
 <section id="apps"><div class="wrap">
   <div class="sec-head rv"><span class="eyebrow">Our apps</span>
-    <h2>Two new apps, made with care.</h2>
-    <p>Each one solves a real, everyday problem, and both are coming soon to the App Store.</p></div>
-  {app_card("airreveal")}
-  {app_card("glpmgr", flip=True)}
+    <h2>{count_word(n)} new app{"" if n == 1 else "s"}, made with care.</h2>
+    <p>Each one solves a real, everyday problem, and {everyone} coming soon to the App Store.</p></div>
+  {cards}
 </div></section>
 
 <section class="alt" aria-label="iSafeNet in numbers"><div class="wrap">
   <div class="stats">
-    <div class="stat rv"><b>2</b><span>apps in the portfolio</span></div>
+    <div class="stat rv"><b>{n}</b><span>app{"" if n == 1 else "s"} in the portfolio</span></div>
     <div class="stat rv"><b>4</b><span>Apple platforms: iPhone, iPad, Apple Watch and Mac</span></div>
     <div class="stat rv"><b>6</b><span>languages on AirReveal's website</span></div>
     <div class="stat rv"><b>0</b><span>ads or tracking tools</span></div>
@@ -368,160 +388,96 @@ def build_index():
 <section id="contact" style="padding-top:0"><div class="wrap">
   <div class="contact rv">
     <h2>Let's talk.</h2>
-    <p>Questions about our apps, feedback, press or partnership enquiries: we read every message and reply personally.</p>
-    <a class="btn" href="mailto:{EMAIL}">{icon("mail")} {EMAIL}</a>
+    <p>Questions about our apps, press or partnership enquiries: we read every message and reply personally. Got an idea for one of our apps? Share it on our feedback board.</p>
+    <div class="cta-row" style="justify-content:center;margin:0"><a class="btn" href="mailto:{EMAIL}">{icon("mail")} {EMAIL}</a><a class="btn ghost" href="feedback.html">Share an idea</a></div>
   </div>
 </div></section>
 </main>
 {footer()}'''
-    extra = ld(ORG) + ld({"@context": "https://schema.org", "@type": "WebSite", "@id": BASE + "#website", "name": "iSafeNet",
-                         "url": BASE, "inLanguage": "en-GB", "publisher": {"@id": ORG_ID}}) \
-        + ld(app_ld("airreveal")) + ld(app_ld("glpmgr"))
-    write("index.html", head("iSafeNet: Mobile App Studio for iPhone, iPad &amp; Apple Watch",
-                             "iSafeNet is an independent mobile app studio building private, accessible apps for iPhone, iPad and Apple Watch, including AirReveal and GLPMGR.",
-                             "", extra) + body)
+    extra = ld(org()) + ld({"@context": "https://schema.org", "@type": "WebSite", "@id": BASE + "#website", "name": "iSafeNet",
+                            "url": BASE, "inLanguage": "en-GB", "publisher": {"@id": ORG_ID}}) \
+        + "".join(ld(app_ld(a)) for a in APPS)
+    write("index.html", head("iSafeNet: Mobile App Studio for iPhone, iPad & Apple Watch",
+                             "iSafeNet is an independent mobile app studio building private, accessible apps for iPhone, iPad and Apple Watch, including "
+                             + names(a["name"] for a in APPS) + ".", "", extra) + body)
 
 
 # ---------------------------------------------------------------- app pages
-def build_app(key):
-    a = APPS[key]
-    other = APPS["glpmgr" if key == "airreveal" else "airreveal"]
-    if key == "airreveal":
-        hero_phones = [("airreveal-plan", "p1"), ("airreveal-flight", "p2"), ("airreveal-journal", "p3")]
-        gallery = ["airreveal-flight", "airreveal-discover", "airreveal-journal", "airreveal-collection", "airreveal-plan", "airreveal-profile"]
-        lead = ("Ever looked out of the window and wondered what's down there? AirReveal places your plane on a live map using "
-                "your device's GPS, names the landmarks, cities and natural wonders below and ahead, and tells you which side to look from. "
-                "It works without in-flight Wi-Fi, and keeps every trip in your flight journal.")
-        features = [
-            ("map", "Live flight map", "Your position from GPS alone, on beautiful maps you download before take-off, so it works in airplane mode."),
-            ("compass", "Which side to look", "Know whether a landmark, or the golden-hour sun, is on the left or right of the aircraft."),
-            ("globe", "Discover what's below", "Landmarks, cities, coastlines and natural wonders named as you pass over them."),
-            ("star", "Quizzes & Discovery Bingo", "Three quick questions about each landmark, bingo for the whole row, achievements and a passport."),
-            ("book", "Flight journal", "Save every flight, collect the places you've seen and build a personal map of your travels."),
-            ("widget", "Lock Screen & widgets", "Follow your progress at a glance with Live Activities and Home Screen widgets."),
-        ]
-        platforms = [("iPhone & iPad", "A comfortable view on iPhone and a wide flight map on iPad."),
-                     ("Live Activities & widgets", "Flight progress on the Lock Screen and Home Screen."),
-                     ("Six languages", "English, Spanish, French, German, Italian and Brazilian Portuguese."),
-                     ("Built with", "Swift, SwiftUI, SwiftData, CoreLocation, MapLibre, WeatherKit, CloudKit, WidgetKit, ActivityKit and StoreKit.")]
-        ipad = ("airreveal-ipad", "AirReveal on iPad with a wide live flight map", 900, 1200)
-        links = [
-            (AIR, "AirReveal website", "Everything about the app, with pricing and FAQ."),
-            (AIR + "what-am-i-flying-over.html", "What am I flying over?", "How to see and name what's below your plane."),
-            (AIR + "user-guide.html", "User guide", "Getting started, tips and a jargon buster."),
-            (AIR + "support.html", "Support", "Help, troubleshooting and contact."),
-            (AIR + "privacy.html", "Privacy Policy", "How AirReveal handles your data."),
-            (AIR + "terms.html", "Terms of Use", "The agreement for using AirReveal."),
-        ]
-        langs = [("es/", "Español"), ("fr/", "Français"), ("de/", "Deutsch"), ("it/", "Italiano"), ("pt-br/", "Português (Brasil)")]
-        lang_html = ('<p style="margin-top:22px;color:var(--ink-2)">AirReveal\'s website is also in ' +
-                     ", ".join(f'<a href="{AIR}{p}" hreflang="{p.rstrip("/")}">{n}</a>' for p, n in langs) + ".</p>")
-        pricing = "Free to plan and preview flights and to take your first Live-tracked flight. AirReveal Pro unlocks continued Live GPS tracking and the full in-flight experience."
-        privacy = "AirReveal uses your location only to place you on the map during a flight. It isn't an official flight-status or aviation-safety service, so always follow your airline and crew."
-        title = "AirReveal by iSafeNet: See What You're Flying Over"
-        desc = "AirReveal is an offline flight map for iPhone and iPad that names the landmarks below your plane, shows which side to look from, and keeps your flight journal."
-    else:
-        hero_phones = [("glpmgr-titration", "p1"), ("glpmgr-at-a-glance", "p2"), ("glpmgr-trends", "p3")]
-        gallery = ["glpmgr-at-a-glance", "glpmgr-trends", "glpmgr-daily-habits", "glpmgr-scan-a-label", "glpmgr-private-photos",
-                   "glpmgr-titration", "glpmgr-injection-areas", "glpmgr-reminders", "glpmgr-on-your-wrist"]
-        lead = ("GLPMGR helps people on GLP-1 medicines keep track of their doses, dose steps, weight and how they feel, without an account "
-                "and without their data leaving their device. It's written in plain English, with a gentle tone and no judgement, for "
-                "Mounjaro, Wegovy, Ozempic and other GLP-1 medicines.")
-        features = [
-            ("bell", "Doses & reminders", "Record injections or tablets in a few taps, with reminders when a dose is due and when supply runs low."),
-            ("chart", "Dose steps", "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, up to your maintenance dose."),
-            ("map", "Injection sites", "Only the areas each manufacturer lists for your region, with a body map of where you've injected before."),
-            ("heart", "Weight & side effects", "A gentle view of your progress, and a diary for how you feel, ready to share with your doctor or nurse."),
-            ("camera", "Water, protein & labels", "Log water and protein, and read the protein figure straight from a food label with your camera."),
-            ("lock", "Private by design", "No account, no ads, no tracking. Progress photos are encrypted and locked behind Face ID."),
-        ]
-        platforms = [("iPhone, iPad & Mac", "Native layouts for each, from one Swift codebase."),
-                     ("Apple Watch", "Your next dose, weight trend and quick logging on your wrist."),
-                     ("Widgets & Live Activities", "Your next dose on the Home Screen and Lock Screen."),
-                     ("Built with", "Swift 6, SwiftUI, SwiftData, HealthKit, WidgetKit, ActivityKit, Vision, CryptoKit and StoreKit 2.")]
-        ipad = ("glpmgr-ipad", "GLPMGR on iPad showing the Today dashboard", 1000, 1334)
-        links = [
-            (GLP, "GLPMGR website", "Features, screens, privacy and pricing."),
-            (GLP + "guide.html", "User guide", "How to use GLPMGR, one step at a time."),
-            (GLP + "glossary.html", "GLP-1 words explained", "Titration, half-life, mg, mmol/L and more, in plain English."),
-            (GLP + "site-guidance.html", "Injection sites by medicine", "What each manufacturer says, for the UK, EU and US."),
-            (GLP + "faq.html", "Questions and answers", "Everything people ask about GLPMGR."),
-            (GLP + "support.html", "Support", "Help with subscriptions, backups and more."),
-        ]
-        meds = [("mounjaro", "Mounjaro"), ("wegovy", "Wegovy"), ("ozempic", "Ozempic"), ("zepbound", "Zepbound"), ("saxenda", "Saxenda")]
-        lang_html = ('<p style="margin-top:22px;color:var(--ink-2)">Injection sites by medicine: ' +
-                     ", ".join(f'<a href="{GLP}{s}-injection-sites.html">{n}</a>' for s, n in meds) + ", and more.</p>")
-        pricing = "Free to use, with no time limits: doses and dose steps, reminders, weight, side effects, water, blood glucose, the Apple Watch app and backups. Premium adds more ways to see your progress, with a 7-day free trial on the yearly plan."
-        privacy = "GLPMGR is a personal tracking tool, not a medical device, and it never suggests a dose or where to inject. Always follow the advice of your doctor, nurse or pharmacist."
-        title = "GLPMGR by iSafeNet: Private GLP-1 Tracker for iPhone &amp; Apple Watch"
-        desc = "GLPMGR is a private GLP-1 tracker for iPhone, iPad and Apple Watch: doses, dose steps, reminders, injection sites, weight and side effects for Mounjaro, Wegovy, Ozempic and more."
+def build_app(a):
+    p = a["page"]
+    name = esc(a["name"])
+    feat_html = "".join(f'<article class="card rv"><div class="ico">{icon(i)}</div><h3>{esc(t)}</h3><p>{esc(d)}</p></article>' for i, t, d in p["features"])
+    plat_html = "".join(f'<li>{icon("check")}<span><b>{esc(t)}:</b> {esc(d)}</span></li>' for t, d in p["platforms"])
+    link_html = "".join(f'<a href="{link(a, u)}"><b>{esc(t)}</b><span>{esc(d)}</span></a>' for u, t, d in p["links"])
+    gal_html = "".join(shot(a, s) for s in p["gallery"])
+    phones = "".join(phone(a, s, f"p{i}") for i, s in enumerate(p["hero"], 1))
+    art_cls = "art" + (" pair" if len(p["art"]) > 1 else "") + (" panels" if all(framed(a, s) for s in p["art"]) else "")
+    art = f'<div class="{art_cls}">' + "".join(shot(a, s) for s in p["art"]) + "</div>"
+    note = ""
+    if p.get("links_note"):
+        n = p["links_note"]
+        items = ", ".join(f'<a href="{link(a, u)}"' + (f' hreflang="{rest[0]}"' if rest else "") + f">{esc(t)}</a>" for u, t, *rest in n["links"])
+        note = f'\n  <p style="margin-top:22px;color:var(--ink-2)">{esc(n["text"])} {items}{esc(n["end"])}</p>'
+    others = [o for o in APPS if o["key"] != a["key"]]
+    more = "\n".join(f'''  <div class="more rv"{' style="margin-bottom:18px"' if i < len(others) - 1 else ""}><img src="{o["icon"]}" width="72" height="72" alt="{esc(o["name"])} app icon">
+    <div><h3>{esc(o["name"])}</h3><p>{esc(o["blurb"])}</p></div>
+    <a class="btn" href="{o["page_file"]}">Explore {esc(o["name"])} {icon("arrow")}</a></div>''' for i, o in enumerate(others))
+    second_url, second_label = p["second_button"]
 
-    feat_html = "".join(f'<article class="card rv"><div class="ico">{icon(i)}</div><h3>{t}</h3><p>{d}</p></article>' for i, t, d in features)
-    plat_html = "".join(f'<li>{icon("check")}<span><b>{t}:</b> {d}</span></li>' for t, d in platforms)
-    link_html = "".join(f'<a href="{u}"><b>{t}</b><span>{d}</span></a>' for u, t, d in links)
-    gal_html = "".join(shot(s, SHOT_ALT[s]) for s in gallery)
-    phones = "".join(phone(s, SHOT_ALT[s], c) for s, c in hero_phones)
-    ipad_img = f'<img src="assets/img/apps/{ipad[0]}.webp" width="{ipad[2]}" height="{ipad[3]}" alt="{esc(ipad[1])}" loading="lazy" decoding="async">'
-    art = f'<div class="art pair">{ipad_img}<img src="assets/img/apps/glpmgr-watch.webp" width="416" height="496" alt="GLPMGR on Apple Watch" loading="lazy"></div>' \
-        if key == "glpmgr" else f'<div class="art">{ipad_img}</div>'
-
-    body = f'''{nav(current=key)}
+    body = f'''{nav(current=a["key"])}
 <main id="main">
 <section class="hero app-hero"><div class="wrap hero-grid">
   <div>
-    <p class="crumbs"><a href="index.html">iSafeNet</a> / <a href="index.html#apps">Apps</a> / {a["name"]}</p>
-    <div class="app-id" style="margin-top:22px"><img src="{a["icon"]}" width="84" height="84" alt="{a["name"]} app icon"><div><span class="soon">Coming soon to the App Store</span><div class="kind" style="margin-top:8px">{esc(a["kind"])}</div></div></div>
-    <h1>{a["name"]}: <span class="grad">{esc(a["tagline"])}</span></h1>
-    <p class="lead">{esc(lead)}</p>
-    <div class="cta-row"><a class="btn" href="{a["site"]}">Visit the {a["name"]} website {icon("out")}</a><a class="btn ghost" href="{links[2][0]}">{"Read the user guide" if key == "airreveal" else "GLP-1 words explained"}</a></div>
+    <p class="crumbs"><a href="index.html">iSafeNet</a> / <a href="index.html#apps">Apps</a> / {name}</p>
+    <div class="app-id" style="margin-top:22px"><img src="{a["icon"]}" width="84" height="84" alt="{name} app icon"><div><span class="soon">Coming soon to the App Store</span><div class="kind" style="margin-top:8px">{esc(a["kind"])}</div></div></div>
+    <h1>{name}: <span class="grad">{esc(a["tagline"])}</span></h1>
+    <p class="lead">{esc(p["lead"])}</p>
+    <div class="cta-row"><a class="btn" href="{a["site"]}">Visit the {name} website {icon("out")}</a><a class="btn ghost" href="{link(a, second_url)}">{esc(second_label)}</a></div>
     <ul class="chips" aria-label="Platforms and features">{"".join(f"<li>{esc(c)}</li>" for c in a["chips"])}</ul>
   </div>
-  <div class="devices" aria-label="Screens from {a["name"]}">{phones}</div>
+  <div class="devices" aria-label="Screens from {name}">{phones}</div>
 </div></section>
 
 <section><div class="wrap">
-  <div class="sec-head rv"><span class="eyebrow">Highlights</span><h2>What {a["name"]} does.</h2></div>
+  <div class="sec-head rv"><span class="eyebrow">Highlights</span><h2>What {name} does.</h2></div>
   <div class="grid">{feat_html}</div>
 </div></section>
 
-<section class="alt" aria-label="{a["name"]} screens" style="padding-bottom:70px"><div class="wrap">
+<section class="alt" aria-label="{name} screens" style="padding-bottom:70px"><div class="wrap">
   <div class="sec-head rv"><span class="eyebrow">Screens</span><h2>A closer look.</h2><p>Swipe through the real app.</p></div></div>
-  <div class="rail" role="group" aria-label="{a["name"]} screenshots" tabindex="0">{gal_html}</div>
+  <div class="rail" role="group" aria-label="{name} screenshots" tabindex="0">{gal_html}</div>
 </section>
 
 <section><div class="wrap split">
   <div class="rv">
     <span class="eyebrow">Made for Apple devices</span>
-    <h2 style="font-size:clamp(1.9rem,3.4vw,2.6rem);margin:12px 0 18px">Native on every screen it runs on.</h2>
+    <h2 style="font-size:clamp(1.9rem,3.4vw,2.6rem);margin:12px 0 18px">{esc(p["platforms_heading"])}</h2>
     <ul class="ticks">{plat_html}</ul>
-    <p style="color:var(--ink-2);margin-top:6px"><b>Pricing:</b> {esc(pricing)}</p>
-    <p style="color:var(--ink-2);margin-top:12px"><b>Good to know:</b> {esc(privacy)}</p>
+    <p style="color:var(--ink-2);margin-top:6px"><b>Pricing:</b> {esc(p["pricing"])}</p>
+    <p style="color:var(--ink-2);margin-top:12px"><b>Good to know:</b> {esc(p["good_to_know"])}</p>
   </div>
   {art}
 </div></section>
 
 <section class="alt"><div class="wrap">
   <div class="sec-head rv"><span class="eyebrow">Learn more</span><h2>Guides, help and details.</h2>
-    <p>{a["name"]} has its own website, with a full user guide, support and policies.</p></div>
-  <div class="links rv">{link_html}</div>
-  {lang_html}
+    <p>{esc(p["learn_more"])}</p></div>
+  <div class="links rv">{link_html}</div>{note}
 </div></section>
-
+''' + (f'''
 <section><div class="wrap">
   <div class="sec-head rv"><span class="eyebrow">More from iSafeNet</span></div>
-  <div class="more rv"><img src="{other["icon"]}" width="72" height="72" alt="{other["name"]} app icon">
-    <div><h3>{other["name"]}</h3><p>{esc(other["tagline"])} {esc(other["summary"])}</p></div>
-    <a class="btn" href="{other["page"]}">Explore {other["name"]} {icon("arrow")}</a></div>
+{more}
 </div></section>
-</main>
+''' if others else "") + f'''</main>
 {footer()}'''
-    extra = ld(ORG) + ld(app_ld(key)) + ld(breadcrumbs([("iSafeNet", ""), ("Apps", "index.html#apps"), (a["name"], a["page"])]))
-    image = "assets/img/og.png"
-    write(a["page"], head(title, desc, a["page"], extra, image) + body)
+    extra = ld(org()) + ld(app_ld(a)) + ld(breadcrumbs([("iSafeNet", ""), ("Apps", "index.html#apps"), (a["name"], a["page_file"])]))
+    write(a["page_file"], head(p["title"], p["description"], a["page_file"], extra) + body)
 
 
-# ---------------------------------------------------------------- privacy, 404, sitemap
+# ---------------------------------------------------------------- privacy, feedback, 404, sitemap
 def build_privacy():
+    policies = names(f'<a href="{a["site"]}privacy.html">{esc(a["name"])} Privacy Policy</a>' for a in APPS)
     body = f'''{nav()}
 <main id="main">
 <div class="page-hero"><div class="wrap">
@@ -531,50 +487,146 @@ def build_privacy():
 </div></div>
 <section><div class="wrap prose">
   <h2>What this website collects</h2>
-  <p>Nothing. This website has no cookies, no analytics, no advertising and no tracking. It doesn't ask for or store any personal information, and its fonts and images are served from this site rather than from third parties.</p>
+  <p>Very little. This website has no cookies, no analytics, no advertising and no tracking. Apart from the feedback board below, it doesn't ask for or store any personal information, and its fonts and images are served from this site rather than from third parties.</p>
   <h2>Hosting</h2>
   <p>The site is a set of static pages hosted by GitHub Pages. Like any web host, GitHub may keep standard server logs (such as IP addresses) to keep the service secure and running; see GitHub's own privacy statement for details.</p>
   <h2>If you email us</h2>
   <p>If you write to <a href="mailto:{EMAIL}">{EMAIL}</a>, we use your message and email address only to reply to you, and we don't share them.</p>
+  <h2>Feedback board</h2>
+  <p>Our <a href="feedback.html">feedback board</a> runs on our own small service hosted by Cloudflare. It has no accounts and doesn't ask for your email. What you post there (your idea or comment, and a name if you give one) is public once we've reviewed it. We never store your IP address: it's only used, in a scrambled form that changes every day, to limit how much one connection can post. Your browser keeps a random ID so your votes count once, and a list of the ideas you follow; both stay on your device. Forms use Cloudflare Turnstile to stop spam; it loads only when you open a form, and Cloudflare handles that check under <a href="https://www.cloudflare.com/turnstile-privacy-policy/">its Turnstile privacy addendum</a>. To have something you posted removed, email us.</p>
   <h2>Our apps</h2>
-  <p>Each app explains exactly how it handles your data: <a href="{AIR}privacy.html">AirReveal Privacy Policy</a> and <a href="{GLP}privacy.html">GLPMGR Privacy Policy</a>.</p>
+  <p>Each app explains exactly how it handles your data: {policies}.</p>
   <h2>Changes</h2>
-  <p>If this ever changes, we'll update this page. Last updated 23 September 2026.</p>
+  <p>If this ever changes, we'll update this page. Last updated 25 September 2026.</p>
 </div></section>
 </main>
 {footer()}'''
     extra = ld(breadcrumbs([("iSafeNet", ""), ("Website privacy", "privacy.html")]))
-    write("privacy.html", head("Website Privacy: iSafeNet", "The iSafeNet website has no cookies, analytics or tracking. Links to the AirReveal and GLPMGR privacy policies.", "privacy.html", extra) + body)
+    write("privacy.html", head("Website Privacy: iSafeNet", "The iSafeNet website has no cookies, analytics or tracking. Links to the "
+                               + names(a["name"] for a in APPS) + " privacy policies.", "privacy.html", extra) + body)
+
+
+def build_feedback():
+    # The board's app list, shared by the page (assets/feedback.js) and the API (feedback-api/src/index.js).
+    board_apps = {a["key"]: {"name": a["name"], "icon": a["icon"]} for a in APPS}
+    board_apps["general"] = {"name": "General", "icon": "assets/img/mark.png"}
+    write("assets/feedback-apps.js", "// Generated by tools/build.py from apps/*.json. Don't edit by hand.\n"
+          "// Used by the board (assets/feedback.js) and its API (feedback-api/): redeploy the API after adding an app.\n"
+          f"export const APPS = {json.dumps(board_apps, ensure_ascii=False, indent=2)};\n")
+
+    health = [a["name"] for a in APPS if a["category"] == "HealthApplication"]
+    health_line = "" if not health else f' {names(health)} {"is a health app" if len(health) == 1 else "are health apps"}, so this matters.'
+    app_names = names((a["name"] for a in APPS), "or")
+    plus, rss = icon("plus"), icon("rss")
+    body = f'''{nav()}
+<main id="main">
+<div class="page-hero"><div class="wrap">
+  <p class="crumbs"><a href="index.html">iSafeNet</a> / Feedback and ideas</p>
+  <h1>Feedback and ideas</h1>
+  <p>Tell us what would make {app_names} better, vote for the ideas you want most, and see what we're building next. No account needed.</p>
+  <div class="fb-hero-actions"><button class="btn" type="button" data-fb-new>{plus} Share an idea</button><a class="btn ghost" data-fb-feed href="#">{rss} Follow updates (RSS)</a></div>
+</div></div>
+<section class="fb"><div class="wrap" id="board" data-api="{FEEDBACK_API}" data-sitekey="{TURNSTILE_SITE_KEY}">
+  <nav class="fb-tabs" aria-label="Board views"><a href="#ideas">Ideas</a><a href="#roadmap">Roadmap</a><a href="#shipped">Shipped</a></nav>
+  <div id="fb-news"></div>
+  <div id="fb-view"><noscript><p class="fb-empty">The board needs JavaScript. You can also email ideas to <a href="mailto:{EMAIL}">{EMAIL}</a>.</p></noscript></div>
+  <p id="fb-live" class="sr" aria-live="polite"></p>
+  <div class="prose" style="margin-top:72px">
+    <h2>How it works</h2>
+    <ul>
+      <li><strong>Share an idea.</strong> Pick the app and say what you'd like it to do, and what it would help you do. One idea per post makes voting fairer.</li>
+      <li><strong>Vote.</strong> Votes are anonymous and help us decide what to build next. Voting for an idea also follows it: when its status changes, you'll see it at the top of this page.</li>
+      <li><strong>We read everything.</strong> Every idea and comment is read by a person before it appears, and we explain what we decide.</li>
+    </ul>
+    <h2>Keep it public-safe</h2>
+    <p>Everything on the board is public. Please don't include health details, medicines, doses, measurements or anything else personal.{health_line} We edit out anything personal before an idea goes up. If something isn't working, or your question is about your own data, email <a href="mailto:{EMAIL}">{EMAIL}</a> instead.</p>
+    <h2>Your privacy</h2>
+    <p>The board is our own, not a third-party service. There's no account, and we don't ask for your email. Your browser keeps a random ID so your votes count once, plus the ideas you follow; these stay on your device. To stop spam, forms use Cloudflare Turnstile, which loads only when you open one to post. Your IP address is never stored, only used to limit how much one connection can post in a day. See <a href="privacy.html">website privacy</a> for details.</p>
+  </div>
+</div></section>
+<dialog id="fb-dialog" class="fb-dialog"></dialog>
+<script type="module" src="assets/feedback.js"></script>
+</main>
+{footer()}'''
+    extra = ('<link rel="stylesheet" href="assets/feedback.css">\n'
+             f'<link rel="alternate" type="application/atom+xml" title="iSafeNet feedback: roadmap updates" href="{FEEDBACK_API}/feed.xml">\n'
+             + ld(breadcrumbs([("iSafeNet", ""), ("Feedback and ideas", "feedback.html")])))
+    write("feedback.html", head("Feedback and Ideas: iSafeNet", f"Suggest ideas for {names(a['name'] for a in APPS)}, "
+                                "vote for the ones you want, and see our roadmap. No account needed.", "feedback.html", extra) + body)
 
 
 def build_extras():
     write("CNAME", "isafenet.app")
     write(".nojekyll", "")
-    pages = [("", "1.0"), ("airreveal.html", "0.9"), ("glpmgr.html", "0.9"), ("privacy.html", "0.3")]
+    pages = [("", "1.0")] + [(a["page_file"], "0.9") for a in APPS] + [("feedback.html", "0.5"), ("privacy.html", "0.3")]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + \
          "".join(f"  <url><loc>{BASE}{p}</loc><lastmod>{LASTMOD}</lastmod><priority>{pr}</priority></url>\n" for p, pr in pages) + "</urlset>\n"
     write("sitemap.xml", sm)
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n")
+    buttons = "".join(f'<a class="btn ghost" href="{a["page_file"]}">{esc(a["name"])}</a>' for a in APPS)
     body = f'''{nav()}
 <main id="main"><div class="page-hero" style="padding:110px 0 130px;text-align:center"><div class="wrap">
   <p class="crumbs">404</p><h1>That page isn't here</h1>
   <p style="margin:0 auto 28px">The link may be out of date. Try our apps instead.</p>
-  <div class="cta-row" style="justify-content:center"><a class="btn" href="index.html">iSafeNet home</a><a class="btn ghost" href="airreveal.html">AirReveal</a><a class="btn ghost" href="glpmgr.html">GLPMGR</a></div>
+  <div class="cta-row" style="justify-content:center"><a class="btn" href="index.html">iSafeNet home</a>{buttons}</div>
 </div></div></main>
 {footer()}'''
-    # 404 must use absolute asset paths: GitHub serves it at whatever URL was missing.
+    # 404 must use absolute paths: GitHub serves it at whatever URL was missing.
     page = head("Page not found: iSafeNet", "That page doesn't exist.", "404.html") + body
-    page = page.replace('href="assets/', 'href="/assets/').replace('src="assets/', 'src="/assets/').replace('srcset="assets/', 'srcset="/assets/') \
-               .replace('href="index.html', 'href="/index.html').replace('href="airreveal.html', 'href="/airreveal.html') \
-               .replace('href="glpmgr.html', 'href="/glpmgr.html').replace('href="privacy.html', 'href="/privacy.html') \
-               .replace('url(fonts/', 'url(/assets/fonts/')
+    page = re.sub(r'\b(href|src|srcset)="(?!https?:|mailto:|#|/)', r'\1="/', page)
     write("404.html", page)
 
 
+# ---------------------------------------------------------------- a new app
+TEMPLATE_NOTE = "Fill in every TODO, then see README.md, 'Adding an app'."
+
+
+def new_app(key):
+    if not re.fullmatch(r"[a-z][a-z0-9-]{1,30}", key):
+        sys.exit("The key is the app's short name in lower case, e.g. 'udapt'. It becomes the page name (udapt.html) and image prefix.")
+    path = os.path.join(APPS_DIR, f"{key}.json")
+    if os.path.exists(path):
+        sys.exit(f"apps/{key}.json already exists.")
+    with open(os.path.join(APPS_DIR, "udapt.json"), encoding="utf-8") as f:
+        example = json.load(f)
+    order = max(json.load(open(p, encoding="utf-8"))["order"] for p in glob.glob(os.path.join(APPS_DIR, "*.json"))) + 1
+    t = "TODO"
+    shots = [f"{key}-screen-1", f"{key}-screen-2", f"{key}-screen-3"]
+    template = {
+        "_note": TEMPLATE_NOTE,
+        "order": order, "name": t, "site": f"https://{key}.isafenet.app/", "kind": "TODO: category · devices, e.g. Health & Fitness · iPhone & Apple Watch",
+        "category": "TODO: a schema.org category, e.g. HealthApplication, TravelApplication, LifestyleApplication",
+        "os": "TODO: e.g. iOS, watchOS", "price": "0",
+        "tagline": "TODO: one short line", "summary": "TODO: two sentences for the homepage card",
+        "blurb": "TODO: tagline plus one sentence, for 'More from iSafeNet'",
+        "ticks": ["TODO"] * 4, "chips": ["TODO"], "colors": ["#1f8f7a", "#0e151a"],
+        "framed_screens": [],
+        "card_shots": shots, "home_shot": shots[0],
+        "screens": {s: "TODO: alt text describing what the screen shows" for s in shots},
+        "footer": [["TODO: link text", "support.html"]],
+        "page": {k: example["page"][k] if k in ("art",) else t for k in REQUIRED_PAGE},
+        "images_from": {"folder": f"../{key}-web", "files": {f"{key}-icon.png": "TODO: path to a 512px+ app icon PNG in that folder",
+                                                            **{f"{s}.webp": "TODO: path to the screenshot" for s in shots}}},
+    }
+    template["page"].update({"second_button": ["support.html", "Get help"], "hero": shots, "gallery": shots, "art": [shots[0]],
+                             "features": [["star", "TODO: feature", "TODO: one sentence"]] * 3,
+                             "platforms": [["TODO: device", "TODO: what it does there"]],
+                             "links": [["", f"TODO website", "TODO: one line"], ["support.html", "Support", "TODO: one line"]]})
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(template, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    print(f"Created apps/{key}.json. {TEMPLATE_NOTE}")
+
+
 if __name__ == "__main__":
+    if "--new-app" in sys.argv:
+        new_app(sys.argv[sys.argv.index("--new-app") + 1])
+        sys.exit()
+    APPS = load_apps()
     build_index()
-    build_app("airreveal")
-    build_app("glpmgr")
+    for app in APPS:
+        build_app(app)
     build_privacy()
+    build_feedback()
     build_extras()
-    print("site built into", ROOT)
+    print("site built into", ROOT, "with", names(a["name"] for a in APPS))

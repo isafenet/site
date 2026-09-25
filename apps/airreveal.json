@@ -1,0 +1,89 @@
+{
+  "order": 1,
+  "name": "AirReveal",
+  "site": "https://airreveal.isafenet.app/",
+  "kind": "Travel · iPhone & iPad",
+  "category": "TravelApplication",
+  "os": "iOS, iPadOS",
+  "price": "0",
+  "tagline": "See what you're flying over.",
+  "summary": "A window-seat companion that names the landmarks, cities and natural wonders below your plane, tells you which side to look from, and keeps a journal of every flight, even in airplane mode.",
+  "blurb": "See what you're flying over. A window-seat companion that names the landmarks, cities and natural wonders below your plane, even in airplane mode.",
+  "ticks": [
+    "Live flight map that works offline, using only GPS",
+    "Landmarks named as you pass, and which window to look from",
+    "Landmark quizzes, Discovery Bingo, achievements and a country passport",
+    "A flight journal that turns your trips into a personal map of the world"
+  ],
+  "chips": ["iPhone", "iPad", "Widgets", "Live Activities", "Offline maps", "6 languages"],
+  "colors": ["#0a3d7a", "#0a1522"],
+  "card_shots": ["airreveal-flight", "airreveal-discover", "airreveal-journal"],
+  "home_shot": "airreveal-flight",
+  "screens": {
+    "airreveal-flight": "AirReveal live flight map showing a plane over Mongolia and the landmark below",
+    "airreveal-discover": "AirReveal Discover screen listing landmarks overhead now and coming up",
+    "airreveal-journal": "AirReveal flight journal with a live trip from London to Tokyo",
+    "airreveal-collection": "AirReveal collection of landmarks discovered on past flights",
+    "airreveal-plan": "AirReveal planning a flight from London Heathrow to Barcelona",
+    "airreveal-profile": "AirReveal profile with achievements, passport and flights",
+    "airreveal-ipad": "AirReveal on iPad with a wide live flight map"
+  },
+  "footer": [
+    ["What am I flying over?", "what-am-i-flying-over.html"],
+    ["AirReveal user guide", "user-guide.html"],
+    ["AirReveal support", "support.html"]
+  ],
+  "page": {
+    "title": "AirReveal by iSafeNet: See What You're Flying Over",
+    "description": "AirReveal is an offline flight map for iPhone and iPad that names the landmarks below your plane, shows which side to look from, and keeps your flight journal.",
+    "lead": "Ever looked out of the window and wondered what's down there? AirReveal places your plane on a live map using your device's GPS, names the landmarks, cities and natural wonders below and ahead, and tells you which side to look from. It works without in-flight Wi-Fi, and keeps every trip in your flight journal.",
+    "second_button": ["user-guide.html", "Read the user guide"],
+    "hero": ["airreveal-plan", "airreveal-flight", "airreveal-journal"],
+    "features": [
+      ["map", "Live flight map", "Your position from GPS alone, on beautiful maps you download before take-off, so it works in airplane mode."],
+      ["compass", "Which side to look", "Know whether a landmark, or the golden-hour sun, is on the left or right of the aircraft."],
+      ["globe", "Discover what's below", "Landmarks, cities, coastlines and natural wonders named as you pass over them."],
+      ["star", "Quizzes & Discovery Bingo", "Three quick questions about each landmark, bingo for the whole row, achievements and a passport."],
+      ["book", "Flight journal", "Save every flight, collect the places you've seen and build a personal map of your travels."],
+      ["widget", "Lock Screen & widgets", "Follow your progress at a glance with Live Activities and Home Screen widgets."]
+    ],
+    "gallery": ["airreveal-flight", "airreveal-discover", "airreveal-journal", "airreveal-collection", "airreveal-plan", "airreveal-profile"],
+    "platforms_heading": "Native on every screen it runs on.",
+    "platforms": [
+      ["iPhone & iPad", "A comfortable view on iPhone and a wide flight map on iPad."],
+      ["Live Activities & widgets", "Flight progress on the Lock Screen and Home Screen."],
+      ["Six languages", "English, Spanish, French, German, Italian and Brazilian Portuguese."],
+      ["Built with", "Swift, SwiftUI, SwiftData, CoreLocation, MapLibre, WeatherKit, CloudKit, WidgetKit, ActivityKit and StoreKit."]
+    ],
+    "pricing": "Free to plan and preview flights and to take your first Live-tracked flight. AirReveal Pro unlocks continued Live GPS tracking and the full in-flight experience.",
+    "good_to_know": "AirReveal uses your location only to place you on the map during a flight. It isn't an official flight-status or aviation-safety service, so always follow your airline and crew.",
+    "art": ["airreveal-ipad"],
+    "learn_more": "AirReveal has its own website, with a full user guide, support and policies.",
+    "links": [
+      ["", "AirReveal website", "Everything about the app, with pricing and FAQ."],
+      ["what-am-i-flying-over.html", "What am I flying over?", "How to see and name what's below your plane."],
+      ["user-guide.html", "User guide", "Getting started, tips and a jargon buster."],
+      ["support.html", "Support", "Help, troubleshooting and contact."],
+      ["privacy.html", "Privacy Policy", "How AirReveal handles your data."],
+      ["terms.html", "Terms of Use", "The agreement for using AirReveal."]
+    ],
+    "links_note": {
+      "text": "AirReveal's website is also in",
+      "links": [["es/", "Español", "es"], ["fr/", "Français", "fr"], ["de/", "Deutsch", "de"], ["it/", "Italiano", "it"], ["pt-br/", "Português (Brasil)", "pt-br"]],
+      "end": "."
+    }
+  },
+  "images_from": {
+    "folder": "../airreveal-legal",
+    "files": {
+      "airreveal-icon.png": "images/app-icon.png",
+      "airreveal-ipad.webp": "images/ipad-flight.webp",
+      "airreveal-flight.webp": "images/panel-flight.webp",
+      "airreveal-discover.webp": "images/panel-discover.webp",
+      "airreveal-journal.webp": "images/panel-journal.webp",
+      "airreveal-collection.webp": "images/panel-collection.webp",
+      "airreveal-plan.webp": "images/panel-plan.webp",
+      "airreveal-profile.webp": "images/panel-profile.webp"
+    }
+  }
+}
