@@ -1,0 +1,15 @@
+{
+  "name": "isafenet-feedback",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "db:local": "wrangler d1 migrations apply isafenet-feedback --local",
+    "db:remote": "wrangler d1 migrations apply isafenet-feedback --remote",
+    "test": "node --test test/",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.140.0"
+  }
+}

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Feedback admin: iSafeNet</title>
+<style>
+:root{--bg:#f5f8fc;--card:#fff;--ink:#0d1b2a;--ink2:#46586d;--line:#e2e9f2;--blue:#0a7cff;--warn:#b35900;--warnbg:#fff4e5;--bad:#c62828;--ok:#1b7f3b;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#07111c;--card:#0e1c2c;--ink:#e8eef6;--ink2:#b2c0d0;--line:#1c2e44;--blue:#4da3ff;--warn:#ffb35c;--warnbg:#2e1f0a;--bad:#ff7b7b;--ok:#5fd38a}}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#0a1522;color:#fff;padding:14px 20px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+header h1{font-size:1.1rem;margin:0 auto 0 0}
+header a{color:#9fd2ff}
+header button{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+main{max-width:1000px;margin:0 auto;padding:20px}
+nav[role=tablist]{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:7px 13px}
+button.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+button.danger{color:var(--bad)}
+button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+input,select,textarea{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:7px 9px;width:100%}
+textarea{min-height:70px;resize:vertical}
+label{display:block;font-size:.85rem;font-weight:600;color:var(--ink2);margin:10px 0 4px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.meta{font-size:.85rem;color:var(--ink2)}
+.flag{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:6px 10px;font-size:.9rem;font-weight:600;margin:8px 0}
+.tag{display:inline-block;font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--line);margin-right:6px}
+.empty{color:var(--ink2);padding:30px 0;text-align:center}
+#msg{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;display:none}
+.quote{white-space:pre-wrap;border-left:3px solid var(--line);padding-left:10px;margin:6px 0}
+h2{font-size:1.05rem;margin:0 0 4px}
+</style>
+</head>
+<body>
+<header><h1>Feedback admin</h1><a href="https://isafenet.app/feedback.html">View the board</a><button id="logout" hidden>Sign out</button></header>
+<main>
+  <section id="login" class="card" hidden>
+    <h2>Sign in</h2>
+    <p class="meta">Paste the admin key. It stays in this browser only.</p>
+    <form id="loginForm"><input type="text" name="username" value="isafenet-feedback-admin" autocomplete="username" hidden><label for="key">Admin key</label><input id="key" type="password" autocomplete="current-password" required>
+      <div class="actions"><button class="primary">Sign in</button></div></form>
+  </section>
+  <div id="app" hidden>
+    <nav role="tablist" aria-label="Sections">
+      <button role="tab" data-tab="queue" aria-selected="true">Review queue <span id="qcount"></span></button>
+      <button role="tab" data-tab="ideas" aria-selected="false">All ideas</button>
+      <button role="tab" data-tab="new" aria-selected="false">Add an idea</button>
+    </nav>
+    <section id="queue"></section>
+    <section id="ideas" hidden><input id="search" type="search" placeholder="Search ideas" aria-label="Search ideas"><div id="ideaList"></div></section>
+    <section id="new" hidden></section>
+  </div>
+</main>
+<div id="msg" role="status" aria-live="polite"></div>
+<script>
+const APPS = {airreveal:"AirReveal", glpmgr:"GLPMGR", udapt:"Udapt", general:"General / iSafeNet"};
+const STATUSES = {open:"Open", considering:"Under consideration", planned:"Planned", started:"In progress", shipped:"Shipped", declined:"Not planned"};
+const STATES = {pending:"Waiting for review", published:"Published", rejected:"Rejected", merged:"Merged"};
+const FLAGS = {dose:"Looks like it mentions a dose", health:"May include personal health details", contact:"Contains an email address or phone number"};
+let key = "";
+try { key = localStorage.getItem("fbAdminKey") || ""; } catch {}
+let ideas = [];
+
+function h(tag, attrs = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+    else if (v === true) el.setAttribute(k, "");
+    else if (v !== false && v != null) el.setAttribute(k, v);
+  }
+  for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid instanceof Node ? kid : String(kid));
+  return el;
+}
+function toast(text) { const m = document.getElementById("msg"); m.textContent = text; m.style.display = "block"; clearTimeout(toast.t); toast.t = setTimeout(() => m.style.display = "none", 2600); }
+async function api(path, body) {
+  const res = await fetch("/api/admin" + path, { method: body ? "POST" : "GET", headers: { Authorization: "Bearer " + key, "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 401 || res.status === 503) { signOut(); throw new Error(data.error || "Please sign in."); }
+  if (!res.ok) throw new Error(data.error || "That didn't work.");
+  return data;
+}
+const act = (fn) => async (e) => { e?.preventDefault?.(); try { await fn(e); } catch (err) { toast(err.message); } };
+const select = (id, options, value) => h("select", { id }, Object.entries(options).map(([v, t]) => h("option", { value: v, selected: v === value }, t)));
+const field = (label, input) => [h("label", { for: input.id }, label), input];
+const flagList = (flags) => (flags || []).map((f) => h("p", { class: "flag" }, "⚠ " + FLAGS[f] + ". Edit it out before publishing."));
+const when = (iso) => iso ? new Date(iso).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) : "";
+
+function signOut() { key = ""; try { localStorage.removeItem("fbAdminKey"); } catch {} show(); }
+function show() {
+  document.getElementById("login").hidden = !!key;
+  document.getElementById("app").hidden = !key;
+  document.getElementById("logout").hidden = !key;
+  if (key) load();
+}
+document.getElementById("loginForm").addEventListener("submit", act(async () => {
+  key = document.getElementById("key").value.trim();
+  try { localStorage.setItem("fbAdminKey", key); } catch {}
+  show();
+}));
+document.getElementById("logout").addEventListener("click", signOut);
+document.querySelectorAll("[role=tab]").forEach((tab) => tab.addEventListener("click", () => {
+  document.querySelectorAll("[role=tab]").forEach((t) => { t.setAttribute("aria-selected", t === tab); document.getElementById(t.dataset.tab).hidden = t !== tab; });
+}));
+document.getElementById("search").addEventListener("input", renderIdeas);
+
+async function load() {
+  try {
+    const [i, c] = await Promise.all([api("/ideas"), api("/comments?state=pending")]);
+    ideas = i.ideas;
+    renderQueue(ideas.filter((x) => x.state === "pending"), c.comments);
+    renderIdeas();
+    renderNew();
+  } catch (err) { toast(err.message); }
+}
+
+function ideaEditor(idea, { queue }) {
+  const id = (n) => `${n}-${idea.id}`;
+  const get = (n) => document.getElementById(id(n)).value;
+  const fields = {
+    title: h("input", { id: id("title"), value: idea.title }),
+    body: h("textarea", { id: id("body") }, idea.body),
+    why: h("textarea", { id: id("why") }, idea.why),
+    author: h("input", { id: id("author"), value: idea.author }),
+  };
+  const values = () => ({ title: get("title"), body: get("body"), why: get("why"), author: get("author"), app: get("app"),
+    status: get("status"), note: get("note"), version: get("version") });
+  const save = (extra, done) => act(async () => { await api(`/ideas/${idea.id}`, { ...values(), ...extra }); toast(done); load(); });
+  return h("article", { class: "card" },
+    h("p", { class: "meta" }, h("span", { class: "tag" }, STATES[idea.state]), `#${idea.id} · ${APPS[idea.app]} · posted ${when(idea.created_at)} · ${idea.votes} votes`,
+      idea.pending_comments ? ` · ${idea.pending_comments} comments waiting` : ""),
+    flagList(idea.flags),
+    field("Title", fields.title), field("Description", fields.body), field("What it would help them do", fields.why),
+    h("div", { class: "row" },
+      h("div", {}, field("App", select(id("app"), APPS, idea.app))),
+      h("div", {}, field("Name shown", fields.author)),
+      h("div", {}, field("Status", select(id("status"), STATUSES, idea.status))),
+      h("div", {}, field("Shipped in version", h("input", { id: id("version"), value: idea.version, placeholder: "e.g. 1.1" })))),
+    field("Public note from us (shown on the idea)", h("textarea", { id: id("note") }, idea.note)),
+    h("div", { class: "actions" },
+      queue
+        ? [h("button", { class: "primary", onclick: save({ state: "published" }, "Published") }, "Publish"),
+           h("button", { onclick: save({ state: "rejected" }, "Rejected") }, "Reject")]
+        : [h("button", { class: "primary", onclick: save({}, "Saved") }, "Save"),
+           idea.state !== "published" ? h("button", { onclick: save({ state: "published" }, "Published") }, "Publish") : h("button", { onclick: save({ state: "rejected" }, "Hidden") }, "Hide"),
+           h("button", { onclick: save({ pinned: !idea.pinned }, idea.pinned ? "Unpinned" : "Pinned") }, idea.pinned ? "Unpin" : "Pin to top"),
+           h("button", { onclick: act(async () => {
+             const text = prompt("Reply as iSafeNet (published straight away):"); if (!text) return;
+             await api(`/ideas/${idea.id}/comments`, { body: text, author: "iSafeNet" }); toast("Reply posted"); load(); }) }, "Reply")],
+      h("button", { onclick: act(async () => {
+        const into = prompt("Merge into which idea number? Votes and comments move across."); if (!into) return;
+        await api(`/ideas/${idea.id}/merge`, { into: Number(into) }); toast("Merged"); load(); }) }, "Merge as duplicate"),
+      h("button", { class: "danger", onclick: act(async () => {
+        if (!confirm(`Delete idea #${idea.id} permanently, with its votes and comments?`)) return;
+        await api(`/ideas/${idea.id}/delete`, {}); toast("Deleted"); load(); }) }, "Delete")));
+}
+
+function renderQueue(pending, comments) {
+  const q = document.getElementById("queue");
+  document.getElementById("qcount").textContent = pending.length + comments.length ? `(${pending.length + comments.length})` : "";
+  q.replaceChildren(...[
+    h("h2", {}, "Ideas waiting"),
+    pending.length ? pending.map((i) => ideaEditor(i, { queue: true })) : h("p", { class: "empty" }, "No ideas waiting."),
+    h("h2", {}, "Comments waiting"),
+    comments.length ? comments.map((c) => {
+      const box = h("textarea", { id: `c-${c.id}`, "aria-label": "Comment" }, c.body);
+      const set = (state, done) => act(async () => { await api(`/comments/${c.id}`, { state, body: box.value }); toast(done); load(); });
+      return h("article", { class: "card" },
+        h("p", { class: "meta" }, `On #${c.idea_id} “${c.idea_title}” · ${c.author || "Anonymous"} · ${when(c.created_at)}`),
+        flagList(c.flags), box,
+        h("div", { class: "actions" },
+          h("button", { class: "primary", onclick: set("published", "Published") }, "Publish"),
+          h("button", { onclick: set("rejected", "Rejected") }, "Reject"),
+          h("button", { class: "danger", onclick: act(async () => { if (!confirm("Delete this comment?")) return; await api(`/comments/${c.id}/delete`, {}); toast("Deleted"); load(); }) }, "Delete")));
+    }) : h("p", { class: "empty" }, "No comments waiting.")].flat());
+}
+
+function renderIdeas() {
+  const q = document.getElementById("search").value.toLowerCase();
+  const list = ideas.filter((i) => i.state !== "pending" && i.state !== "merged" && (!q || (i.title + " " + i.body + " #" + i.id).toLowerCase().includes(q)));
+  document.getElementById("ideaList").replaceChildren(...(list.length ? list.map((i) => ideaEditor(i, { queue: false })) : [h("p", { class: "empty" }, "Nothing here yet.")]));
+}
+
+function renderNew() {
+  const n = document.getElementById("new");
+  if (n.childElementCount) return;
+  const f = (x) => document.getElementById("n-" + x).value;
+  n.append(h("form", { class: "card", onsubmit: act(async (e) => {
+    await api("/ideas", { app: f("app"), title: f("title"), body: f("body"), why: f("why"), status: f("status"), note: f("note"), version: f("version"), author: "iSafeNet" });
+    e.target.reset(); toast("Added to the board"); load();
+  }) },
+    h("h2", {}, "Add an idea from us"),
+    h("p", { class: "meta" }, "Published straight away. Use it to put your own plans on the roadmap."),
+    field("App", select("n-app", APPS, "udapt")),
+    field("Title", h("input", { id: "n-title", required: true, minlength: 5, maxlength: 120 })),
+    field("Description", h("textarea", { id: "n-body" })),
+    field("What it helps people do", h("textarea", { id: "n-why" })),
+    h("div", { class: "row" }, h("div", {}, field("Status", select("n-status", STATUSES, "planned"))), h("div", {}, field("Version", h("input", { id: "n-version" })))),
+    field("Public note", h("textarea", { id: "n-note" })),
+    h("div", { class: "actions" }, h("button", { class: "primary" }, "Add to the board"))));
+}
+show();
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+/* iSafeNet feedback board (feedback.html). Uses the tokens from site.css. */
+.fb{padding:40px 0 96px}
+.fb-tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:26px;overflow-x:auto}
+.fb-tabs a{font:700 1rem var(--head);color:var(--ink-2);padding:12px 16px;border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.fb-tabs a:hover{color:var(--ink);text-decoration:none}
+.fb-tabs a[aria-current]{color:var(--ink);border-bottom-color:var(--blue)}
+.fb-hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.fb-hero-actions svg{width:18px;height:18px}
+
+/* news for this browser */
+.fb-news{display:flex;gap:14px;align-items:flex-start;background:var(--chip);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:24px;color:var(--ink-2)}
+.fb-news>svg{width:22px;height:22px;flex:none;color:var(--blue);margin-top:2px}
+.fb-news ul{margin:4px 0 0;padding-left:18px}
+.fb-news p+p{margin-top:6px}
+
+/* toolbar */
+.fb-toolbar{display:grid;gap:14px;margin-bottom:22px}
+.fb-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fb-row input[type=search]{flex:1 1 240px}
+.fb input,.fb select,.fb textarea,.fb-dialog input,.fb-dialog textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%}
+.fb textarea,.fb-dialog textarea{resize:vertical;min-height:3.2em}
+.fb-select{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--ink-2);font-weight:600}
+.fb-select select{width:auto;padding:9px 10px}
+.fb-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.fb-toolbar .fb-chips{margin:0}
+.fb-chips button{display:inline-flex;align-items:center;gap:7px;font:600 .92rem var(--body);color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
+.fb-chips button img{border-radius:5px}
+.fb-chips button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* idea list */
+.fb-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.fb-card{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;box-shadow:var(--shadow)}
+.fb-card-body{min-width:0;flex:1}
+.fb-card h3{font-size:1.1rem;letter-spacing:-.01em;margin:2px 0 4px}
+.fb-card h3 a{color:var(--ink)}
+.fb-snippet{color:var(--ink-2);font-size:.95rem;overflow-wrap:anywhere}
+.fb-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:.85rem;color:var(--ink-3);margin-top:8px}
+.fb-app{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--ink-2)}
+.fb-app img{border-radius:5px}
+.fb-count{display:inline-flex;align-items:center;gap:4px}
+.fb-count svg{width:15px;height:15px}
+.fb-pin{font-weight:700;color:var(--blue)}
+
+/* votes */
+.fb-vote{flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:56px;min-height:60px;padding:6px 8px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:800 1rem var(--head);cursor:pointer;transition:transform .12s ease}
+.fb-vote svg{width:20px;height:20px}
+.fb-vote:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.fb-vote:active:not(:disabled){transform:scale(.95)}
+.fb-vote.on{background:var(--grad);border-color:transparent;color:#fff}
+.fb-vote:disabled{cursor:default;opacity:.75}
+.fb-vote.big{min-width:68px;min-height:74px;font-size:1.2rem}
+
+/* statuses */
+.fb-status{display:inline-block;font-weight:700;font-size:.78rem;letter-spacing:.02em;padding:3px 10px;border-radius:999px;background:var(--chip);color:var(--ink-2)}
+.s-considering{--s:#8a5cf6}.s-planned{--s:#0a7cff}.s-started{--s:#d97706}.s-shipped{--s:#16a34a}.s-declined{--s:#6b7c90}
+.fb-status[class*=" s-"]{background:color-mix(in srgb,var(--s) 14%,transparent);color:color-mix(in srgb,var(--s) 80%,var(--ink))}
+
+/* roadmap */
+.fb-roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.fb-col{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--s,var(--blue));border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.c-considering{--s:#8a5cf6}.c-planned{--s:#0a7cff}.c-started{--s:#d97706}
+.fb-col h2{font-size:1.15rem;display:flex;align-items:center;justify-content:space-between}
+.fb-n{font:700 .85rem var(--body);color:var(--ink-3)}
+.fb-blurb{color:var(--ink-3);font-size:.9rem;margin:4px 0 12px}
+.fb-col ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.fb-col li{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg)}
+.fb-col li a{font-weight:600;color:var(--ink)}
+.fb-col .fb-meta{margin-top:4px}
+.fb-none{color:var(--ink-3);font-size:.95rem}
+@media (max-width:860px){.fb-roadmap{grid-template-columns:1fr}}
+
+/* shipped */
+.fb-shipped{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid var(--line);display:grid;gap:26px}
+.fb-shipped li{position:relative}
+.fb-shipped li::before{content:"";position:absolute;left:-30px;top:10px;width:12px;height:12px;border-radius:50%;background:#16a34a;box-shadow:0 0 0 4px var(--bg)}
+.fb-shipped h3{font-size:1.15rem;margin:6px 0 4px}
+.fb-shipped h3 a{color:var(--ink)}
+.fb-shipped p{color:var(--ink-2)}
+.fb-thanks{font-size:.9rem;color:var(--ink-3)!important;margin-top:4px}
+
+/* one idea */
+.fb-detail{max-width:760px}
+.fb-back{display:inline-flex;align-items:center;gap:6px;font-weight:600;margin-bottom:18px}
+.fb-back svg{width:18px;height:18px}
+.fb-detail-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:22px}
+.fb-detail h2{font-size:clamp(1.5rem,3vw,2rem);margin:8px 0 6px;outline:none}
+.fb-detail h3{font-size:1.05rem;margin:28px 0 8px}
+.fb-by{color:var(--ink-3);font-size:.9rem}
+.fb-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.fb-ghost{display:inline-flex;align-items:center;gap:6px;font:600 .9rem var(--body);color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer}
+.fb-ghost svg{width:16px;height:16px}
+.fb-ghost.on{color:var(--blue);border-color:var(--blue)}
+.fb-text{white-space:pre-line;overflow-wrap:anywhere;color:var(--ink-2)}
+.fb-why{background:var(--chip);border-radius:16px;padding:4px 18px 16px;margin-top:20px}
+.fb-why h3{margin-top:14px}
+.fb-reply{border:1px solid var(--line);border-left:4px solid var(--s,var(--blue));background:var(--card);border-radius:14px;padding:4px 18px 16px;margin-top:20px}
+.fb-reply h3{margin-top:14px}
+.fb-timeline{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--line);display:grid;gap:12px}
+.fb-timeline li{position:relative;font-size:.95rem}
+.fb-timeline li::before{content:"";position:absolute;left:-24px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.fb-timeline span{color:var(--ink-3);margin-left:8px}
+.fb-timeline p{color:var(--ink-2);margin-top:2px}
+.fb-comments{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:12px}
+.fb-comments li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px}
+.fb-comments li.team{border-color:var(--blue)}
+.fb-comments .fb-by{margin-bottom:4px}
+.fb-comment-form{display:grid;gap:6px;margin-top:10px}
+.fb-comment-form .btn{justify-self:start;margin-top:8px}
+
+/* forms */
+.fb-dialog label,.fb-comment-form label{font-weight:700;font-size:.95rem;margin-top:10px;display:block}
+.fb-opt{font-weight:400;color:var(--ink-3)}
+.fb-warn p{background:#fff4e5;color:#7a3e00;border-radius:12px;padding:10px 14px;margin-top:8px;font-size:.93rem}
+@media (prefers-color-scheme:dark){.fb-warn p{background:#2e1f0a;color:#ffc98a}}
+.fb-form-status{color:var(--ink-2);font-size:.93rem;min-height:1.4em;margin-top:6px}
+.fb-done{background:var(--chip);border-radius:12px;padding:12px 16px;color:var(--ink)}
+.fb-human{min-height:0}
+.fb-small{font-size:.88rem;color:var(--ink-3);margin-top:14px}
+.fb-empty{text-align:center;color:var(--ink-2);padding:48px 0;display:grid;justify-items:center;gap:14px}
+.fb-error{color:#c62828}
+
+/* dialog */
+.fb-dialog{width:min(640px,calc(100% - 24px));max-height:calc(100dvh - 24px);border:none;border-radius:24px;padding:0;background:var(--card);color:var(--ink);box-shadow:var(--shadow-lg)}
+.fb-dialog::backdrop{background:rgba(4,14,30,.6);backdrop-filter:blur(4px)}
+.fb-dialog form,.fb-sent{padding:24px 26px 22px}
+.fb-dialog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.fb-dialog h2{font-size:1.4rem;outline:none}
+.fb-close{background:none;border:none;color:var(--ink-2);cursor:pointer;padding:6px;border-radius:10px}
+.fb-close svg{width:22px;height:22px}
+.fb-dialog fieldset{border:none;margin:10px 0 0;padding:0}
+.fb-dialog legend{font-weight:700;font-size:.95rem;padding:0;margin-bottom:8px}
+.fb-pick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fb-pick label{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border:1px solid var(--line);border-radius:14px;cursor:pointer;font-weight:600;font-size:.9rem;text-align:center}
+.fb-pick img{border-radius:7px}
+.fb-pick input{position:absolute;opacity:0;pointer-events:none}
+.fb-pick label:has(input:checked){border-color:var(--blue);box-shadow:0 0 0 2px var(--blue) inset;background:var(--chip)}
+.fb-pick label:has(input:focus-visible){outline:3px solid var(--cyan);outline-offset:2px}
+@media (max-width:520px){.fb-pick{grid-template-columns:repeat(2,1fr)}}
+.fb-similar{background:var(--chip);border-radius:12px;padding:10px 14px;margin-top:8px;font-size:.93rem;color:var(--ink-2)}
+.fb-similar ul{margin:4px 0 0;padding-left:18px}
+.fb-dialog-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+.fb-dialog .btn{padding:11px 18px}
+.fb-dialog .btn svg,.fb-empty .btn svg{width:18px;height:18px}
+.fb-detail section{padding:0}
+
+/* WCAG AA contrast: the site's --ink-3 and --blue fall just short on the light background */
+.fb{--fb-muted:var(--ink-2);--fb-link:var(--blue-deep)}
+@media (prefers-color-scheme:dark){.fb{--fb-muted:var(--ink-3);--fb-link:var(--blue)}}
+.fb a,.fb-dialog a{color:var(--fb-link)}
+.fb-meta,.fb-by,.fb-blurb,.fb-none,.fb-opt,.fb-thanks,.fb-timeline span,.fb-n,.fb-small{color:var(--fb-muted)!important}
+.fb-status[class*=" s-"]{color:color-mix(in srgb,var(--s) 62%,var(--ink))}
+.fb img,.fb-dialog img{object-fit:contain}
+.fb-similar .fb-meta{display:inline;margin:0}

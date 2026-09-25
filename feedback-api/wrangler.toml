@@ -1,0 +1,19 @@
+# iSafeNet feedback board API. Deploy: npm run deploy (see README.md).
+name = "isafenet-feedback"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+ALLOWED_ORIGINS = "https://isafenet.app"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "isafenet-feedback"
+database_id = "950a33db-a031-443c-a156-ebdd7858c7b9"
+migrations_dir = "migrations"
+
+# Clear out yesterday's rate-limit rows (free-plan cron trigger).
+[triggers]
+crons = ["17 3 * * *"]
