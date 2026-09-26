@@ -141,9 +141,41 @@ def app_ld(a, with_page=True):
            "applicationCategory": a["category"], "operatingSystem": a["os"], "inLanguage": "en-GB",
            "publisher": {"@id": ORG_ID}, "author": {"@id": ORG_ID},
            "offers": {"@type": "Offer", "price": a.get("price", "0"), "priceCurrency": "GBP"}}
+    if a.get("app_store"):
+        obj["installUrl"] = obj["downloadUrl"] = a["app_store"]
     if with_page:
         obj["sameAs"] = [BASE + a["page_file"]]
     return obj
+
+
+def store_status(a):
+    """An app's App Store status pill: a link once it's live (its `app_store`
+    URL in apps/*.json), else "Coming soon"."""
+    if a.get("app_store"):
+        return f'<a class="live" href="{a["app_store"]}">{icon("store")} Available on the App Store</a>'
+    return '<span class="soon">Coming soon to the App Store</span>'
+
+
+def store_button(a, cls="btn"):
+    return f'<a class="{cls}" href="{a["app_store"]}">{icon("store")} Download on the App Store</a>' if a.get("app_store") else ""
+
+
+def and_list(names):
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+
+
+def availability_sentence(apps):
+    """The end of the home page's "Each one solves a real, everyday problem…" line: where each
+    app is — all coming soon, some live, or all live."""
+    live = [a["name"] for a in apps if a.get("app_store")]
+    soon = [a["name"] for a in apps if not a.get("app_store")]
+    n = len(apps)
+    if not live:
+        everyone = "it is" if n == 1 else "both are" if n == 2 else f"all {count_word(n).lower()} are"
+        return f", and {everyone} coming soon to the App Store."
+    if not soon:
+        return ", and it's on the App Store." if n == 1 else ", and every one is on the App Store."
+    return f". {and_list(live)} {'is' if len(live) == 1 else 'are'} on the App Store now; {and_list(soon)} {'is' if len(soon) == 1 else 'are'} coming soon."
 
 
 def org():
@@ -295,7 +327,7 @@ def app_card(a, flip=False):
     <p class="desc">{esc(a["summary"])}</p>
     <ul class="ticks">{ticks}</ul>
     <ul class="chips" aria-label="Platforms and features">{chips}</ul>
-    <div class="actions"><a class="btn" href="{a["page_file"]}">Explore {esc(a["name"])} {icon("arrow")}</a><a class="btn light" href="{a["site"]}">{esc(a["name"])} website {icon("out")}</a></div>
+    <div class="actions">{store_button(a)}<a class="btn{" light" if a.get("app_store") else ""}" href="{a["page_file"]}">Explore {esc(a["name"])} {icon("arrow")}</a><a class="btn light" href="{a["site"]}">{esc(a["name"])} website {icon("out")}</a></div>
   </div>
   <div class="shots">{shots}</div>
 </article>'''
@@ -324,7 +356,6 @@ def build_index():
     prin_html = "".join(f'<article class="card rv"><div class="ico">{icon(i)}</div><h3>{t}</h3><p>{d}</p></article>' for i, t, d in principles)
 
     n = len(APPS)
-    everyone = "it is" if n == 1 else "both are" if n == 2 else f"all {count_word(n).lower()} are"
     hero = "\n    ".join(phone(a, a["home_shot"], f"p{i}") for i, a in enumerate(APPS[:3], 1))
     cards = "\n  ".join(app_card(a, flip=i % 2 == 1) for i, a in enumerate(APPS))
     body = f'''{nav()}
@@ -345,7 +376,7 @@ def build_index():
 <section id="apps"><div class="wrap">
   <div class="sec-head rv"><span class="eyebrow">Our apps</span>
     <h2>{count_word(n)} new app{"" if n == 1 else "s"}, made with care.</h2>
-    <p>Each one solves a real, everyday problem, and {everyone} coming soon to the App Store.</p></div>
+    <p>Each one solves a real, everyday problem{availability_sentence(APPS)}</p></div>
   {cards}
 </div></section>
 
@@ -429,10 +460,10 @@ def build_app(a):
 <section class="hero app-hero"><div class="wrap hero-grid">
   <div>
     <p class="crumbs"><a href="index.html">iSafeNet</a> / <a href="index.html#apps">Apps</a> / {name}</p>
-    <div class="app-id" style="margin-top:22px"><img src="{a["icon"]}" width="84" height="84" alt="{name} app icon"><div><span class="soon">Coming soon to the App Store</span><div class="kind" style="margin-top:8px">{esc(a["kind"])}</div></div></div>
+    <div class="app-id" style="margin-top:22px"><img src="{a["icon"]}" width="84" height="84" alt="{name} app icon"><div>{store_status(a)}<div class="kind" style="margin-top:8px">{esc(a["kind"])}</div></div></div>
     <h1>{name}: <span class="grad">{esc(a["tagline"])}</span></h1>
     <p class="lead">{esc(p["lead"])}</p>
-    <div class="cta-row"><a class="btn" href="{a["site"]}">Visit the {name} website {icon("out")}</a><a class="btn ghost" href="{link(a, second_url)}">{esc(second_label)}</a></div>
+    <div class="cta-row">{store_button(a)}<a class="btn{" ghost" if a.get("app_store") else ""}" href="{a["site"]}">Visit the {name} website {icon("out")}</a><a class="btn ghost" href="{link(a, second_url)}">{esc(second_label)}</a></div>
     <ul class="chips" aria-label="Platforms and features">{"".join(f"<li>{esc(c)}</li>" for c in a["chips"])}</ul>
   </div>
   <div class="devices" aria-label="Screens from {name}">{phones}</div>

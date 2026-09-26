@@ -226,5 +226,6 @@
       "glpmgr-reminders.webp": "assets/panels/08-reminders.webp",
       "glpmgr-on-your-wrist.webp": "assets/panels/09-on-your-wrist.webp"
     }
-  }
+  },
+  "app_store": "https://apps.apple.com/app/glpmgr-glp-1-tracker/id6814282972"
 }
