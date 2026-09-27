@@ -64,6 +64,14 @@
     {
       "title": "Dose steps and missed-dose guides for each medicine",
       "body": "See how your medicine's dose steps up, and what to do if you miss a dose, in the words of its own UK leaflet or US prescribing information, with the source and when GLPMGR checked it. Open it from the Next Dose tile, your dosing schedule, or when you record a dose. Your prescriber's instructions always come first."
+    },
+    {
+      "title": "A new look on Apple Watch",
+      "body": "The Watch app has one screen each for your next dose (with a countdown ring), your weight and trend, water and protein, swiped left and right, and laid out for every Watch from the SE 40 mm to the Ultra 49 mm. With Premium, your goal on the Weight screen, a countdown ring for your watch face and a Weight card in the Smart Stack."
+    },
+    {
+      "title": "New Home Screen and Lock Screen widgets",
+      "body": "Water and Protein widgets with a button to log straight from the Home Screen, a Weight widget, and a large Your Journey widget with your weight since you started, each dose, any change of medicine and your goal. The Next Dose widget and the Lock Screen countdown are redesigned, and the countdown gains Log Dose and Snooze buttons. Premium."
     }
   ]
 }
