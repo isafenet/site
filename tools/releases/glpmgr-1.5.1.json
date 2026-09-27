@@ -48,6 +48,14 @@
     {
       "title": "Dose alarm on Apple Watch",
       "body": "When a dose is due, your Apple Watch taps your wrist (three taps every 30 seconds, or a pattern you choose) until you tap Taken or Snooze. Taken logs the dose on your iPhone. The alarm is set whenever GLPMGR is open on your Watch in the day and a half before a dose, and your Watch asks for one tap to set it when a dose is coming up. Premium."
+    },
+    {
+      "title": "Answer reminders from the notification, on iPhone or Apple Watch",
+      "body": "Reminders gain buttons so you can act without opening the app: Log a Glass on a water reminder, Add a Serving on a protein reminder, Log Weight on the weigh-in, and Log Dose and Snooze on a dose reminder. They work on your iPhone and on your Apple Watch. On the Watch, Log Dose records the dose on your iPhone straight away; you can add the injection site there later."
+    },
+    {
+      "title": "Swipe between screens on Apple Watch",
+      "body": "The Watch app now has one screen for each thing, swiped left and right: your next dose (and whether its alarm is set), your weight with Log Weight, water, and protein. No more scrolling up and down."
     }
   ]
 }
