@@ -116,6 +116,10 @@
     {
       "title": "Clearer wording throughout",
       "body": "We've gone through the app's wording to make it plainer and more consistent: the things on Today and Journey are always tiles, adding an entry is always Log, and chart keys, titles and settings say what they show in everyday words."
+    },
+    {
+      "title": "A new app icon: the dose ring",
+      "body": "GLPMGR has a new icon: a dose ring over the GLPMGR name, in the app's teal-to-blue gradient. With Match App Icon to Theme on, it takes your colour theme's gradient, and it has dark and tinted versions for the Home Screen. It's on the Apple Watch too."
     }
   ]
 }
