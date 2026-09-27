@@ -27,11 +27,11 @@
     },
     {
       "title": "Smarter dose reminders",
-      "body": "Choose an optional heads-up before a dose is due (from 30 minutes to the day before) and a follow-up if it isn't recorded yet. Dose reminders gain Record Dose and Snooze buttons, with a snooze time you pick, and can come through a Focus if you turn on Time Sensitive. All in Settings › Reminders, and all off until you turn them on."
+      "body": "Choose an optional heads-up before a dose is due (from 30 minutes to the day before) and a follow-up if it isn't logged yet. Dose reminders gain Log Dose and Snooze buttons, with a snooze time you pick, and can come through a Focus if you turn on Time Sensitive. All in Settings › Reminders, and all off until you turn them on."
     },
     {
       "title": "A side-effect check-in after each dose",
-      "body": "An optional \"How are you feeling?\" reminder a set time after each dose (4 hours to 2 days), which opens the symptom record. A quick note of side effects helps you spot patterns and is ready for your next appointment."
+      "body": "An optional \"How are you feeling?\" reminder a set time after each dose (4 hours to 2 days), which opens the symptom log. A quick log of side effects helps you spot patterns and is ready for your next appointment."
     },
     {
       "title": "An evening protein reminder",
@@ -51,11 +51,11 @@
     },
     {
       "title": "Answer reminders from the notification, on iPhone or Apple Watch",
-      "body": "Reminders gain buttons so you can act without opening the app: Record a Glass on a water reminder, Add a Serving on a protein reminder, Record Weight on the weigh-in, and Record Dose and Snooze on a dose reminder. They work on your iPhone and on your Apple Watch. On the Watch, Record Dose records the dose on your iPhone straight away; you can add the injection site there later."
+      "body": "Reminders gain buttons so you can act without opening the app: Log a Glass on a water reminder, Add a Serving on a protein reminder, Log Weight on the weigh-in, and Log Dose and Snooze on a dose reminder. They work on your iPhone and on your Apple Watch. On the Watch, Log Dose logs the dose on your iPhone straight away; you can add the injection site there later."
     },
     {
       "title": "Swipe between screens on Apple Watch",
-      "body": "The Watch app now has one screen for each thing, swiped left and right: your next dose (and whether its alarm is set), your weight with Record Weight, water, and protein. No more scrolling up and down."
+      "body": "The Watch app now has one screen for each thing, swiped left and right: your next dose (and whether its alarm is set), your weight with Log Weight, water, and protein. No more scrolling up and down."
     },
     {
       "title": "Changing medicine, checked and tracked",
@@ -63,7 +63,7 @@
     },
     {
       "title": "Dose steps and missed-dose guides for each medicine",
-      "body": "See how your medicine's dose steps up, and what to do if you miss a dose, in the words of its own UK leaflet or US prescribing information, with the source and when GLPMGR checked it. Open it from the Next Dose card, your dosing schedule, or when you record a dose. Your prescriber's instructions always come first."
+      "body": "See how your medicine's dose steps up, and what to do if you miss a dose, in the words of its own UK leaflet or US prescribing information, with the source and when GLPMGR checked it. Open it from the Next Dose tile, your dosing schedule, or when you log a dose. Your prescriber's instructions always come first."
     },
     {
       "title": "A new look on Apple Watch",
@@ -71,19 +71,19 @@
     },
     {
       "title": "New Home Screen and Lock Screen widgets",
-      "body": "Water and Protein widgets with a button to record straight from the Home Screen, a Weight widget, and a large Your Journey widget with your weight since you started, each dose, any change of medicine and your goal. The Next Dose widget and the Lock Screen countdown are redesigned, and the countdown gains Record Dose and Snooze buttons. Premium."
+      "body": "Water and Protein widgets with a button to log straight from the Home Screen, a Weight widget, and a large Your Journey widget with your weight since you started, each dose, any change of medicine and your goal. The Next Dose widget and the Lock Screen countdown are redesigned, and the countdown gains Log Dose and Snooze buttons. Premium."
     },
     {
       "title": "Bigger widgets, including for iPad",
-      "body": "More widget sizes to choose from: a large Next Dose widget with your dose step, last dose, last injection site recorded, supply and weight, plus a Record Dose button; medium Water (with the week's water), Protein (with today's servings) and Weight (with your goal) widgets; and Your Journey in the iPad's extra-large size, with your weight, doses, any change of medicine and daily water on one chart. Premium."
+      "body": "More widget sizes to choose from: a large Next Dose widget with your dose step, last dose, last injection site logged, supply and weight, plus a Log Dose button; medium Water (with the week's water), Protein (with today's servings) and Weight (with your goal) widgets; and Your Journey in the iPad's extra-large size, with your weight, doses, any change of medicine and daily water on one chart. Premium."
     },
     {
       "title": "A fresh look: the GLPMGR card style",
-      "body": "Today, Journey, Trends, Settings and Symptoms now use the GLPMGR style: clean cards with rounded type, rings, and small headings in your theme's colour, the same as the widgets and Apple Watch, in light and dark mode and every colour theme. Each card has small, standard and large sizes, laid out the way they're designed, and the buttons are simple pills. Headings are checked for contrast in every appearance, including Increase Contrast. Prefer the old look? Choose Classic in Settings › Appearance › Card Style; your card order and sizes stay as they are, and every card shows the same information in both."
+      "body": "Today, Journey, Trends, Settings and Symptoms now use the GLPMGR style: clean tiles with rounded type, rings, and small headings in your theme's colour, the same as the widgets and Apple Watch, in light and dark mode and every colour theme. Each tile has small, standard and large sizes, laid out the way they're designed, and the buttons are simple pills. Headings are checked for contrast in every appearance, including Increase Contrast. Prefer the old look? Choose Classic in Settings › Appearance › Tile Style; your tile order and sizes stay as they are, and every tile shows the same information in both."
     },
     {
       "title": "More room on iPad",
-      "body": "On iPad (and in a wide Mac window), Today and Journey spread across three columns of cards: in landscape, even with the sidebar showing, and on the 13-inch iPad in portrait. Narrower windows keep two columns, and the largest text sizes one."
+      "body": "On iPad (and in a wide Mac window), Today and Journey spread across three columns of tiles: in landscape, even with the sidebar showing, and on the 13-inch iPad in portrait. Narrower windows keep two columns, and the largest text sizes one."
     },
     {
       "title": "Press and hold a reminder to see where you are",
@@ -99,11 +99,11 @@
     },
     {
       "title": "Your Journey on the Journey tab",
-      "body": "A new Your Journey card shows your weight over the range you choose, how much it has changed, each dose, and your goal as a dashed line. Each medicine's doses have their own colour and dash, named in a legend, so a change of medicine is easy to see. The colours stay distinct with the common kinds of colour blindness. Press and hold the card to change the graph type or open Trends."
+      "body": "A new Your Journey tile shows your weight over the range you choose, how much it has changed, each dose, and your goal as a dashed line. Each medicine's doses have their own colour and dash, named in a legend, so a change of medicine is easy to see. The colours stay distinct with the common kinds of colour blindness. Press and hold the tile to change the graph type or open Trends."
     },
     {
       "title": "Water, protein and glucose on your weight charts",
-      "body": "Your Journey and the Weight & Injections chart can show each day's water and protein, compared with your daily goals, and your daily glucose average, in a band under your weight line, so you can see them side by side. Over a long range on a smaller screen, water and protein are averaged by week so the bars stay easy to read. Each only shows while you track it, and each can be turned off from the card's long-press menu or Settings › Appearance › Weight Charts. Protein and glucose need Premium."
+      "body": "Your Journey and the Weight & Injections chart can show each day's water and protein, compared with your daily goals, and your daily glucose average, in a band under your weight line, so you can see them side by side. Over a long range on a smaller screen, water and protein are averaged by week so the bars stay easy to read. Each only shows while you track it, and each can be turned off from the tile's long-press menu or Settings › Appearance › Weight Charts. Protein and glucose need Premium."
     },
     {
       "title": "Choose how each chart and dial is drawn",
@@ -111,7 +111,7 @@
     },
     {
       "title": "Hide or show every card at once",
-      "body": "Customise Today and Customise Journey have Hide All, to start from a clear screen and add back just the cards you want, and Show All to bring everything back. Hidden cards keep their place and size."
+      "body": "Customise Today and Customise Journey have Hide All, to start from a clear screen and add back just the tiles you want, and Show All to bring everything back. Hidden cards keep their place and size."
     },
     {
       "title": "Widgets in light and dark",
