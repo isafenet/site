@@ -1,8 +1,8 @@
 {
   "app": "glpmgr",
-  "version": "1.5.1",
+  "version": "1.6",
   "status": "started",
-  "note": "Coming in GLPMGR 1.5.1.",
+  "note": "Coming in GLPMGR 1.6.",
   "author": "iSafeNet",
   "ideas": [
     {
@@ -76,6 +76,22 @@
     {
       "title": "Bigger widgets, including for iPad",
       "body": "More widget sizes to choose from: a large Next Dose widget with your dose step, last dose, last injection site recorded, supply and weight, plus a Log Dose button; medium Water (with the week's water), Protein (with today's servings) and Weight (with your goal) widgets; and Your Journey in the iPad's extra-large size, with your weight, doses, any change of medicine and daily water on one chart. Premium."
+    },
+    {
+      "title": "A fresh look: the GLPMGR card style",
+      "body": "Today and Journey now use the same clean cards, rings and headings as the widgets and Apple Watch, in light and dark mode and every colour theme, with your chart and dial colours. Headings are checked for contrast in every appearance, including Increase Contrast. Prefer the old look? Choose Classic in Settings › Appearance › Card Style; your card order and sizes stay as they are."
+    },
+    {
+      "title": "More room on iPad",
+      "body": "On iPad (and in a wide Mac window), Today and Journey spread across three columns of cards: in landscape, even with the sidebar showing, and on the 13-inch iPad in portrait. Narrower windows keep two columns, and the largest text sizes one."
+    },
+    {
+      "title": "Press and hold a reminder to see where you are",
+      "body": "Press and hold a dose, water or protein reminder on your iPhone to see a card in the GLPMGR style: the countdown to your dose with your last dose, last injection site and supply, or today's water or protein ring with how much is left. Apple Watch shows the same kind of screen when you raise your wrist to a reminder, and every reminder button now has an icon."
+    },
+    {
+      "title": "Hide medicine names in reminders",
+      "body": "Turn on Hide Medicine Names in Settings › Reminders and dose reminders say \"Your dose is due\" instead of naming your medicine and dose, on the Lock Screen, the pressed-and-held card and your Apple Watch. Off unless you turn it on."
     }
   ]
 }

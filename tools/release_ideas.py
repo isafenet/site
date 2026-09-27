@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Put an app release's new features on the feedback board (https://isafenet.app/feedback.html).
 
-  python3 tools/release_ideas.py post tools/releases/glpmgr-1.5.1.json   # add them, as "started"
-  python3 tools/release_ideas.py ship glpmgr 1.5.1                        # once live: mark them shipped
+  python3 tools/release_ideas.py post tools/releases/glpmgr-1.6.json     # add them, as "started"
+  python3 tools/release_ideas.py ship glpmgr 1.6                          # once live: mark them shipped
 
 `post` adds each idea in the file as a published team idea with the file's status, note and version,
 skipping any whose title is already on the board for that app, so it's safe to run twice. `ship` marks
