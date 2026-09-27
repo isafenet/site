@@ -56,6 +56,14 @@
     {
       "title": "Swipe between screens on Apple Watch",
       "body": "The Watch app now has one screen for each thing, swiped left and right: your next dose (and whether its alarm is set), your weight with Log Weight, water, and protein. No more scrolling up and down."
+    },
+    {
+      "title": "Changing medicine, checked and tracked",
+      "body": "When you record a dose of a different GLP-1 medicine, brand, or form (injection or tablet), GLPMGR checks it's the one you meant, shows what that medicine's product information says about using two GLP-1 medicines together, and offers to pause the old medicine's reminders so you're not reminded about both. Every change is marked on your timeline, your Journey chart, Trends and the report for your doctor."
+    },
+    {
+      "title": "Dose steps and missed-dose guides for each medicine",
+      "body": "See how your medicine's dose steps up, and what to do if you miss a dose, in the words of its own UK leaflet or US prescribing information, with the source and when GLPMGR checked it. Open it from the Next Dose tile, your dosing schedule, or when you record a dose. Your prescriber's instructions always come first."
     }
   ]
 }
