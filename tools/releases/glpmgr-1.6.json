@@ -91,7 +91,7 @@
     },
     {
       "title": "Hide medicine names in reminders",
-      "body": "Turn on Hide Medicine Names in Settings › Reminders and dose reminders say \"Your dose is due\" instead of naming your medicine and dose, on the Lock Screen, the pressed-and-held card and your Apple Watch. Off unless you turn it on."
+      "body": "Turn on Hide Medicine Names in Settings › Reminders and dose reminders say \"Your dose is due\" instead of naming your medicine and dose, on the Lock Screen, the pressed-and-held card, your Apple Watch and the Watch's dose alarm. Off unless you turn it on."
     },
     {
       "title": "A new app icon",
@@ -107,7 +107,7 @@
     },
     {
       "title": "Choose how each chart and dial is drawn",
-      "body": "Pick the graph type for every chart: Site Usage as bars or a ring; blood glucose as line and range, line, bars or points; water and protein per day as bars, a line or points; and the symptom and glucose dose-cycle charts too. The Water, Protein and Goal dials can each be a ring or fill like a glass, and your Apple Watch follows. Change them in Settings › Appearance, or by pressing and holding the card."
+      "body": "Pick the graph type for every chart: Site Usage as bars or a ring; blood glucose as line and range, line, bars or points; water and protein per day as bars, a line or points; and the symptom and glucose dose-cycle charts too. The Water, Protein and Goal dials can each be a ring or fill like a glass, and your Apple Watch follows. Change them in Settings › Appearance, or by pressing and holding the tile."
     },
     {
       "title": "Hide or show every card at once",
@@ -116,6 +116,10 @@
     {
       "title": "Widgets in light and dark",
       "body": "The widgets now follow your Home Screen: white cards in light mode, near-black in dark, in your theme's colours. The Journey widget colours each dose by medicine, as the app does, and the Lock Screen Live Activity leads with its countdown ring and has pill buttons. Premium."
+    },
+    {
+      "title": "Clearer wording throughout",
+      "body": "We've gone through the app's wording to make it plainer and more consistent: the things on Today and Journey are always tiles, adding an entry is always Log, and chart keys, titles and settings say what they show in everyday words."
     }
   ]
 }
