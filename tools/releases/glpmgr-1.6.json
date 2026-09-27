@@ -94,10 +94,6 @@
       "body": "Turn on Hide Medicine Names in Settings › Reminders and dose reminders say \"Your dose is due\" instead of naming your medicine and dose, on the Lock Screen, the pressed-and-held card, your Apple Watch and the Watch's dose alarm. Off unless you turn it on."
     },
     {
-      "title": "A new app icon",
-      "body": "GLPMGR has a new icon: a bold \"G\" in the app's teal-to-blue gradient. With Match App Icon to Theme on, it takes your colour theme's gradient, and it has dark and tinted versions for iOS. The Apple Watch app, the Share Progress picture and the welcome screen use it too."
-    },
-    {
       "title": "Your Journey on the Journey tab",
       "body": "A new Your Journey tile shows your weight over the range you choose, how much it has changed, each dose, and your goal as a dashed line. Each medicine's doses have their own colour and dash, named in a legend, so a change of medicine is easy to see. The colours stay distinct with the common kinds of colour blindness. Press and hold the tile to change the graph type or open Trends."
     },

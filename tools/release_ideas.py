@@ -3,11 +3,14 @@
 
   python3 tools/release_ideas.py post tools/releases/glpmgr-1.6.json     # add them, as "started"
   python3 tools/release_ideas.py ship glpmgr 1.6                          # once live: mark them shipped
+  python3 tools/release_ideas.py hide glpmgr "A new app icon"             # take a dropped feature off
 
 `post` adds each idea in the file as a published team idea with the file's status, note and version,
 skipping any whose title is already on the board for that app, so it's safe to run twice. `ship` marks
 every idea with that app and version as shipped, with the note "Now Shipped in <version>", the same
-way the 1.5 items were done by hand. Add --dry-run to either to see what it would do.
+way the 1.5 items were done by hand. `hide` takes ideas off the public board by exact title (it sets them
+to "rejected", as the moderation page does), for a feature dropped before release. Add --dry-run to any
+of them to see what it would do.
 
 The admin key (the Worker's ADMIN_TOKEN secret) comes from FEEDBACK_ADMIN_TOKEN, or is asked for.
 Run it in your own terminal so the key never ends up in a chat transcript or shell history.
@@ -75,6 +78,19 @@ def ship(token, app, version, note, dry_run):
             print(f"  shipped #{idea['id']}: {idea['title']}")
 
 
+def hide(token, app, titles, dry_run):
+    wanted = {t.strip().lower() for t in titles}
+    found = [i for i in board(token, app) if i["title"].strip().lower() in wanted]
+    for idea in found:
+        if dry_run:
+            print(f"  would hide #{idea['id']}: {idea['title']}")
+        else:
+            call(token, "POST", f"/ideas/{idea['id']}", {"state": "rejected"})
+            print(f"  hid #{idea['id']}: {idea['title']}")
+    for title in sorted(wanted - {i["title"].strip().lower() for i in found}):
+        print(f"  not on the board: {title}")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -86,6 +102,10 @@ def main():
     s.add_argument("version")
     s.add_argument("--note", default="")
     s.add_argument("--dry-run", action="store_true")
+    h = sub.add_parser("hide", help="take ideas off the board by title")
+    h.add_argument("app")
+    h.add_argument("titles", nargs="+")
+    h.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
     token = os.environ.get("FEEDBACK_ADMIN_TOKEN") or getpass.getpass("Feedback board admin key: ")
@@ -96,8 +116,10 @@ def main():
         with open(args.file) as f:
             release = json.load(f)
         post(token, release, args.dry_run)
-    else:
+    elif args.command == "ship":
         ship(token, args.app, args.version, args.note, args.dry_run)
+    else:
+        hide(token, args.app, args.titles, args.dry_run)
 
 
 if __name__ == "__main__":
