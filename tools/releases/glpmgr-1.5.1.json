@@ -1,0 +1,53 @@
+{
+  "app": "glpmgr",
+  "version": "1.5.1",
+  "status": "started",
+  "note": "Coming in GLPMGR 1.5.1.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "How to take your tablet, from its leaflet",
+      "body": "When you log a GLP-1 tablet, GLPMGR shows how to take it, in the words of its patient leaflet, with a link to the full leaflet. For semaglutide and orforglipron tablets where GLPMGR has checked the leaflet for your region."
+    },
+    {
+      "title": "A countdown after tablets that need a wait",
+      "body": "If your tablet's leaflet says to wait 30 minutes before eating, drinking or taking other medicines, Today counts it down and can remind you when the wait is over. You can turn the reminder off in Settings › Reminders."
+    },
+    {
+      "title": "Find a food's protein: search, recent foods and barcodes",
+      "body": "The Protein tile gains Find a Food. Search thousands of foods from the UK, US, French and Australian food tables (your own country's first), pick from your recent foods, or scan a barcode, then choose how much you had and check the protein before it's added. Search is on your device; a barcode scan sends only the barcode number to Open Food Facts to look the product up. Premium, with protein tracking."
+    },
+    {
+      "title": "Log a meal's protein from a photo or by voice",
+      "body": "On iPhones with Apple Intelligence (iOS 27), take a photo of your meal or say what you had. Apple's on-device model names the foods, the protein comes from the food tables, never a guess, and you check everything before it's added. Nothing leaves your phone. Premium, with protein tracking."
+    },
+    {
+      "title": "Body map help when your medicine has no brand chosen",
+      "body": "If you record a medicine by its ingredient alone (for example \"Semaglutide\"), where the brands' leaflets differ, GLPMGR now says which brand to choose so it can show that medicine's injection areas and body map."
+    },
+    {
+      "title": "Smarter dose reminders",
+      "body": "Choose an optional heads-up before a dose is due (from 30 minutes to the day before) and a follow-up if it isn't logged yet. Dose reminders gain Log Dose and Snooze buttons, with a snooze time you pick, and can come through a Focus if you turn on Time Sensitive. All in Settings › Reminders, and all off until you turn them on."
+    },
+    {
+      "title": "A side-effect check-in after each dose",
+      "body": "An optional \"How are you feeling?\" reminder a set time after each dose (4 hours to 2 days), which opens the symptom log. A quick record of side effects helps you spot patterns and is ready for your next appointment."
+    },
+    {
+      "title": "An evening protein reminder",
+      "body": "An optional nudge at a time you choose, only on days you're still under your protein goal. It stops for the day as soon as you reach it. Premium, with protein tracking."
+    },
+    {
+      "title": "Weekly weigh-in reminder for everyone",
+      "body": "The weekly weigh-in reminder, at the day and time you pick, no longer needs Maintenance tools switched on. It never mentions your weight."
+    },
+    {
+      "title": "All your reminders in one place",
+      "body": "A new Settings › Reminders page lists every reminder GLPMGR offers (doses, supply, tablets, side-effect check-ins, water, protein, weigh-ins and backups), each with its own switch and times."
+    },
+    {
+      "title": "Dose alarm on Apple Watch",
+      "body": "When a dose is due, your Apple Watch taps your wrist (three taps every 30 seconds, or a pattern you choose) until you tap Taken or Snooze. Taken logs the dose on your iPhone. The alarm is set whenever GLPMGR is open on your Watch in the day and a half before a dose, and your Watch asks for one tap to set it when a dose is coming up. Premium."
+    }
+  ]
+}

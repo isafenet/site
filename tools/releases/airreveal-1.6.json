@@ -1,0 +1,37 @@
+{
+  "app": "airreveal",
+  "version": "1.6",
+  "status": "started",
+  "note": "Coming in AirReveal 1.6.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "Window View: landmarks labelled on the camera",
+      "body": "Hold your phone up to the plane window and the landmarks outside are labelled on the camera picture, from mountain tops to cities and lakes. Tap a label for its story. Open it with the camera button on the Live map; it works offline."
+    },
+    {
+      "title": "Offline maps you can count on",
+      "body": "A flight only shows as \"Available offline\" once its map has finished downloading, with its size. A download that was cut short carries on where it stopped, and one that fails can be tried again."
+    },
+    {
+      "title": "Download maps automatically on Wi-Fi",
+      "body": "A new flight's maps and landmarks download by themselves while you're on Wi-Fi. Turn it on or off in Profile › Trip Data."
+    },
+    {
+      "title": "Choose your units",
+      "body": "Automatic, Aviation, Metric or Imperial, for altitude, speed, distance and weather. In Profile › Flight HUD › Units."
+    },
+    {
+      "title": "The weather below your plane on the Home Screen widget",
+      "body": "The widget now shows the weather below your plane, as well as your flight."
+    },
+    {
+      "title": "Flight HUD on the Lock Screen and in the Dynamic Island",
+      "body": "Your heading, altitude, speed and which side to look, on the Lock Screen and in the Dynamic Island while you fly."
+    },
+    {
+      "title": "Flight HUD beside the flight panel on iPad",
+      "body": "On iPad in landscape, the Flight HUD now shows beside the flight panel instead of over the map."
+    }
+  ]
+}

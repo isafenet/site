@@ -1,0 +1,27 @@
+{
+  "app": "udapt",
+  "version": "1.1",
+  "status": "started",
+  "note": "Coming in Udapt 1.1.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "My own plan: log the exercise plan your rehab team gave you",
+      "body": "If your physio, doctor or rehab team has given you an exercise plan, add it in Settings › Training › My own plan exactly as it's written: sets, reps or time, any weight, how hard it should feel in their words, and which days. Udapt never changes it or suggests anything else. On a plan day Today shows what's on your plan; tick each set as you do it, with the same safety advice every session and an optional note for your rehab team. Finished sessions are saved to Apple Health, and Share my sessions sends your rehab team a plain list of what you did."
+    },
+    {
+      "title": "Control Centre buttons",
+      "body": "Add Start Today's Workout and Log Food to Control Centre, and open Udapt straight at that screen. If Udapt has stepped back from your training after the health check, the workout button opens your own plan or Today instead."
+    },
+    {
+      "title": "The health check button opens the right setting",
+      "body": "On the Training card, the button that takes you to the health check now opens it directly, instead of the top of Settings."
+    },
+    {
+      "title": "Udapt in Spanish, French, German, Italian and Portuguese",
+      "body": "Udapt in five more languages, the same ones as AirReveal: Spanish, French, German, Italian and Brazilian Portuguese.",
+      "status": "planned",
+      "note": "Planned for Udapt 1.1."
+    }
+  ]
+}
