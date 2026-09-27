@@ -79,7 +79,7 @@
     },
     {
       "title": "A fresh look: the GLPMGR card style",
-      "body": "Today and Journey now use the same clean cards, rings and headings as the widgets and Apple Watch, in light and dark mode and every colour theme, with your chart and dial colours. Headings are checked for contrast in every appearance, including Increase Contrast. Prefer the old look? Choose Classic in Settings › Appearance › Card Style; your card order and sizes stay as they are."
+      "body": "Today, Journey, Trends, Settings and Symptoms now use the GLPMGR style: clean cards with rounded type, rings, and small headings in your theme's colour, the same as the widgets and Apple Watch, in light and dark mode and every colour theme. Each card has small, standard and large sizes, laid out the way they're designed, and the buttons are simple pills. Headings are checked for contrast in every appearance, including Increase Contrast. Prefer the old look? Choose Classic in Settings › Appearance › Card Style; your card order and sizes stay as they are, and every card shows the same information in both."
     },
     {
       "title": "More room on iPad",
@@ -92,6 +92,30 @@
     {
       "title": "Hide medicine names in reminders",
       "body": "Turn on Hide Medicine Names in Settings › Reminders and dose reminders say \"Your dose is due\" instead of naming your medicine and dose, on the Lock Screen, the pressed-and-held card and your Apple Watch. Off unless you turn it on."
+    },
+    {
+      "title": "A new app icon",
+      "body": "GLPMGR has a new icon: a bold \"G\" in the app's teal-to-blue gradient. With Match App Icon to Theme on, it takes your colour theme's gradient, and it has dark and tinted versions for iOS. The Apple Watch app, the Share Progress picture and the welcome screen use it too."
+    },
+    {
+      "title": "Your Journey on the Journey tab",
+      "body": "A new Your Journey card shows your weight over the range you choose, how much it has changed, each dose, and your goal as a dashed line. Each medicine's doses have their own colour and dash, named in a legend, so a change of medicine is easy to see. The colours stay distinct with the common kinds of colour blindness. Press and hold the card to change the graph type or open Trends."
+    },
+    {
+      "title": "Water, protein and glucose on your weight charts",
+      "body": "Your Journey and the Weight & Injections chart can show each day's water and protein, as a share of your goals, and your daily glucose average, in a band under your weight line, so you can see them side by side. Each only shows while you track it, and each can be turned off from the card's long-press menu or Settings › Appearance › Weight Charts. Protein and glucose need Premium."
+    },
+    {
+      "title": "Choose how each chart and dial is drawn",
+      "body": "Pick the graph type for every chart: Site Usage as bars or a ring; blood glucose as line and range, line, bars or points; water and protein per day as bars, a line or points; and the symptom and glucose dose-cycle charts too. The Water, Protein and Goal dials can each be a ring or fill like a glass, and your Apple Watch follows. Change them in Settings › Appearance, or by pressing and holding the card."
+    },
+    {
+      "title": "Hide or show every card at once",
+      "body": "Customise Today and Customise Journey have Hide All, to start from a clear screen and add back just the cards you want, and Show All to bring everything back. Hidden cards keep their place and size."
+    },
+    {
+      "title": "Widgets in light and dark",
+      "body": "The widgets now follow your Home Screen: white cards in light mode, near-black in dark, in your theme's colours. The Journey widget colours each dose by medicine, as the app does, and the Lock Screen Live Activity leads with its countdown ring and has pill buttons. Premium."
     }
   ]
 }
