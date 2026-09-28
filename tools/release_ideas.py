@@ -2,11 +2,13 @@
 """Put an app release's new features on the feedback board (https://isafenet.app/feedback.html).
 
   python3 tools/release_ideas.py post tools/releases/glpmgr-1.6.json     # add them, as "started"
+  python3 tools/release_ideas.py update tools/releases/glpmgr-1.6.json   # reword ones already posted
   python3 tools/release_ideas.py ship glpmgr 1.6                          # once live: mark them shipped
   python3 tools/release_ideas.py hide glpmgr "A new app icon"             # take a dropped feature off
 
 `post` adds each idea in the file as a published team idea with the file's status, note and version,
-skipping any whose title is already on the board for that app, so it's safe to run twice. `ship` marks
+skipping any whose title is already on the board for that app, so it's safe to run twice. `update`
+rewrites the description of ideas already posted, matched by title, when the file's wording changes. `ship` marks
 every idea with that app and version as shipped, with the note "Now Shipped in <version>", the same
 way the 1.5 items were done by hand. `hide` takes ideas off the public board by exact title (it sets them
 to "rejected", as the moderation page does), for a feature dropped before release. Add --dry-run to any
@@ -67,6 +69,25 @@ def post(token, release, dry_run):
             print(f"  added #{call(token, 'POST', '/ideas', body)['id']}: {idea['title']}")
 
 
+def update(token, release, dry_run):
+    """Brings the description of each idea already on the board in line with the file, matched by title.
+    `post` skips ideas already there, so this is how a reworded entry reaches the board."""
+    on_board = {i["title"].strip().lower(): i for i in board(token, release["app"])}
+    for idea in release["ideas"]:
+        current = on_board.get(idea["title"].strip().lower())
+        if current is None:
+            print(f"  not on the board yet (use post): {idea['title']}")
+            continue
+        body = idea.get("body", "")
+        if (current.get("body") or "") == body:
+            continue
+        if dry_run:
+            print(f"  would reword #{current['id']}: {idea['title']}")
+        else:
+            call(token, "POST", f"/ideas/{current['id']}", {"body": body})
+            print(f"  reworded #{current['id']}: {idea['title']}")
+
+
 def ship(token, app, version, note, dry_run):
     for idea in board(token, app):
         if idea["version"] != version or idea["status"] == "shipped":
@@ -97,6 +118,9 @@ def main():
     p = sub.add_parser("post", help="add a release's ideas")
     p.add_argument("file")
     p.add_argument("--dry-run", action="store_true")
+    u = sub.add_parser("update", help="reword ideas already posted, from the release file")
+    u.add_argument("file")
+    u.add_argument("--dry-run", action="store_true")
     s = sub.add_parser("ship", help="mark a release's ideas shipped")
     s.add_argument("app")
     s.add_argument("version")
@@ -116,6 +140,10 @@ def main():
         with open(args.file) as f:
             release = json.load(f)
         post(token, release, args.dry_run)
+    elif args.command == "update":
+        with open(args.file) as f:
+            release = json.load(f)
+        update(token, release, args.dry_run)
     elif args.command == "ship":
         ship(token, args.app, args.version, args.note, args.dry_run)
     else:

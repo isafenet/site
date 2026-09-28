@@ -91,7 +91,7 @@
     },
     {
       "title": "Hide medicine names in reminders",
-      "body": "Turn on Hide Medicine Names in Settings › Reminders and dose reminders say \"Your dose is due\" instead of naming your medicine and dose, on the Lock Screen, the pressed-and-held card, your Apple Watch and the Watch's dose alarm. Off unless you turn it on."
+      "body": "Turn on Hide Medicine Names in Settings › Reminders and dose reminders say \"Your dose is due\" instead of naming your medicine and dose, on the Lock Screen, the pressed-and-held card, your Apple Watch and the Watch's dose alarm. The Live Activity and Lock Screen widgets leave them out too. Off unless you turn it on."
     },
     {
       "title": "Your Journey on the Journey tab",
