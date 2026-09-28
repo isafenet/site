@@ -19,8 +19,8 @@
     "iPhone",
     "iPad",
     "Apple Watch",
-    "Mac",
     "Widgets",
+    "Live Activities",
     "Apple Health"
   ],
   "colors": [
@@ -81,17 +81,17 @@
       [
         "bell",
         "Doses & reminders",
-        "Record injections or tablets in a few taps, with reminders when a dose is due and when supply runs low."
+        "Log injections or tablets in a few taps. Reminders your way: a heads-up before a dose, a follow-up if it isn't logged, Log Dose and Snooze buttons, and low-supply alerts."
       ],
       [
         "chart",
         "Dose steps",
-        "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, up to your maintenance dose."
+        "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, with each medicine's own leaflet wording on dose steps and missed doses."
       ],
       [
         "map",
         "Injection sites",
-        "Only the areas each manufacturer lists for your region, with a body map of where you've injected before."
+        "Only the areas each manufacturer lists for your region, with a body map of where you've injected before (Premium)."
       ],
       [
         "heart",
@@ -100,13 +100,13 @@
       ],
       [
         "camera",
-        "Water, protein & labels",
-        "Log water and protein, and read the protein figure straight from a food label with your camera."
+        "Water, protein & food",
+        "Log water with one tap. With Premium, track protein: search thousands of foods, or scan a barcode or a nutrition label."
       ],
       [
         "lock",
         "Private by design",
-        "No account, no ads, no tracking. Progress photos are encrypted and locked behind Face ID."
+        "No account, no ads, no tracking, nothing in iCloud. Hide Medicine Names keeps your medicine off the Lock Screen, and progress photos are locked behind Face ID."
       ]
     ],
     "gallery": [
@@ -123,16 +123,16 @@
     "platforms_heading": "Native on every screen it runs on.",
     "platforms": [
       [
-        "iPhone, iPad & Mac",
-        "Native layouts for each, from one Swift codebase."
+        "iPhone & iPad",
+        "Native layouts for each, with up to three columns of tiles on a larger iPad."
       ],
       [
         "Apple Watch",
-        "Your next dose, weight trend and quick logging on your wrist."
+        "Your next dose, weight, water and protein, one screen each. With Premium, a dose alarm that taps your wrist until you tap Taken."
       ],
       [
         "Widgets & Live Activities",
-        "Your next dose on the Home Screen and Lock Screen."
+        "Your next dose, water, protein, weight and journey on the Home Screen and Lock Screen, with a countdown when a dose is near (Premium)."
       ],
       [
         "Built with",
