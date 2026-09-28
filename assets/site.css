@@ -101,6 +101,11 @@ p{margin:0}
 .app-id .kind{font-weight:600;color:rgba(255,255,255,.7);font-size:.95rem}
 .app-hero h1{font-size:clamp(2.2rem,4.6vw,3.6rem);margin:18px 0 18px}
 .app-hero .devices{height:520px}
+/* The app pages' own hero rules are more specific than the general ones above, so they need their own
+   narrow-screen versions: without these the app pages never stacked on a phone (text squeezed into half
+   the width, the screens running off the right edge). */
+@media (max-width:980px){.app-hero .hero-grid{grid-template-columns:1fr}.app-hero .devices{height:470px}}
+@media (max-width:520px){.app-hero{padding:48px 0 64px}.app-hero .devices{height:380px}}
 .soon{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem;color:#ffd58a;background:rgba(255,174,43,.12);border:1px solid rgba(255,174,43,.35);padding:6px 12px;border-radius:999px}
 .live{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem;color:#8ff0c4;background:rgba(40,200,130,.12);border:1px solid rgba(40,200,130,.4);padding:6px 12px;border-radius:999px;text-decoration:none}
 .live:hover{background:rgba(40,200,130,.2)}
