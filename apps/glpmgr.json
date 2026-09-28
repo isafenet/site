@@ -46,6 +46,17 @@
     "glpmgr-ipad": "GLPMGR on iPad showing the Today dashboard",
     "glpmgr-watch": "GLPMGR on Apple Watch"
   },
+  "framed_screens": [
+    "glpmgr-at-a-glance",
+    "glpmgr-trends",
+    "glpmgr-daily-habits",
+    "glpmgr-scan-a-label",
+    "glpmgr-private-photos",
+    "glpmgr-titration",
+    "glpmgr-injection-areas",
+    "glpmgr-reminders",
+    "glpmgr-on-your-wrist"
+  ],
   "footer": [
     [
       "Choosing a GLP-1 app",
