@@ -22,8 +22,12 @@
       "body": "The whole app in European Spanish: your plan, the readiness and food explanations, the health check, My own plan and every exercise how-to. It follows your iPhone's language. Food search still uses English food names for now."
     },
     {
+      "title": "Udapt in French",
+      "body": "The whole app in French (France): your plan, the readiness and food explanations, the health check, My own plan and every exercise how-to. It follows your iPhone's language. Food search still uses English food names for now."
+    },
+    {
       "title": "Udapt in Spanish, French, German, Italian and Portuguese",
-      "body": "Udapt in five more languages, the same ones as AirReveal. Spanish (Spain) is coming in Udapt 1.1; French, German, Italian and Brazilian Portuguese are still planned.",
+      "body": "Udapt in five more languages, the same ones as AirReveal. Spanish (Spain) and French (France) are coming in Udapt 1.1; German, Italian and Brazilian Portuguese are still planned.",
       "status": "planned",
       "note": "Planned."
     }
