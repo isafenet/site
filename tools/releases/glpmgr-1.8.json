@@ -1,0 +1,49 @@
+{
+  "app": "glpmgr",
+  "version": "1.8",
+  "status": "started",
+  "note": "Coming in GLPMGR 1.8.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "Read your smart scale from Apple Health",
+      "body": "Turn on Settings › Apple Health › Read Weight from Apple Health, and weight, body fat and lean mass arrive as you weigh in. Nothing is added twice, and the timeline marks what came from Apple Health. Add your height for BMI and waist-to-height."
+    },
+    {
+      "title": "Clearer weight trends",
+      "body": "A smoothed line showing your usual weight, weekly averages, your weight at each dose step, and your weigh-ins across the days after a dose. With Premium, lean mass and body fat over time."
+    },
+    {
+      "title": "A daily check-in",
+      "body": "Appetite, energy, sleep and bowel movements in a few taps, from a new Today tile. With Premium, see your answers across the days after a dose."
+    },
+    {
+      "title": "Symptom Trends",
+      "body": "How often each symptom was logged, week by week, alongside your check-ins over time."
+    },
+    {
+      "title": "Fibre from food search",
+      "body": "Foods you search or scan now count fibre alongside protein."
+    },
+    {
+      "title": "More on Today and Journey",
+      "body": "Every medicine on Next Dose if you take more than one; This Week, Site Usage and Blood Glucose on Journey; steps from Apple Health if you turn them on; and Put Beside, to pin one tile next to another."
+    },
+    {
+      "title": "Compare two progress photos",
+      "body": "Put two progress photos side by side. Part of Premium."
+    },
+    {
+      "title": "Calmer, more accessible charts",
+      "body": "Doses as small marks along the bottom, your latest weight labelled, and water, protein and glucose on strips of their own. VoiceOver can play the main charts as sound (Audio Graphs), with stronger text contrast and tidier layouts at the largest text sizes."
+    },
+    {
+      "title": "Automatic backups",
+      "body": "A password-locked backup saved by itself, daily or weekly, to a folder you choose, such as iCloud Drive."
+    },
+    {
+      "title": "Blood glucose from Apple Health, in one place",
+      "body": "The switch to read blood glucose from Apple Health now sits with the other Apple Health switches, in Settings › Apple Health, and the Blood Glucose page shows whether it's on."
+    }
+  ]
+}
