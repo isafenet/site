@@ -1,0 +1,41 @@
+{
+  "app": "glpmgr",
+  "version": "1.7",
+  "status": "started",
+  "note": "Coming in GLPMGR 1.7.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "Log with Siri",
+      "body": "Log your dose, a glass of water, protein, your weight, a symptom or a blood glucose reading by voice. Say \"Log my dose in GLPMGR\", and Siri always checks with you before it logs a dose. You can say \"GLP Manager\" too. Part of Premium."
+    },
+    {
+      "title": "Ask Siri about your day",
+      "body": "Ask \"When's my next dose?\", \"Where did I inject last?\", \"How much water today?\", \"How much protein have I had today?\" or \"How's my weight going?\". Siri tells you only what you've logged, never advice. Part of Premium."
+    },
+    {
+      "title": "Siri on Apple Watch",
+      "body": "Log water, protein, your weight or your dose from your wrist, and ask about your next dose, today's water and protein, or your weight. Part of Premium."
+    },
+    {
+      "title": "Siri keeps your medicine private",
+      "body": "With Hide Medicine Names on, Siri never says your medicine's name. Anything about your dose, weight, symptoms or glucose needs your iPhone or Watch unlocked."
+    },
+    {
+      "title": "Shortcuts, Spotlight and the Action button",
+      "body": "Every GLPMGR action is in the Shortcuts app, including Doses Left, Snooze My Dose Reminder, Open My Journey and Open Trends, so you can put them on the Action button or find them in Spotlight. Settings › Siri & Shortcuts lists every phrase. Part of Premium."
+    },
+    {
+      "title": "Next dose countdowns show hours too",
+      "body": "The time to your next dose now shows hours as well as days, such as \"In 6d 4h\", on Today, the widgets and Apple Watch, so it's clear exactly when it's due."
+    },
+    {
+      "title": "Current Weight on Journey shows your goal",
+      "body": "Opening Current Weight on Journey now shows the goal you set, and has a link to your weight trends."
+    },
+    {
+      "title": "Plainer welcome pages",
+      "body": "The welcome pages are reworded in plain English: dose steps can go up and down as your plan changes, and side effects are described as common, never your fault."
+    }
+  ]
+}
