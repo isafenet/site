@@ -26,10 +26,24 @@
       "body": "The whole app in French (France): your plan, the readiness and food explanations, the health check, My own plan and every exercise how-to. It follows your iPhone's language. Food search still uses English food names for now."
     },
     {
+      "title": "Udapt in German",
+      "body": "The whole app in German: your plan, the readiness and food explanations, the health check, My own plan and every exercise how-to. It follows your iPhone's language. Food search still uses English food names for now."
+    },
+    {
+      "title": "Udapt in Italian",
+      "body": "The whole app in Italian: your plan, the readiness and food explanations, the health check, My own plan and every exercise how-to. It follows your iPhone's language. Food search still uses English food names for now."
+    },
+    {
+      "title": "Udapt in Portuguese (Portugal)",
+      "body": "The whole app in European Portuguese: your plan, the readiness and food explanations, the health check, My own plan and every exercise how-to. It follows your iPhone's language. Food search still uses English food names for now."
+    },
+    {
+      "title": "Udapt in Portuguese (Brazil)",
+      "body": "The whole app in Brazilian Portuguese: your plan, the readiness and food explanations, the health check, My own plan and every exercise how-to. It follows your iPhone's language. Food search still uses English food names for now."
+    },
+    {
       "title": "Udapt in Spanish, French, German, Italian and Portuguese",
-      "body": "Udapt in five more languages, the same ones as AirReveal. Spanish (Spain) and French (France) are coming in Udapt 1.1; German, Italian and Brazilian Portuguese are still planned.",
-      "status": "planned",
-      "note": "Planned."
+      "body": "Udapt in more languages, the same ones as AirReveal plus Portugal's Portuguese. All six are coming in Udapt 1.1: Spanish (Spain), French (France), German, Italian, Portuguese (Portugal) and Portuguese (Brazil). Each follows your iPhone's language."
     }
   ]
 }

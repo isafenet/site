@@ -8,7 +8,7 @@
 
 `post` adds each idea in the file as a published team idea with the file's status, note and version,
 skipping any whose title is already on the board for that app, so it's safe to run twice. `update`
-rewrites the description of ideas already posted, matched by title, when the file's wording changes. `ship` marks
+brings the description, status and note of ideas already posted (matched by title) in line with the file. `ship` marks
 every idea with that app and version as shipped, with the note "Now Shipped in <version>", the same
 way the 1.5 items were done by hand. `hide` takes ideas off the public board by exact title (it sets them
 to "rejected", as the moderation page does), for a feature dropped before release. Add --dry-run to any
@@ -87,7 +87,7 @@ def post(token, release, dry_run):
 
 
 def update(token, release, dry_run):
-    """Brings the description of each idea already on the board in line with the file, matched by title.
+    """Brings the description, status and note of each idea already on the board in line with the file, matched by title.
     `post` skips ideas already there, so this is how a reworded entry reaches the board."""
     on_board = {i["title"].strip().lower(): i for i in board(token, release["app"])}
     for idea in release["ideas"]:
@@ -95,14 +95,22 @@ def update(token, release, dry_run):
         if current is None:
             print(f"  not on the board yet (use post): {idea['title']}")
             continue
-        body = idea.get("body", "")
-        if (current.get("body") or "") == body:
+        wanted = {
+            "body": idea.get("body", ""),
+            "status": idea.get("status", release.get("status", "started")),
+            "note": idea.get("note", release.get("note", "")),
+        }
+        changes = {k: v for k, v in wanted.items() if (current.get(k) or "") != v}
+        if current.get("status") == "shipped":
+            changes.pop("status", None)
+            changes.pop("note", None)
+        if not changes:
             continue
         if dry_run:
-            print(f"  would reword #{current['id']}: {idea['title']}")
+            print(f"  would update #{current['id']} ({', '.join(changes)}): {idea['title']}")
         else:
-            call(token, "POST", f"/ideas/{current['id']}", {"body": body})
-            print(f"  reworded #{current['id']}: {idea['title']}")
+            call(token, "POST", f"/ideas/{current['id']}", changes)
+            print(f"  updated #{current['id']} ({', '.join(changes)}): {idea['title']}")
 
 
 def ship(token, app, version, note, dry_run):
