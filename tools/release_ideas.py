@@ -14,17 +14,34 @@ way the 1.5 items were done by hand. `hide` takes ideas off the public board by 
 to "rejected", as the moderation page does), for a feature dropped before release. Add --dry-run to any
 of them to see what it would do.
 
-The admin key (the Worker's ADMIN_TOKEN secret) comes from FEEDBACK_ADMIN_TOKEN, or is asked for.
-Run it in your own terminal so the key never ends up in a chat transcript or shell history.
+The admin key (the Worker's ADMIN_TOKEN secret) comes from, in order: FEEDBACK_ADMIN_TOKEN; the macOS Keychain
+(service "isafenet-feedback-admin"); or a prompt. Store it in the Keychain once, in your own terminal, so it never
+ends up in a chat transcript or shell history (the -w on its own makes `security` ask for it):
+
+  security add-generic-password -s isafenet-feedback-admin -a admin -w
 """
 
 import argparse
 import getpass
 import json
 import os
+import subprocess
 import sys
 import urllib.error
 import urllib.request
+
+KEYCHAIN_SERVICE = "isafenet-feedback-admin"
+
+
+def keychain_token() -> "str | None":
+    """The admin key from the login Keychain, or None if it isn't stored (or this isn't a Mac)."""
+    try:
+        found = subprocess.run(["security", "find-generic-password", "-s", KEYCHAIN_SERVICE, "-w"],
+                               capture_output=True, text=True)
+    except FileNotFoundError:
+        return None
+    return (found.stdout.strip() or None) if found.returncode == 0 else None
+
 
 API = "https://isafenet-feedback.isafenet-feedback.workers.dev/api/admin"
 
@@ -132,7 +149,11 @@ def main():
     h.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    token = os.environ.get("FEEDBACK_ADMIN_TOKEN") or getpass.getpass("Feedback board admin key: ")
+    token = os.environ.get("FEEDBACK_ADMIN_TOKEN") or keychain_token()
+    if not token:
+        if not sys.stdin.isatty():
+            sys.exit(f"No admin key. Store it once with: security add-generic-password -s {KEYCHAIN_SERVICE} -a admin -w")
+        token = getpass.getpass("Feedback board admin key: ")
     if not token:
         sys.exit("No admin key.")
 
