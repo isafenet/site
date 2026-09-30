@@ -1,0 +1,37 @@
+{
+  "app": "udapt",
+  "version": "1.0",
+  "status": "shipped",
+  "note": "Now Shipped in 1.0",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "One daily plan that adjusts to how you've recovered",
+      "body": "Each morning Udapt reads your sleep, heart rate variability and resting heart rate from Apple Health, or asks a 5-question check-in, and adjusts today's training and food targets together, explaining every change in plain English."
+    },
+    {
+      "title": "Readiness compared with your own normal",
+      "body": "A readiness score out of 10, compared with your own usual numbers, never with other people's. On a rough morning you get fewer sets and a lighter effort, with the original session one tap away."
+    },
+    {
+      "title": "Gym and home programmes with how-tos",
+      "body": "Full programmes for the gym or home (dumbbells and bodyweight), set-by-set logging, how-to photos and instructions for each exercise, and progress charts for every lift."
+    },
+    {
+      "title": "Protect a shoulder, knee or lower back",
+      "body": "Tell Udapt which joint you're being careful with and it swaps out exercises that load it."
+    },
+    {
+      "title": "Food targets that follow your training",
+      "body": "Calorie, protein, carb and fat targets: a little more on training days, a little less on rest days, with the week's total unchanged. Search over 14,000 foods, scan a barcode, or describe a meal or snap a photo with Apple Intelligence."
+    },
+    {
+      "title": "Apple Watch app, widgets and Siri",
+      "body": "Today's plan and set logging on Apple Watch with a rest timer and a readiness complication, Home Screen and Lock Screen widgets, a Live Activity while you train, and Siri for \"How ready am I?\"."
+    },
+    {
+      "title": "Private by design",
+      "body": "No account, no ads and no third-party analytics. Your health data stays in Apple Health and everything Udapt keeps stays on your phone."
+    }
+  ]
+}
