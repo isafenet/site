@@ -1,6 +1,7 @@
 // AirReveal flight lookup: a Cloudflare Worker between the app and SkyLink API, with a D1 database.
 //
 //          GET /v1/route/:callsign     departure and arrival airports for an ICAO callsign (BAW117)
+//          GET /v1/status/:flight      today's status of a flight (BA117): gates, terminals, times, delays
 //
 // SkyLink's terms don't allow its key in an app binary, so the key lives here as a Worker secret.
 // While AirReveal is on SkyLink's free trial (1,000 requests a month), this is for TestFlight builds only,
@@ -14,6 +15,8 @@ import AIRPORT_CODES from "./airport-codes.json" with { type: "json" };
 
 const SKYLINK = "https://data.skylinkapi.com/v3.1";
 const CACHE_DAYS = { found: 14, notFound: 1 };
+// A flight's status changes through the day; one answer serves everyone on that flight for 5 minutes.
+const STATUS_CACHE_MINUTES = { found: 5, notFound: 30 };
 
 class HttpError extends Error {
   constructor(status, code, message) { super(message); this.status = status; this.code = code; }
@@ -47,11 +50,81 @@ async function route(req, env) {
   const url = new URL(req.url);
   const path = url.pathname.replace(/\/+$/, "");
   if (req.method !== "GET") fail(405, "method", "Only GET is supported.");
-  const m = path.match(/^\/v1\/route\/([^/]+)$/);
-  if (!m) fail(404, "not_found", "No such endpoint.");
-  const callsign = normalizeCallsign(decodeURIComponent(m[1]));
-  if (!callsign) fail(422, "invalid", "Send an ICAO callsign such as BAW117.");
-  return json(await lookUpRoute(callsign, req, env));
+  let m = path.match(/^\/v1\/route\/([^/]+)$/);
+  if (m) {
+    const callsign = normalizeCallsign(decodeURIComponent(m[1]));
+    if (!callsign) fail(422, "invalid", "Send an ICAO callsign such as BAW117.");
+    return json(await lookUpRoute(callsign, req, env));
+  }
+  m = path.match(/^\/v1\/status\/([^/]+)$/);
+  if (m) {
+    const flight = normalizeFlightNumber(decodeURIComponent(m[1]));
+    if (!flight) fail(422, "invalid", "Send a flight number such as BA117.");
+    return json(await lookUpStatus(flight, req, env));
+  }
+  fail(404, "not_found", "No such endpoint.");
+}
+
+/** BA117, ba 117, U28001, BAW117 → the same without spaces; anything else → null. */
+export function normalizeFlightNumber(raw) {
+  const s = String(raw).toUpperCase().replace(/\s+/g, "");
+  return /^[A-Z0-9]{2,3}\d{1,4}[A-Z]?$/.test(s) && /[A-Z]/.test(s.slice(0, 3)) ? s : null;
+}
+
+/** SkyLink's flight status, reshaped for the app: IATA airports, and "" (not yet published) as null. */
+export function shapeStatus(flight, body) {
+  if (!body || !body.departure || !body.arrival) return { flight, found: false };
+  // Unpublished fields come as "" or "--".
+  const text = (v) => (typeof v === "string" && v.trim() && !/^-+$/.test(v.trim()) ? v.trim() : null);
+  // Airports come as "LHR • London" (the docs show a bare "EGLL").
+  const code = (v) => { const c = text(v)?.split("•")[0].trim(); return c ? (airport(c)?.iata ?? c) : null; };
+  const side = (s, extra) => ({
+    airport: code(s.airport),
+    terminal: text(s.terminal), gate: text(s.gate),
+    scheduled: text(s.scheduled_time), ...extra,
+  });
+  return {
+    // "Departed 08:41" → the word(s) and the time, so the app can translate the word.
+    flight, found: true, status: text(body.status), ...statusParts(text(body.status)),
+    departure: side(body.departure, { actual: text(body.departure.actual_time) }),
+    arrival: side(body.arrival, { estimated: text(body.arrival.estimated_time), actual: text(body.arrival.actual_time), baggage: text(body.arrival.baggage) }),
+  };
+}
+
+/** "Departed 08:41" → { statusWord: "Departed", statusTime: "08:41" }; no time → statusTime null. */
+export function statusParts(status) {
+  if (!status) return { statusWord: null, statusTime: null };
+  const m = status.match(/^(.*?)\s*(\d{1,2}:\d{2})$/);
+  return m ? { statusWord: m[1] || null, statusTime: m[2] } : { statusWord: status, statusTime: null };
+}
+
+async function lookUpStatus(flight, req, env) {
+  const key = `status:${flight}`;
+  const cached = await env.DB.prepare("SELECT body FROM cache WHERE key = ? AND expires > ?")
+    .bind(key, now().toISOString()).first();
+  if (cached) return { ...JSON.parse(cached.body), cached: true };
+
+  await limitPerPerson(req, env);
+  await spendFromMonthlyBudget(env);
+
+  const res = await fetch(`${SKYLINK}/flight_status/${encodeURIComponent(flight)}`, {
+    headers: { "x-api-key": env.SKYLINK_API_KEY, Accept: "application/json" },
+  });
+  let result;
+  if (res.status === 404 || res.status === 422) {
+    result = shapeStatus(flight, null);
+  } else if (res.status === 429) {
+    fail(503, "paused", "Flight lookup is paused until next month.");
+  } else if (!res.ok) {
+    console.error("SkyLink status", res.status, await res.text().catch(() => ""));
+    fail(502, "upstream", "The flight data service didn't answer.");
+  } else {
+    result = shapeStatus(flight, await res.json());
+  }
+  const minutes = result.found ? STATUS_CACHE_MINUTES.found : STATUS_CACHE_MINUTES.notFound;
+  await env.DB.prepare("INSERT OR REPLACE INTO cache (key, body, expires) VALUES (?, ?, ?)")
+    .bind(key, JSON.stringify(result), new Date(now().getTime() + minutes * 60e3).toISOString()).run();
+  return { ...result, cached: false };
 }
 
 /** BAW117, BAW 117, baw117a → BAW117 / BAW117A; anything else → null. */
