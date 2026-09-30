@@ -1,0 +1,21 @@
+# AirReveal flight lookup (SkyLink API proxy). Deploy: npm run deploy (see README.md).
+name = "airreveal-flights"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+workers_dev = true
+preview_urls = false
+
+[vars]
+# SkyLink's free trial is 1,000 requests a month; stop well short so there's never overage.
+MONTHLY_CAP = "900"
+DAILY_LIMIT = "40"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "airreveal-flights"
+database_id = "6b150cfc-06ea-43ef-acba-3d615e008892"
+migrations_dir = "migrations"
+
+# Clear yesterday's rate-limit rows and expired cache entries (free-plan cron trigger).
+[triggers]
+crons = ["23 3 * * *"]

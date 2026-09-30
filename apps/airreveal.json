@@ -85,5 +85,6 @@
       "airreveal-plan.webp": "images/panel-plan.webp",
       "airreveal-profile.webp": "images/panel-profile.webp"
     }
-  }
+  },
+  "app_store": "https://apps.apple.com/app/airreveal-flight-map-explorer/id6814283579"
 }

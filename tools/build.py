@@ -603,7 +603,7 @@ def build_extras():
 </div></div></main>
 {footer()}'''
     # 404 must use absolute paths: GitHub serves it at whatever URL was missing.
-    page = head("Page not found: iSafeNet", "That page doesn't exist.", "404.html") + body
+    page = head("Page not found: iSafeNet", "That page doesn't exist.", "404.html").replace('content="index,follow,max-image-preview:large"', 'content="noindex"') + body
     page = re.sub(r'\b(href|src|srcset)="(?!https?:|mailto:|#|/)', r'\1="/', page)
     write("404.html", page)
 

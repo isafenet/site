@@ -10,6 +10,14 @@
       "body": "Hold your phone up to the plane window and the landmarks outside are labelled on the camera picture, from mountain tops to cities and lakes. Tap a label for its story. Open it with the camera button on the Live map; it works offline."
     },
     {
+      "title": "Best Side to Sit",
+      "body": "When you add a flight, AirReveal tells you which window to book, left or right, the landmarks you'll see from it and whether you'll catch the sunrise or sunset. Worked out on your phone, so it works before you've even booked."
+    },
+    {
+      "title": "Flight HUD on the map",
+      "body": "Altitude, speed and heading on the map, with what you're flying over and which side to look, as a glass panel or cockpit-style tapes. Turn it on or off in Profile › Flight HUD."
+    },
+    {
       "title": "Offline maps you can count on",
       "body": "A flight only shows as \"Available offline\" once its map has finished downloading, with its size. A download that was cut short carries on where it stopped, and one that fails can be tried again."
     },
