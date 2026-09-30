@@ -13,14 +13,16 @@
     "A readiness score from Apple Health or a morning check-in",
     "Training that eases off or progresses automatically",
     "Food targets that shift with training days, plus photo and voice logging",
-    "Protects a joint by swapping out exercises that load it"
+    "Protects a joint by swapping out exercises that load it",
+    "My own plan: log the exercise plan your physio or rehab team gave you, exactly as written"
   ],
   "chips": [
     "iPhone",
     "Apple Watch",
     "Widgets",
     "Apple Health",
-    "On-device AI"
+    "On-device AI",
+    "6 languages"
   ],
   "colors": [
     "#1f8f7a",
@@ -90,7 +92,7 @@
       [
         "cup",
         "Food targets that move with training",
-        "More carbs on training days, a little less on rest days, and the week's total stays the same. After two weeks of logging, your calorie target adapts to what your body actually does, not a generic formula."
+        "More carbs on training days, a little less on rest days, and the week's total stays the same. After a month of daily weigh-ins and food logs, your calorie target adapts to what your body actually does, not a generic formula."
       ],
       [
         "robot",
@@ -131,8 +133,8 @@
         "Today's plan on the Home Screen and Lock Screen, and your rest timer live during a workout."
       ],
       [
-        "Siri & Shortcuts",
-        "Ask for your readiness or log your usual breakfast, hands-free."
+        "Siri, Shortcuts & Control Centre",
+        "Ask for your readiness or log your usual breakfast, hands-free, or open today's workout from Control Centre."
       ],
       [
         "Built with",

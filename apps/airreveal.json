@@ -11,7 +11,7 @@
   "blurb": "See what you're flying over. A window-seat companion that names the landmarks, cities and natural wonders below your plane, even in airplane mode.",
   "ticks": [
     "Live flight map that works offline, using only GPS",
-    "Landmarks named as you pass, and which window to look from",
+    "Landmarks named as you pass, labelled on your camera in Window View, and the best side to sit",
     "Landmark quizzes, Discovery Bingo, achievements and a country passport",
     "A flight journal that turns your trips into a personal map of the world"
   ],
@@ -36,16 +36,16 @@
   "page": {
     "title": "AirReveal by iSafeNet: See What You're Flying Over",
     "description": "AirReveal is an offline flight map for iPhone and iPad that names the landmarks below your plane, shows which side to look from, and keeps your flight journal.",
-    "lead": "Ever looked out of the window and wondered what's down there? AirReveal places your plane on a live map using your device's GPS, names the landmarks, cities and natural wonders below and ahead, and tells you which side to look from. It works without in-flight Wi-Fi, and keeps every trip in your flight journal.",
+    "lead": "Ever looked out of the window and wondered what's down there? AirReveal places your plane on a live map using your device's GPS, names the landmarks, cities and natural wonders below and ahead, labels them on your camera when you hold it up to the window, and tells you the best side to sit. It works without in-flight Wi-Fi, and keeps every trip in your flight journal.",
     "second_button": ["user-guide.html", "Read the user guide"],
     "hero": ["airreveal-plan", "airreveal-flight", "airreveal-journal"],
     "features": [
-      ["map", "Live flight map", "Your position from GPS alone, on beautiful maps you download before take-off, so it works in airplane mode."],
-      ["compass", "Which side to look", "Know whether a landmark, or the golden-hour sun, is on the left or right of the aircraft."],
-      ["globe", "Discover what's below", "Landmarks, cities, coastlines and natural wonders named as you pass over them."],
+      ["map", "Live flight map", "Your position from GPS alone, with the landmarks, cities and natural wonders below named as you pass. Maps download before take-off, so it works in airplane mode."],
+      ["compass", "Best Side to Sit", "When you add a flight, AirReveal tells you which window to book, the landmarks you'll see from it and whether you'll catch the sunrise or sunset."],
+      ["camera", "Window View", "Hold your phone up to the plane window and the landmarks outside are labelled on the camera picture. It works offline."],
       ["star", "Quizzes & Discovery Bingo", "Three quick questions about each landmark, bingo for the whole row, achievements and a passport."],
       ["book", "Flight journal", "Save every flight, collect the places you've seen and build a personal map of your travels."],
-      ["widget", "Lock Screen & widgets", "Follow your progress at a glance with Live Activities and Home Screen widgets."]
+      ["widget", "Flight HUD & Lock Screen", "Altitude, speed and heading on the map, and on the Lock Screen and in the Dynamic Island while you fly."]
     ],
     "gallery": ["airreveal-flight", "airreveal-discover", "airreveal-journal", "airreveal-collection", "airreveal-plan", "airreveal-profile"],
     "platforms_heading": "Native on every screen it runs on.",
