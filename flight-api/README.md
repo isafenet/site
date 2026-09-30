@@ -5,7 +5,7 @@ SkyLink's terms don't allow its key in an app binary ("a mobile app binary, brow
 repository"), so the key is a Worker secret and the app only ever talks to this Worker.
 
 **TestFlight only for now.** AirReveal is on SkyLink's free trial (1,000 requests a month), so the app shows
-Look Up Flight only in TestFlight and Xcode builds. Before it goes into an App Store release, move to a paid
+Look Up Flight only in TestFlight and Xcode builds, and only when adding a Live trip (not a planned one). Before it goes into an App Store release, move to a paid
 SkyLink plan and raise `MONTHLY_CAP`.
 
 Live at `https://airreveal-flights.isafenet-feedback.workers.dev`.
