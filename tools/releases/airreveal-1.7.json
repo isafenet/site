@@ -1,0 +1,49 @@
+{
+  "app": "airreveal",
+  "version": "1.7",
+  "status": "started",
+  "note": "Coming in AirReveal 1.7.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "Above You: the aircraft around you, live",
+      "body": "On the ground, see the planes and helicopters flying around you right now: a list, a map with a radar, and which way your phone is facing so you know where to look. Tap one for its type, height, distance and a photo."
+    },
+    {
+      "title": "Point your phone at the sky",
+      "body": "Hold your phone up and the aircraft above you are labelled on the camera picture, each with a little plane or helicopter pointing the way it flies, in your color theme."
+    },
+    {
+      "title": "Follow a plane",
+      "body": "Pick a plane and follow it on the map, on the Lock Screen and in the Dynamic Island, with a tap on your wrist when it's close."
+    },
+    {
+      "title": "Above You widgets",
+      "body": "The aircraft around you on the Home Screen and Lock Screen, with a small radar. Page through them with the up and down buttons."
+    },
+    {
+      "title": "AirReveal on Apple Watch",
+      "body": "The Above You radar, the plane you're following and your own flight, on your wrist."
+    },
+    {
+      "title": "Spotter's Logbook",
+      "body": "Every aircraft you've revealed, kept on your phone, with your firsts, your rarest finds and your personal bests."
+    },
+    {
+      "title": "Games for spotters",
+      "body": "Sky Bingo, three daily challenges, rare and legendary aircraft, trivia on each aircraft and new achievements. Turn any of them off in Settings › Games."
+    },
+    {
+      "title": "Split-Flap and Information Board skins",
+      "body": "Make AirReveal look like an airport departures board. Choose a skin in Settings › Appearance, and pick its color in Color Theme."
+    },
+    {
+      "title": "A day map and a night map",
+      "body": "The map is light by day and dark at night, by itself. You can still choose your own in the map options."
+    },
+    {
+      "title": "Easier to read and to use with VoiceOver",
+      "body": "Clearer text and buttons that are easier to tap, and VoiceOver reads boards and flags as words."
+    }
+  ]
+}
