@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { normalizeCallsign, airport, shape } from "../src/index.js";
+import { normalizeCallsign, airport, shape, routeFromStatus, shapeStatus } from "../src/index.js";
 
 test("callsigns are normalized or rejected", () => {
   assert.equal(normalizeCallsign(" baw 117 "), "BAW117");
@@ -41,4 +41,21 @@ test("a low-confidence answer keeps up to three suggestions, skipping unknown ai
 test("nothing usable is not found", () => {
   assert.equal(shape("BAW1", null).found, false);
   assert.equal(shape("BAW1", { confidence: "high", departure_icao: "ZZZZ", arrival_icao: "YYYY" }).found, false);
+});
+
+test("today's status becomes a low-confidence route", () => {
+  const r = routeFromStatus("EXS1827", shapeStatus("LS1827", {
+    status: "Landed 19:08",
+    departure: { airport: "BRS • Bristol", scheduled_time: "14:10" },
+    arrival: { airport: "FUE • Fuerteventura", scheduled_time: "18:10" },
+  }));
+  assert.equal(r.found, true);
+  assert.equal(r.confidence, "low");
+  assert.equal(r.departure.iata, "BRS");
+  assert.equal(r.arrival.iata, "FUE");
+});
+
+test("a status without both airports is not found", () => {
+  assert.equal(routeFromStatus("EXS1", shapeStatus("LS1", null)).found, false);
+  assert.equal(routeFromStatus("EXS1", { found: true, departure: { airport: "BRS" }, arrival: { airport: null } }).found, false);
 });

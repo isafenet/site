@@ -1,6 +1,7 @@
 // AirReveal flight lookup: a Cloudflare Worker between the app and SkyLink API, with a D1 database.
 //
-//          GET /v1/route/:callsign     departure and arrival airports for an ICAO callsign (BAW117)
+//          GET /v1/route/:callsign     departure and arrival airports for an ICAO callsign (BAW117);
+//                                      ?flight=LS1827 also tries the flight number if the callsign isn't known
 //          GET /v1/status/:flight      today's status of a flight (BA117): gates, terminals, times, delays
 //
 // SkyLink's terms don't allow its key in an app binary, so the key lives here as a Worker secret.
@@ -54,7 +55,10 @@ async function route(req, env) {
   if (m) {
     const callsign = normalizeCallsign(decodeURIComponent(m[1]));
     if (!callsign) fail(422, "invalid", "Send an ICAO callsign such as BAW117.");
-    return json(await lookUpRoute(callsign, req, env));
+    const raw = url.searchParams.get("flight");
+    const flight = raw ? normalizeFlightNumber(raw) : null;
+    if (raw && !flight) fail(422, "invalid", "Send a flight number such as BA117.");
+    return json(await lookUpRoute(callsign, flight, req, env));
   }
   m = path.match(/^\/v1\/status\/([^/]+)$/);
   if (m) {
@@ -103,7 +107,12 @@ async function lookUpStatus(flight, req, env) {
   const cached = await env.DB.prepare("SELECT body FROM cache WHERE key = ? AND expires > ?")
     .bind(key, now().toISOString()).first();
   if (cached) return { ...JSON.parse(cached.body), cached: true };
+  return { ...(await fetchStatus(flight, req, env)), cached: false };
+}
 
+/** Asks SkyLink for a flight's status (spending from the budgets) and caches the answer. */
+async function fetchStatus(flight, req, env) {
+  const key = `status:${flight}`;
   await limitPerPerson(req, env);
   await spendFromMonthlyBudget(env);
 
@@ -124,7 +133,7 @@ async function lookUpStatus(flight, req, env) {
   const minutes = result.found ? STATUS_CACHE_MINUTES.found : STATUS_CACHE_MINUTES.notFound;
   await env.DB.prepare("INSERT OR REPLACE INTO cache (key, body, expires) VALUES (?, ?, ?)")
     .bind(key, JSON.stringify(result), new Date(now().getTime() + minutes * 60e3).toISOString()).run();
-  return { ...result, cached: false };
+  return result;
 }
 
 /** BAW117, BAW 117, baw117a → BAW117 / BAW117A; anything else → null. */
@@ -159,7 +168,35 @@ export function shape(callsign, body) {
   return { callsign, found: false, confidence: null, departure: null, arrival: null, suggestions: [] };
 }
 
-async function lookUpRoute(callsign, req, env) {
+/**
+ * The airports of today's flight, from its status, as a low-confidence route: a flight number usually keeps
+ * its route, but this is one day's flight rather than SkyLink's route data.
+ */
+export function routeFromStatus(callsign, status) {
+  const departure = airport(status?.departure?.airport), arrival = airport(status?.arrival?.airport);
+  if (status?.found && departure?.iata && arrival?.iata) {
+    return { callsign, found: true, confidence: "low", departure, arrival, suggestions: [] };
+  }
+  return shape(callsign, null);
+}
+
+async function lookUpRoute(callsign, flight, req, env) {
+  const byCallsign = await lookUpRouteByCallsign(callsign, req, env);
+  if (byCallsign.found || !flight) return byCallsign;
+  // Some airlines (Jet2, easyJet) fly under callsigns that aren't their flight numbers (e.g. EXS47KM, not EXS1827),
+  // so SkyLink's callsign routes miss them; its flight status is keyed by the flight number instead.
+  const key = `route-flight:${flight}`;
+  const cached = await env.DB.prepare("SELECT body FROM cache WHERE key = ? AND expires > ?")
+    .bind(key, now().toISOString()).first();
+  if (cached) return { ...JSON.parse(cached.body), cached: true };
+  const result = routeFromStatus(callsign, await fetchStatus(flight, req, env));
+  const days = result.found ? CACHE_DAYS.found : CACHE_DAYS.notFound;
+  await env.DB.prepare("INSERT OR REPLACE INTO cache (key, body, expires) VALUES (?, ?, ?)")
+    .bind(key, JSON.stringify(result), new Date(now().getTime() + days * 86400e3).toISOString()).run();
+  return { ...result, cached: false };
+}
+
+async function lookUpRouteByCallsign(callsign, req, env) {
   const key = `route:${callsign}`;
   const cached = await env.DB.prepare("SELECT body FROM cache WHERE key = ? AND expires > ?")
     .bind(key, now().toISOString()).first();

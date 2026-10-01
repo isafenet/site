@@ -26,6 +26,12 @@ app converts `BA117` itself). It calls SkyLink's
 routes instead (up to three in `suggestions`, the first also in `departure`/`arrival`); the app says it's a best
 match to check. `found: false` means nothing usable.
 
+`?flight=LS1827` (the IATA flight number) adds a fallback: if SkyLink has no route for the callsign, the
+Worker asks its flight status (`/flight_status`) for that flight number and
+answers with today's airports as `confidence: "low"`. Airlines such as Jet2 and easyJet fly under callsigns
+that aren't their flight numbers (`EXS47KM`, say, for a Jet2 flight sold as LS1827), so the callsign alone often finds nothing. The
+fallback is a second SkyLink call, only when the first finds nothing; its answer is cached like a route.
+
 Errors are `{ "error": code, "message": text }`: `invalid` (422), `limit` (429, the per-person daily limit),
 `paused` (503, the monthly cap is reached), `upstream` (502).
 
