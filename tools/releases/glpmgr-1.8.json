@@ -44,6 +44,14 @@
     {
       "title": "Blood glucose from Apple Health, in one place",
       "body": "The switch to read blood glucose from Apple Health now sits with the other Apple Health switches, in Settings › Apple Health, and the Blood Glucose page shows whether it's on."
+    },
+    {
+      "title": "Easier to read and to use with VoiceOver",
+      "body": "Clearer grey text everywhere, larger buttons that are easier to tap, and VoiceOver no longer reads out decorative icons."
+    },
+    {
+      "title": "UK medicine information from the MHRA",
+      "body": "In the UK, injection areas, dose steps and tablet instructions now come from each manufacturer's leaflet as published by the MHRA, the UK's medicines regulator. Same leaflets, same wording."
     }
   ]
 }
