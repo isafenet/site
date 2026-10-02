@@ -115,6 +115,8 @@ def main() -> None:
         head = git(repo, "rev-parse", "HEAD").strip()
         committed_at = int(git(repo, "log", "-1", "--format=%ct", head).strip())
         if head == base:
+            if not state.get("commit") and not args.dry_run:   # the first run: record where we start
+                call("POST", "/v1/admin/sky-routes/commit", {"commit": head, "committedAt": committed_at})
             print(f"Up to date with {head[:10]}.")
             return
 
