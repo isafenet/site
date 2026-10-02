@@ -9,8 +9,11 @@ preview_urls = false
 # SkyLink's free trial is 1,000 requests a month. Every call is counted before it's made, so the cap is
 # exact; the app shows what's left and turns Look Up Flight and status off when it's used up.
 MONTHLY_CAP = "1000"
-# Emergency-aircraft alerts: Apple's push service (the .p8 key itself is the APNS_KEY secret).
+# Emergency-aircraft alerts: Apple's push service. Each environment has its own key; the .p8 files themselves
+# are the APNS_KEY_SANDBOX and APNS_KEY_PRODUCTION secrets.
 APNS_TEAM_ID = "5L66N8999D"
+APNS_KEY_ID_SANDBOX = "8C7H265U62"
+APNS_KEY_ID_PRODUCTION = "FPN8W449YW"
 APNS_TOPIC = "com.isafenet.app.airreveal"
 DAILY_LIMIT = "40"
 

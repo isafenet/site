@@ -81,12 +81,11 @@ alerted by the app itself while it's open: ADSB.lol's worldwide military list is
 the free plan. Subscriptions are deleted when alerts are turned off, when Apple says a token is gone, or after 30
 days without an update.
 
-**Setting it up (once):** in the Apple Developer account, Certificates, Identifiers & Profiles › Keys, create a key
-with Apple Push Notifications service (APNs), download the `.p8` and note its Key ID. Then:
-`npx wrangler secret put APNS_KEY` (paste the whole `.p8`, BEGIN and END lines included) and
-`npx wrangler secret put APNS_KEY_ID`. `APNS_TEAM_ID` and `APNS_TOPIC` (the app's bundle ID) are in
-`wrangler.toml`. Run `npm run db:remote` for the tables, then `npm run deploy`. Until the key is set the cron finds
-the aircraft but sends nothing.
+**Keys:** sandbox (Xcode builds) and production (TestFlight and the App Store) each have an APNs key, created in the
+Apple Developer account (Certificates, Identifiers & Profiles › Keys). The `.p8` files are the secrets
+`APNS_KEY_SANDBOX` and `APNS_KEY_PRODUCTION` (`npx wrangler secret put …`, the whole file, BEGIN and END lines
+included); their Key IDs, `APNS_TEAM_ID` and `APNS_TOPIC` (the app's bundle ID) are in `wrangler.toml`. One key for
+both environments also works, as `APNS_KEY` and `APNS_KEY_ID`. The `.p8` files are kept out of every repository.
 
 ADSB.lol's rate limits are dynamic, and it asks to be told about production use; a refused request is skipped and
 tried again the next minute.
@@ -113,8 +112,8 @@ Check this month's usage:
 | --- | --- |
 | `SKYLINK_API_KEY` | The SkyLink licence key (sent as `x-api-key`). Paste it at the prompt; never commit it. |
 | `HASH_SECRET` | 32+ random characters for the rate-limit hash. Already set. |
-| `APNS_KEY` | The APNs `.p8` key, for emergency-aircraft alerts. |
-| `APNS_KEY_ID` | That key's Key ID. |
+| `APNS_KEY_SANDBOX` | The sandbox APNs `.p8` key (Xcode builds), for emergency-aircraft alerts. |
+| `APNS_KEY_PRODUCTION` | The production APNs `.p8` key (TestFlight and the App Store). |
 | `SKY_ROUTES_SECRET` | Lets the GitHub Action post route changes; the same value is the repository's Actions secret. |
 
 ## Develop and deploy

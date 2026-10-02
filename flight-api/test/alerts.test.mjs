@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { cellOf, cellsAround, classify, countryOf, matchAlerts, parseSubscription, payload, signJWT } from "../src/alerts.js";
+import { apnsKey, cellOf, cellsAround, classify, countryOf, matchAlerts, parseSubscription, payload, signJWT } from "../src/alerts.js";
 import EMERGENCY from "../src/emergency-aircraft.json" with { type: "json" };
 
 const token = "a".repeat(64);
@@ -72,4 +72,12 @@ test("the APNs token is an ES256 JWT that verifies with the key's public half", 
   const valid = await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, pair.publicKey,
     Buffer.from(signature, "base64url"), new TextEncoder().encode(`${header}.${claims}`));
   assert.ok(valid);
+});
+
+test("each environment uses its own key, or the shared one", () => {
+  const env = { APNS_KEY_SANDBOX: "S", APNS_KEY_ID_SANDBOX: "8C7H265U62", APNS_KEY_PRODUCTION: "P", APNS_KEY_ID_PRODUCTION: "FPN8W449YW" };
+  assert.deepEqual(apnsKey(env, "sandbox"), { pem: "S", id: "8C7H265U62" });
+  assert.deepEqual(apnsKey(env, "production"), { pem: "P", id: "FPN8W449YW" });
+  assert.deepEqual(apnsKey({ APNS_KEY: "K", APNS_KEY_ID: "ID" }, "production"), { pem: "K", id: "ID" });
+  assert.equal(apnsKey({ APNS_KEY_ID_PRODUCTION: "FPN8W449YW" }, "production"), null);   // no key yet
 });

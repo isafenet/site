@@ -175,14 +175,16 @@ export async function sendAlerts(env, now = Date.now()) {
   ).bind(seconds - QUIET_SECONDS, JSON.stringify(subscribers.map((s) => s.token))).all();
   const alerts = matchAlerts(subscribers, aircraft, new Set(sent.map((r) => `${r.token}|${r.hex}`))).slice(0, MAX_PUSHES);
   if (!alerts.length) return { aircraft: aircraft.length, alerts: 0 };
-  if (!env.APNS_KEY || !env.APNS_KEY_ID) {
-    console.error("APNS_KEY / APNS_KEY_ID not set: alerts not sent");
-    return { aircraft: aircraft.length, alerts: 0 };
-  }
-
-  const jwt = await apnsToken(env, seconds);
+  const jwts = {};
   const delivered = [], gone = [];
   for (const alert of alerts) {
+    const key = apnsKey(env, alert.environment);
+    if (!key) {
+      console.error(`No APNs key for ${alert.environment}: alert not sent`);
+      continue;
+    }
+    jwts[alert.environment] ??= await apnsToken(env, alert.environment, key, seconds);
+    const jwt = jwts[alert.environment];
     const host = alert.environment === "sandbox" ? "api.sandbox.push.apple.com" : "api.push.apple.com";
     const res = await fetch(`https://${host}/3/device/${alert.token}`, {
       method: "POST",
@@ -255,16 +257,29 @@ export async function cleanUpAlerts(env, now = Date.now()) {
 // MARK: APNs provider token
 
 /**
- * The ES256 token Apple's push service wants, signed with the .p8 key (APNS_KEY). Apple refuses tokens
- * refreshed more than every 20 minutes, so one is kept in D1 and reused for 40.
+ * The .p8 key and its Key ID for an environment: sandbox (Xcode builds) and production (TestFlight and the
+ * App Store) have keys of their own (APNS_KEY_SANDBOX / APNS_KEY_ID_SANDBOX, APNS_KEY_PRODUCTION /
+ * APNS_KEY_ID_PRODUCTION); APNS_KEY / APNS_KEY_ID, a key for both, is used where one is missing.
  */
-async function apnsToken(env, seconds) {
-  const kept = await env.DB.prepare("SELECT jwt, issued_at FROM apns_token WHERE id = 1").first();
+export function apnsKey(env, environment) {
+  const suffix = environment === "sandbox" ? "SANDBOX" : "PRODUCTION";
+  const pem = env[`APNS_KEY_${suffix}`] ?? env.APNS_KEY;
+  const id = env[`APNS_KEY_ID_${suffix}`] ?? env.APNS_KEY_ID;
+  return pem && id ? { pem, id } : null;
+}
+
+/**
+ * The ES256 token Apple's push service wants, signed with the environment's .p8 key. Apple refuses tokens
+ * refreshed more than every 20 minutes, so one per environment is kept in D1 and reused for 40.
+ */
+async function apnsToken(env, environment, key, seconds) {
+  const kept = await env.DB.prepare("SELECT jwt, issued_at FROM apns_token WHERE environment = ?").bind(environment).first();
   if (kept && seconds - kept.issued_at < 40 * 60) return kept.jwt;
-  const jwt = await signJWT(env.APNS_KEY, env.APNS_KEY_ID, env.APNS_TEAM_ID, seconds);
+  const jwt = await signJWT(key.pem, key.id, env.APNS_TEAM_ID, seconds);
   await env.DB.prepare(
-    "INSERT INTO apns_token (id, jwt, issued_at) VALUES (1, ?, ?) ON CONFLICT(id) DO UPDATE SET jwt = excluded.jwt, issued_at = excluded.issued_at",
-  ).bind(jwt, seconds).run();
+    "INSERT INTO apns_token (environment, jwt, issued_at) VALUES (?, ?, ?) " +
+    "ON CONFLICT(environment) DO UPDATE SET jwt = excluded.jwt, issued_at = excluded.issued_at",
+  ).bind(environment, jwt, seconds).run();
   return jwt;
 }
 
