@@ -244,17 +244,10 @@
     "accent": "#2C93D1",
     "photo": "morning.webp",
     "photo_alt": "A mug of tea in morning sunlight by a window",
-    "screen": "glpmgr-today.webp",
+    "screen": "glpmgr-today-1-8.webp",
     "screen_from": "home",
     "screen_alt": "GLPMGR's Today screen with the next dose, goal, water and protein",
     "device": "phone",
-    "log": "Your GLP-1 journey, privately",
-    "peek": {
-      "version": "1.8",
-      "url": "https://glpmgr.isafenet.app/glpmgr-1-8.html",
-      "log": "Daily check-in, Audio Graphs",
-      "photo": "morning.webp",
-      "text": "A daily check-in, charts you can hear with Audio Graphs, your smart scale from Apple Health, clearer weight trends and automatic backups."
-    }
+    "log": "1.8: daily check-in, Audio Graphs"
   }
 }
