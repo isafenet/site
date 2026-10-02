@@ -66,6 +66,31 @@ Actions if that happens (the next run catches up on everything since).
 
 Check the sync: `npx wrangler d1 execute airreveal-flights --remote --command "SELECT * FROM sky_sync"`
 
+## Emergency-aircraft alerts
+
+AirReveal can notify people when a police, air ambulance, coastguard or rescue, or firefighting aircraft comes
+near them, even with the app closed (`src/alerts.js`). The app subscribes with `PUT /v1/alerts`
+(`{ token, environment, latitude, longitude, radiusKm, services, units }`, the location rounded to about a
+kilometre) and unsubscribes with `DELETE /v1/alerts` (`{ token }`).
+
+Every minute, while anyone is subscribed, the cron asks ADSB.lol for the ~2,800 known emergency aircraft
+(`src/emergency-aircraft.json`, from plane-alert-db, built by AirReveal's `Scripts/generate_special_aircraft.py
+--worker …`) and for the squawks the UK and Germany use for air ambulances and police, one request a second, and
+pushes to each subscriber within their distance, at most once per aircraft in 30 minutes. Military aircraft are
+alerted by the app itself while it's open: ADSB.lol's worldwide military list is too big to read every minute on
+the free plan. Subscriptions are deleted when alerts are turned off, when Apple says a token is gone, or after 30
+days without an update.
+
+**Setting it up (once):** in the Apple Developer account, Certificates, Identifiers & Profiles › Keys, create a key
+with Apple Push Notifications service (APNs), download the `.p8` and note its Key ID. Then:
+`npx wrangler secret put APNS_KEY` (paste the whole `.p8`, BEGIN and END lines included) and
+`npx wrangler secret put APNS_KEY_ID`. `APNS_TEAM_ID` and `APNS_TOPIC` (the app's bundle ID) are in
+`wrangler.toml`. Run `npm run db:remote` for the tables, then `npm run deploy`. Until the key is set the cron finds
+the aircraft but sends nothing.
+
+ADSB.lol's rate limits are dynamic, and it asks to be told about production use; a refused request is skipped and
+tried again the next minute.
+
 ## Staying inside the trial
 
 - **Cache:** found routes are kept for 14 days, not-found for 1 day, so a repeat lookup never reaches SkyLink.
@@ -88,6 +113,8 @@ Check this month's usage:
 | --- | --- |
 | `SKYLINK_API_KEY` | The SkyLink licence key (sent as `x-api-key`). Paste it at the prompt; never commit it. |
 | `HASH_SECRET` | 32+ random characters for the rate-limit hash. Already set. |
+| `APNS_KEY` | The APNs `.p8` key, for emergency-aircraft alerts. |
+| `APNS_KEY_ID` | That key's Key ID. |
 | `SKY_ROUTES_SECRET` | Lets the GitHub Action post route changes; the same value is the repository's Actions secret. |
 
 ## Develop and deploy

@@ -9,6 +9,9 @@ preview_urls = false
 # SkyLink's free trial is 1,000 requests a month. Every call is counted before it's made, so the cap is
 # exact; the app shows what's left and turns Look Up Flight and status off when it's used up.
 MONTHLY_CAP = "1000"
+# Emergency-aircraft alerts: Apple's push service (the .p8 key itself is the APNS_KEY secret).
+APNS_TEAM_ID = "5L66N8999D"
+APNS_TOPIC = "com.isafenet.app.airreveal"
 DAILY_LIMIT = "40"
 
 [[d1_databases]]
@@ -17,6 +20,7 @@ database_name = "airreveal-flights"
 database_id = "6b150cfc-06ea-43ef-acba-3d615e008892"
 migrations_dir = "migrations"
 
-# Clear yesterday's rate-limit rows and expired cache entries (free-plan cron trigger).
+# Daily: clear yesterday's rate-limit rows, expired cache entries and old alerts. Every minute: send
+# emergency-aircraft alerts (does nothing while nobody has subscribed).
 [triggers]
-crons = ["23 3 * * *"]
+crons = ["23 3 * * *", "* * * * *"]

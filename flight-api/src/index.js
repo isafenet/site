@@ -4,6 +4,7 @@
 //                                      ?flight=LS1827 also tries the flight number if the callsign isn't known
 //          GET /v1/status/:flight      today's status of a flight (BA117): gates, terminals, times, delays
 //          GET /v1/sky-routes/changes  aircraft routes changed since the app's copy (see sky-routes.js)
+//          PUT/DELETE /v1/alerts     emergency-aircraft alerts: subscribe or stop (see alerts.js)
 //          GET /v1/usage               SkyLink calls left this month (also sent as X-SkyLink-Remaining and
 //                                      X-SkyLink-Limit on every route and status answer)
 //
@@ -17,6 +18,7 @@
 
 import AIRPORT_CODES from "./airport-codes.json" with { type: "json" };
 import { handleSkyRoutes } from "./sky-routes.js";
+import { cleanUpAlerts, handleAlerts, sendAlerts } from "./alerts.js";
 
 const SKYLINK = "https://data.skylinkapi.com/v3.1";
 const CACHE_DAYS = { found: 14, notFound: 1 };
@@ -42,12 +44,18 @@ export default {
       return json({ error: "server", message: "Something went wrong on our side." }, 500);
     }
   },
-  // Daily cron: rate-limit rows only matter for the day they were made; expired cache rows can go too.
-  async scheduled(_event, env) {
+  // Every minute: emergency-aircraft alerts. Daily: rate-limit rows only matter for the day they were
+  // made; expired cache rows, old sent alerts and stale subscriptions can go too.
+  async scheduled(event, env) {
+    if (event.cron === "* * * * *") {
+      await sendAlerts(env);
+      return;
+    }
     await env.DB.batch([
       env.DB.prepare("DELETE FROM rate WHERE day < ?").bind(today()),
       env.DB.prepare("DELETE FROM cache WHERE expires < ?").bind(now().toISOString()),
     ]);
+    await cleanUpAlerts(env);
   },
 };
 
@@ -56,6 +64,8 @@ async function route(req, env) {
   const path = url.pathname.replace(/\/+$/, "");
   const sky = await handleSkyRoutes(req, env, path, url, fail);
   if (sky) return json(sky);
+  const alerts = await handleAlerts(req, env, path, fail);
+  if (alerts) return json(alerts);
   if (req.method !== "GET") fail(405, "method", "Only GET is supported.");
   let m = path.match(/^\/v1\/route\/([^/]+)$/);
   if (m) {
