@@ -6,7 +6,8 @@ workers_dev = true
 preview_urls = false
 
 [vars]
-ALLOWED_ORIGINS = "https://isafenet.app"
+# The board, and the sneak peek pages' launch-list forms.
+ALLOWED_ORIGINS = "https://isafenet.app,https://airreveal.isafenet.app,https://glpmgr.isafenet.app"
 
 [[d1_databases]]
 binding = "DB"

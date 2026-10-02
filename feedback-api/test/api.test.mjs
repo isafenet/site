@@ -117,3 +117,45 @@ live("deleting removes everything", async () => {
   await call(`/api/admin/ideas/${ideaId}/delete`, {}, { admin: true });
   assert.equal((await call(`/api/ideas/${ideaId}`)).status, 404);
 });
+
+// ---------------------------------------------------------------- launch list
+
+const listEmail = `Peek.${Date.now()}@Example.com`;
+
+live("joining a launch list stores the address, lower-cased, once", async () => {
+  const first = await call("/api/launch-list", { app: "airreveal", email: listEmail, turnstile: TOKEN });
+  assert.equal(first.status, 200);
+  assert.deepEqual(first.data, { ok: true });
+  const again = await call("/api/launch-list", { app: "airreveal", email: listEmail, turnstile: TOKEN });
+  assert.deepEqual(again.data, { ok: true });   // the same answer, so the list can't be probed
+  const list = await call("/api/admin/launch-list?app=airreveal", null, { admin: true });
+  const mine = list.data.people.filter((p) => p.email === listEmail.toLowerCase());
+  assert.equal(mine.length, 1);
+});
+
+live("a launch list needs a real-looking address, a known app and the person check", async () => {
+  assert.equal((await call("/api/launch-list", { app: "airreveal", email: "not-an-email", turnstile: TOKEN })).status, 400);
+  assert.equal((await call("/api/launch-list", { app: "udapt", email: "a@b.com", turnstile: TOKEN })).status, 400);
+  assert.equal((await call("/api/launch-list", { app: "glpmgr", email: "a@b.com" })).status, 400);
+});
+
+live("a filled-in honeypot is thanked but not stored", async () => {
+  const bot = `bot.${Date.now()}@example.com`;
+  const r = await call("/api/launch-list", { app: "glpmgr", email: bot, website: "http://spam", turnstile: TOKEN });
+  assert.deepEqual(r.data, { ok: true });
+  const list = await call("/api/admin/launch-list?app=glpmgr", null, { admin: true });
+  assert.ok(!list.data.people.some((p) => p.email === bot));
+});
+
+live("the launch list is for the admin only, and can be emptied", async () => {
+  assert.equal((await call("/api/admin/launch-list?app=airreveal")).status, 401);
+  const removed = await call("/api/admin/launch-list/delete", { app: "airreveal", email: listEmail }, { admin: true });
+  assert.equal(removed.data.removed, 1);
+  const cleared = await call("/api/admin/launch-list/clear", { app: "glpmgr" }, { admin: true });
+  assert.equal(cleared.status, 200);
+});
+
+live("the sneak peek sites may call the launch list", async () => {
+  const r = await call("/api/launch-list", { app: "airreveal", email: "x", turnstile: TOKEN }, { origin: "https://airreveal.isafenet.app" });
+  assert.equal(r.headers.get("access-control-allow-origin"), "https://airreveal.isafenet.app");
+});

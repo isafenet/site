@@ -7,10 +7,16 @@
 //          POST /api/ideas/:id/comments    comment (Turnstile; waits for review)
 //          POST /api/votes/mine            {voter} which ideas this browser has voted for
 //          GET  /feed.xml[?app=]           Atom feed of new ideas and status changes
+//          POST /api/launch-list           {app, email, turnstile} join a sneak peek page's launch list
 // Admin:   GET  /admin                     the moderation page; /api/admin/* needs the admin key
+//          GET  /api/admin/launch-list?app=          the list, to send the launch email
+//          POST /api/admin/launch-list/delete        {app, email} take someone off
+//          POST /api/admin/launch-list/clear         {app} delete an app's list once the email has gone
 //
-// Privacy: no accounts, emails or IP addresses are stored. Votes are keyed by an HMAC of a random ID
+// Privacy: the board stores no accounts, emails or IP addresses. Votes are keyed by an HMAC of a random ID
 // the browser makes; rate limits by an HMAC of IP + date that can't be reversed or linked across days.
+// The launch list is the one place an email is kept: only the address someone typed to be told when an
+// app's next version is out, with the app, the time and the wording they agreed to, deleted once told.
 
 import { personalDetails } from "../../assets/feedback-personal.js";
 import { APPS as APP_LIST } from "../../assets/feedback-apps.js"; // generated from apps/*.json; redeploy after adding an app
@@ -25,7 +31,12 @@ const STATUS_NAMES = {
   open: "Open", considering: "Under consideration", planned: "Planned",
   started: "In progress", shipped: "Shipped", declined: "Not planned",
 };
-const LIMITS = { idea: 5, comment: 20, vote: 300, admin_fail: 10 }; // per IP, per day
+const LIMITS = { idea: 5, comment: 20, vote: 300, signup: 10, admin_fail: 10 }; // per IP, per day
+// Apps with a sneak peek page and a launch list, and what joining it means.
+export const LAUNCHES = {
+  airreveal: "Email me when AirReveal 2.0 is out. Used for nothing else, and deleted once I've been told.",
+  glpmgr: "Email me when GLPMGR 1.8 is out. Used for nothing else, and deleted once I've been told.",
+};
 const BOARD = "https://isafenet.app/feedback.html";
 
 const now = () => new Date().toISOString();
@@ -85,6 +96,7 @@ async function route(req, env) {
   if ((m = path.match(/^\/api\/ideas\/(\d+)\/vote$/)) && method === "POST") return ok(await vote(req, env, +m[1]));
   if ((m = path.match(/^\/api\/ideas\/(\d+)\/comments$/)) && method === "POST") return ok(await createComment(req, env, +m[1]), 201);
   if (path === "/api/votes/mine" && method === "POST") return ok(await myVotes(req, env));
+  if (path === "/api/launch-list" && method === "POST") return ok(await joinLaunchList(req, env));
   if (path === "/" && method === "GET") {
     return new Response(`iSafeNet feedback API. The board is at ${BOARD}\n`, { headers: { "Content-Type": "text/plain; charset=utf-8" } });
   }
@@ -328,7 +340,58 @@ async function admin(req, env, path, method, url) {
   if (path === "/comments" && method === "GET") return adminComments(env, url.searchParams.get("state") || "pending");
   if ((m = path.match(/^\/comments\/(\d+)$/)) && method === "POST") return updateComment(req, env, +m[1]);
   if ((m = path.match(/^\/comments\/(\d+)\/delete$/)) && method === "POST") return deleteComment(env, +m[1]);
+  if (path === "/launch-list" && method === "GET") return launchList(env, url.searchParams.get("app"));
+  if (path === "/launch-list/delete" && method === "POST") return leaveLaunchList(req, env);
+  if (path === "/launch-list/clear" && method === "POST") return clearLaunchList(req, env);
   fail(404, "Not found.");
+}
+
+// ---------------------------------------------------------------- launch list
+
+/** A plausible email address, lower-cased; fails with a friendly message otherwise. */
+export function launchEmail(value) {
+  const email = typeof value === "string" ? value.trim().toLowerCase() : "";
+  if (email.length > 254 || !/^[^\s@"<>()]{1,64}@[^\s@"<>()]+\.[a-z]{2,}$/.test(email)) {
+    fail(400, "Please check your email address.");
+  }
+  return email;
+}
+
+/**
+ * Joins an app's launch list. A filled-in honeypot field ("website", hidden from people) or an address
+ * already on the list gets the same answer as a new one, so the form can't be used to find out who's on it.
+ */
+async function joinLaunchList(req, env) {
+  const b = await readBody(req, 2000);
+  const app = pick(b.app, Object.keys(LAUNCHES), "Unknown app.");
+  const email = launchEmail(b.email);
+  if (typeof b.website === "string" && b.website.trim()) return { ok: true };
+  await limit(req, env, "signup");
+  await human(req, env, b.turnstile);
+  await env.DB.prepare("INSERT OR IGNORE INTO launch_list (app, email, consent, created_at) VALUES (?, ?, ?, ?)")
+    .bind(app, email, LAUNCHES[app], now()).run();
+  return { ok: true };
+}
+
+async function launchList(env, app) {
+  pick(app, Object.keys(LAUNCHES), "Unknown app.");
+  const { results } = await env.DB.prepare("SELECT email, created_at FROM launch_list WHERE app = ? ORDER BY created_at")
+    .bind(app).all();
+  return { app, count: results.length, people: results };
+}
+
+async function leaveLaunchList(req, env) {
+  const b = await readBody(req);
+  const app = pick(b.app, Object.keys(LAUNCHES), "Unknown app.");
+  const res = await env.DB.prepare("DELETE FROM launch_list WHERE app = ? AND email = ?").bind(app, launchEmail(b.email)).run();
+  return { removed: res.meta.changes };
+}
+
+async function clearLaunchList(req, env) {
+  const b = await readBody(req);
+  const app = pick(b.app, Object.keys(LAUNCHES), "Unknown app.");
+  const res = await env.DB.prepare("DELETE FROM launch_list WHERE app = ?").bind(app).run();
+  return { removed: res.meta.changes };
 }
 
 async function adminIdeas(env) {
