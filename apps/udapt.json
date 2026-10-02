@@ -184,5 +184,16 @@
       "udapt-panel-home-or-gym.webp": "images/06-home-or-gym.webp"
     }
   },
-  "app_store": "https://apps.apple.com/app/udapt-workout-food-planner/id6815828206"
+  "app_store": "https://apps.apple.com/app/udapt-workout-food-planner/id6815828206",
+  "home": {
+    "intro": "a fitness plan that adapts to you",
+    "accent": "#35C79C",
+    "photo": "udapt-dawn.webp",
+    "photo_alt": "A runner on a wet road at dawn",
+    "screen": "udapt-today.webp",
+    "screen_from": "apps",
+    "screen_alt": "Udapt's Today screen with the morning check-in, readiness and today's workout",
+    "device": "phone",
+    "log": "Training and food, adapted daily"
+  }
 }

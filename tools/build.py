@@ -26,6 +26,7 @@ EMAIL = "info@isafenet.app"
 ORG_ID = BASE + "#organization"
 LASTMOD = "2026-09-25"
 YEAR = 2026
+SHIP_LOG_MONTH = "Oct 2026"  # the home page's ship log heading
 FEEDBACK_API = "https://isafenet-feedback.isafenet-feedback.workers.dev"
 TURNSTILE_SITE_KEY = "0x4AAAAAAFDmH6KTeIIm11HZ"
 NUMBER_WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
@@ -194,7 +195,8 @@ def breadcrumbs(trail):
 
 
 # ---------------------------------------------------------------- shell
-def head(title, desc, path, extra="", image="assets/img/og.png"):
+def head(title, desc, path, extra="", image="assets/img/og.png", css="assets/site.css",
+         preload="assets/fonts/pjs-800.woff2", theme="#0a1522"):
     url = BASE + path
     title, desc = esc(title), esc(desc)
     return f'''<!doctype html>
@@ -204,7 +206,7 @@ def head(title, desc, path, extra="", image="assets/img/og.png"):
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{desc}">
-<meta name="theme-color" content="#0a1522">
+<meta name="theme-color" content="{theme}">
 <link rel="canonical" href="{url}">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32-dark.png" media="(prefers-color-scheme: dark)">
@@ -222,8 +224,8 @@ def head(title, desc, path, extra="", image="assets/img/og.png"):
 <meta name="twitter:title" content="{title}">
 <meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="{BASE}{image}">
-<link rel="preload" href="assets/fonts/pjs-800.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css">
+<link rel="preload" href="{preload}" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{css}">
 <script>document.documentElement.classList.add("js")</script>
 {extra}</head>
 <body>
@@ -335,102 +337,201 @@ def app_card(a, flip=False):
 
 # ---------------------------------------------------------------- home
 def build_index():
-    caps = [
-        ("swift", "Native Swift & SwiftUI", "Written natively in Swift, with SwiftUI, SwiftData and Swift 6 concurrency, so apps feel fast and at home on every device."),
-        ("devices", "iPhone, iPad & Mac", "One codebase that adapts: roomy layouts on iPad, a proper window on Mac, and a comfortable column on iPhone."),
-        ("watch", "Apple Watch", "Glanceable watch apps and complications for the moments when your phone isn't in reach."),
-        ("widget", "Widgets & Live Activities", "Useful information on the Home Screen and Lock Screen, updating live without opening the app."),
-        ("offline", "Offline-first", "GPS, maps and on-device text recognition that keep working in airplane mode or without a signal."),
-        ("shield", "Private by design", "No accounts unless they're needed, no advertising, no tracking. Sensitive data stays on the device and is encrypted."),
-        ("access", "Accessible to everyone", "Dynamic Type to the largest sizes, VoiceOver, Reduce Motion, clear contrast and plain, kind language."),
-        ("store", "App Store launch", "StoreKit 2 subscriptions and free trials, App Store listings, screenshots, websites and user guides."),
-    ]
-    cap_html = "".join(f'<article class="card rv"><div class="ico">{icon(i)}</div><h3>{t}</h3><p>{d}</p></article>' for i, t, d in caps)
+    """The home page: a night-time studio design with its own stylesheet (assets/home.css). Each app's
+    "home" block gives its photo, screen and colour; a "peek" inside it puts the coming version in the
+    ship log and the sneak peeks. Delete the peek when that version is out and the app shows as live."""
+    def img(path, alt, cls="", lazy=True):
+        w, h = Image.open(os.path.join(ROOT, path)).size
+        return (f'<img{f" class={chr(34)}{cls}{chr(34)}" if cls else ""} src="{path}" width="{w}" height="{h}" alt="{esc(alt)}"'
+                + (' loading="lazy" decoding="async"' if lazy else "") + ">")
 
-    principles = [
-        ("heart", "People first", "We write for real people, not engineers: plain words, gentle tone, and a user guide and jargon buster with every app."),
-        ("lock", "Your data is yours", "We don't run servers that collect your information. What you record stays on your device unless you choose to share it."),
-        ("book", "Honest by default", "Clear pricing, no dark patterns, and straightforward disclaimers where they matter, such as health and travel safety."),
-        ("spark", "Always improving", "Apps are never finished. We listen, refine and ship updates that make each app calmer and more useful."),
+    def home_path(a, name, kind="home"):
+        return f"assets/img/{'apps' if kind == 'apps' else 'home'}/{name}"
+
+    peeks = [a for a in APPS if a["home"].get("peek")]
+    log_rows = []
+    for a in APPS:
+        h, p = a["home"], a["home"].get("peek")
+        if p:
+            row = (f'<li style="--c:{h["accent"]}"><span class="dot pulse" aria-hidden="true"></span><a href="{p["url"]}"><b>{esc(a["name"])} {esc(p["version"])}</b>'
+                   f'<small>{esc(p["log"])}</small></a><span class="state">Coming soon</span></li>')
+        else:
+            row = (f'<li style="--c:{h["accent"]}"><span class="dot" aria-hidden="true"></span><a href="{a["site"]}"><b>{esc(a["name"])}</b>'
+                   f'<small>{esc(h["log"])}</small></a><span class="state">On the App Store</span></li>')
+        log_rows.append(row)
+
+    peek_html = ""
+    if peeks:
+        cards = "".join(f'''
+      <a class="peek" href="{a["home"]["peek"]["url"]}" style="--c:{a["home"]["accent"]}">
+        {img(home_path(a, a["home"]["peek"]["photo"]), "", "bg")}
+        <span class="flag">{esc(a["name"])}</span>
+        <span class="ver">{esc(a["home"]["peek"]["version"].split(".")[0])}<em>.{esc(a["home"]["peek"]["version"].split(".", 1)[1])}</em></span>
+        <p>{esc(a["home"]["peek"]["text"])}</p>
+        <span class="go">Take a look {icon("arrow")}</span>
+      </a>''' for a in peeks)
+        k = len(peeks)
+        peek_html = f'''
+<section id="peeks">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">Sneak peeks</p><h2>{count_word(k)} big update{"" if k == 1 else "s"} {"is" if k == 1 else "are"} on the way.</h2><p class="lede">{"It's a free update" if k == 1 else "Both are free updates"}. See what's coming, and leave your email if you'd like a note on launch day.</p></div>
+    <div class="peeks{" one" if k == 1 else ""}">{cards}
+    </div>
+  </div>
+</section>
+'''
+
+    def shelf(a, flip):
+        h = a["home"]
+        ticks = "".join(f"<li>{esc(t)}</li>" for t in a["ticks"])
+        chips = "".join(f"<span>{esc(c)}</span>" for c in a["chips"])
+        screen = img(home_path(a, h["screen"], h["screen_from"]), h["screen_alt"], h["device"])
+        return f'''
+    <article class="shelf{" flip" if flip else ""}" id="{a["key"]}" style="--c:{h["accent"]}">
+      <div class="visual">{img(home_path(a, h["photo"]), h["photo_alt"], "photo")}{screen}</div>
+      <div class="copy">
+        <div class="idline"><img src="{a["icon"]}" width="58" height="58" alt=""><div><h3>{esc(a["name"])}</h3><small>{esc(a["kind"])}</small></div></div>
+        <p class="say">{esc(a["tagline"])}</p>
+        <ul>{ticks}</ul>
+        <div class="chips">{chips}</div>
+        <div class="links">{store_button(a, "store")}<a class="textlink" href="{a["site"]}">Website</a><a class="textlink" href="{a["page_file"]}">About {esc(a["name"])}</a></div>
+      </div>
+    </article>'''
+
+    craft = [
+        ("Swift 6 · SwiftUI", "Native, all the way", "Built with Apple's own frameworks, so apps feel fast and at home on every device."),
+        ("iPhone · iPad · Mac", "One app, every screen", "Roomy layouts on iPad, a proper window on Mac and a comfortable column on iPhone."),
+        ("watchOS", "On your wrist", "Glanceable watch apps and complications for when your phone isn't in reach."),
+        ("WidgetKit · ActivityKit", "Widgets and Live Activities", "Useful information on the Home Screen and Lock Screen, live, without opening the app."),
+        ("Offline-first", "Works without a signal", "GPS, maps and on-device text recognition that keep going in airplane mode."),
+        ("On-device", "Private by design", "No accounts unless they're needed. Sensitive data stays on the device, encrypted."),
+        ("Dynamic Type · VoiceOver", "Accessible to everyone", "The largest text sizes, VoiceOver, Reduce Motion, clear contrast and kind language."),
+        ("StoreKit 2", "Launch, done properly", "Fair subscriptions and free trials, App Store listings, websites and user guides."),
     ]
-    prin_html = "".join(f'<article class="card rv"><div class="ico">{icon(i)}</div><h3>{t}</h3><p>{d}</p></article>' for i, t, d in principles)
+    craft_html = "".join(f"\n      <div><code>{esc(c)}</code><h3>{esc(t)}</h3><p>{esc(d)}</p></div>" for c, t, d in craft)
+
+    def foot_col(a):
+        p = a["home"].get("peek")
+        items = [(f'About {a["name"]}', a["page_file"]), (f'{a["name"]} website', a["site"])]
+        if p:
+            items.append((f'{p["version"]} sneak peek', p["url"]))
+        items += [(t, link(a, u)) for t, u in a["footer"]]
+        lis = "".join(f'<li><a href="{u}">{esc(t)}</a></li>' for t, u in items)
+        return f'<div><h4>{esc(a["name"])}</h4><ul>{lis}</ul></div>'
 
     n = len(APPS)
-    hero = "\n    ".join(phone(a, a["home_shot"], f"p{i}") for i, a in enumerate(APPS[:3], 1))
-    cards = "\n  ".join(app_card(a, flip=i % 2 == 1) for i, a in enumerate(APPS))
-    body = f'''{nav()}
+    credits = names(dict.fromkeys(["Avtar Singh", "Stephen Mease", "Aimee Giles", "Astra Liu", "Kasper Rasmussen", "Lucas Favre"]))
+    body = f'''<div class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="iSafeNet home"><img src="assets/img/mark.png" srcset="assets/img/mark@2x.png 2x" width="18" height="26" alt="">iSafeNet</a>
+    <nav aria-label="Main">{'<a href="#peeks">Sneak peeks</a>' if peeks else ''}<a href="#apps">Apps</a><a href="#build">What we build</a><a href="#approach">How we work</a><a class="cta" href="#contact">Get in touch</a></nav>
+  </div>
+</div>
+
 <main id="main">
-<section class="hero"><div class="wrap hero-grid">
-  <div>
-    <span class="pill"><i></i> Independent mobile app studio</span>
-    <h1>We build calm, private apps for <span class="grad">iPhone, iPad and Apple&nbsp;Watch.</span></h1>
-    <p class="lead">iSafeNet designs, builds and looks after native Apple apps that respect the people using them: beautiful to use, accessible to everyone, and private by design.</p>
-    <div class="cta-row"><a class="btn" href="#apps">See our apps {icon("arrow")}</a><a class="btn ghost" href="#contact">Get in touch</a></div>
-    <ul class="chips" aria-label="What we work with"><li>Swift</li><li>SwiftUI</li><li>iPhone</li><li>iPad</li><li>Apple Watch</li><li>Mac</li></ul>
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Independent app studio · iPhone, iPad &amp; Apple Watch</p>
+      <h1 style="margin-top:22px"><span>Create.</span><span class="lit">Ship.</span><span>Evolve.</span></h1>
+      <p class="lede">iSafeNet makes calm, private apps that people use every day: {names(esc(a["home"].get("intro", a["name"])) for a in APPS)}. No ads and no tracking.</p>
+      <div class="btns"><a class="btn primary" href="#apps">See our apps</a>{'<a class="btn ghost" href="#peeks">See what’s coming</a>' if peeks else ''}</div>
+    </div>
+    <aside class="log" aria-label="Our apps right now">
+      <header><span>Ship log</span><span>{SHIP_LOG_MONTH}</span></header>
+      <ol>
+        {"""
+        """.join(log_rows)}
+      </ol>
+    </aside>
   </div>
-  <div class="devices" aria-label="Screens from our apps">
-    {hero}
+</header>
+
+<div class="strip"><div class="wrap"><span>Swift &amp; SwiftUI</span><span>iPhone</span><span>iPad</span><span>Apple Watch</span><span>Widgets &amp; Live Activities</span><span>Works offline</span><span>Private by design</span></div></div>
+{peek_html}
+<section id="apps"{' style="padding-top:0"' if peeks else ''}>
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">Our apps</p><h2>{count_word(n)} app{"" if n == 1 else "s"}, each for one real moment in your day.</h2></div>
+{"".join(shelf(a, i % 2 == 1) for i, a in enumerate(APPS))}
   </div>
-</div></section>
+</section>
 
-<section id="apps"><div class="wrap">
-  <div class="sec-head rv"><span class="eyebrow">Our apps</span>
-    <h2>{count_word(n)} new app{"" if n == 1 else "s"}, made with care.</h2>
-    <p>Each one solves a real, everyday problem{availability_sentence(APPS)}</p></div>
-  {cards}
-</div></section>
-
-<section class="alt" aria-label="iSafeNet in numbers"><div class="wrap">
-  <div class="stats">
-    <div class="stat rv"><b>{n}</b><span>app{"" if n == 1 else "s"} in the portfolio</span></div>
-    <div class="stat rv"><b>4</b><span>Apple platforms: iPhone, iPad, Apple Watch and Mac</span></div>
-    <div class="stat rv"><b>6</b><span>languages on AirReveal's website</span></div>
-    <div class="stat rv"><b>0</b><span>ads or tracking tools</span></div>
+<div class="wrap">
+  <div class="numbers" aria-label="The studio in numbers">
+    <div><b>{n}</b><span>app{"" if n == 1 else "s"} on the App Store</span></div>
+    <div><b>4</b><span>Apple platforms: iPhone, iPad, Apple Watch and Mac</span></div>
+    <div><b>6</b><span>languages in AirReveal and Udapt</span></div>
+    <div><b>0</b><span>ads or tracking tools, in any app</span></div>
   </div>
-</div></section>
+</div>
 
-<section id="build"><div class="wrap">
-  <div class="sec-head rv"><span class="eyebrow">What we build</span>
-    <h2>Native mobile apps, end to end.</h2>
-    <p>From the first sketch to the App Store and every update after, built with Apple's own frameworks and design guidelines.</p></div>
-  <div class="grid four">{cap_html}</div>
-</div></section>
-
-<section id="approach" class="alt"><div class="wrap">
-  <div class="sec-head center rv"><span class="eyebrow">How we work</span>
-    <h2>Create. Ship. Evolve.</h2>
-    <p>Three words that describe how every iSafeNet app comes to life, and keeps getting better.</p></div>
-  <div class="steps">
-    <article class="step rv"><h3><span class="grad">Create</span></h3><p>We start with the person using the app and the problem in front of them, then design something calm and obvious.</p>
-      <ul><li>Research and plain-language copy</li><li>SwiftUI prototypes on real devices</li><li>Accessibility from day one</li></ul></article>
-    <article class="step rv"><h3><span class="grad">Ship</span></h3><p>We build carefully and test thoroughly, then launch with everything people need to get started.</p>
-      <ul><li>Hundreds of automated tests</li><li>App Store listing, screenshots and website</li><li>User guides and support pages</li></ul></article>
-    <article class="step rv"><h3><span class="grad">Evolve</span></h3><p>After launch we keep listening, fixing and refining, and we adopt new Apple features as they arrive.</p>
-      <ul><li>Regular updates</li><li>New devices and OS releases</li><li>Feedback shapes what comes next</li></ul></article>
+<section id="build">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">What we build</p><h2>Native apps, from first sketch to every update after.</h2></div>
+    <div class="craft">{craft_html}
+    </div>
   </div>
-</div></section>
+</section>
 
-<section aria-label="Our principles"><div class="wrap">
-  <div class="sec-head rv"><span class="eyebrow">What we believe</span>
-    <h2>Good apps treat people well.</h2></div>
-  <div class="grid four">{prin_html}</div>
-</div></section>
-
-<section id="contact" style="padding-top:0"><div class="wrap">
-  <div class="contact rv">
-    <h2>Let's talk.</h2>
-    <p>Questions about our apps, press or partnership enquiries: we read every message and reply personally. Got an idea for one of our apps? Share it on our feedback board.</p>
-    <div class="cta-row" style="justify-content:center;margin:0"><a class="btn" href="mailto:{EMAIL}">{icon("mail")} {EMAIL}</a><a class="btn ghost" href="feedback.html">Share an idea</a></div>
+<section id="approach" style="padding-top:0">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">How we work</p><h2>Three words for every app we make.</h2></div>
+    <div class="cse">
+      <div><h3>Create.</h3><p>We start with the person using the app and the problem in front of them, then design something calm and obvious.</p><ul><li>Research and plain-language copy</li><li>Prototypes on real devices</li><li>Accessibility from day one</li></ul></div>
+      <div><h3>Ship.</h3><p>We build carefully and test thoroughly, then launch with everything people need to get started.</p><ul><li>Hundreds of automated tests</li><li>Listing, screenshots and website</li><li>User guides and support pages</li></ul></div>
+      <div><h3>Evolve.</h3><p>After launch we keep listening and refining, and adopt new Apple features as they arrive.</p><ul><li>Regular updates</li><li>New devices and OS releases</li><li>Your feedback shapes what's next</li></ul></div>
+    </div>
   </div>
-</div></section>
+</section>
+
+<section style="padding-top:0" aria-labelledby="believe">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">What we believe</p><h2 id="believe">Good apps treat people well.</h2></div>
+    <div class="beliefs">
+      <div><h3>People first</h3><p>We write for real people: plain words, a gentle tone, and a user guide and jargon buster with every app.</p></div>
+      <div><h3>Your data is yours</h3><p>We don't run servers that collect your information. What you record stays on your device unless you choose to share it.</p></div>
+      <div><h3>Honest by default</h3><p>Clear pricing, no dark patterns, and straightforward disclaimers where they matter, like health and travel safety.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="contact">
+      <div>
+        <p class="eyebrow">Contact</p>
+        <h2 style="margin-top:16px">Got an idea, or a question?</h2>
+        <p class="lede" style="margin-top:16px;color:var(--paper)">Questions about our apps, press or partnership enquiries: write to us. A real person reads every message and replies personally.</p>
+        <div class="mail"><a class="btn primary" href="mailto:{EMAIL}">{icon("mail")} {EMAIL}</a></div>
+      </div>
+      <div class="side">
+        <p>Want a feature in one of our apps? Post it on the feedback board and vote for the ideas you like.</p>
+        <a class="btn ghost" href="feedback.html" style="justify-self:start">Share an idea</a>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
-{footer()}'''
+
+<footer>
+  <div class="wrap">
+    <div class="cols" style="--cols:{n + 1}">
+      <div><a class="brand" href="index.html"><img src="assets/img/mark.png" srcset="assets/img/mark@2x.png 2x" width="18" height="26" alt="">iSafeNet</a><p style="margin-top:14px;max-width:32ch">An independent app studio making calm, private apps for iPhone, iPad and Apple Watch.</p><p style="margin-top:10px"><a href="mailto:{EMAIL}">{EMAIL}</a></p></div>
+      {"".join(foot_col(a) for a in APPS)}
+      <div><h4>iSafeNet</h4><ul><li><a href="#apps">Our apps</a></li><li><a href="#build">What we build</a></li><li><a href="#approach">How we work</a></li><li><a href="#contact">Contact</a></li><li><a href="feedback.html">Feedback and ideas</a></li><li><a href="privacy.html">Website privacy</a></li></ul></div>
+    </div>
+    <div class="legal"><span>© {YEAR} iSafeNet. Create. Ship. Evolve. Apple, iPhone, iPad, Apple Watch, Mac and App Store are trademarks of Apple Inc. Medicine names are trademarks of their owners.</span><span>Photos on Unsplash: {credits}.</span></div>
+  </div>
+</footer>
+</body></html>
+'''
     extra = ld(org()) + ld({"@context": "https://schema.org", "@type": "WebSite", "@id": BASE + "#website", "name": "iSafeNet",
                             "url": BASE, "inLanguage": "en-GB", "publisher": {"@id": ORG_ID}}) \
         + "".join(ld(app_ld(a)) for a in APPS)
     write("index.html", head("iSafeNet: Mobile App Studio for iPhone, iPad & Apple Watch",
                              "iSafeNet is an independent mobile app studio building private, accessible apps for iPhone, iPad and Apple Watch, including "
-                             + names(a["name"] for a in APPS) + ".", "", extra) + body)
+                             + names(a["name"] for a in APPS) + ".", "", extra, css="assets/home.css",
+                             preload="assets/fonts/home/bricolage-grotesque-normal-700-latin.woff2", theme="#0B1018") + body)
 
 
 # ---------------------------------------------------------------- app pages

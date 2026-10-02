@@ -238,5 +238,23 @@
       "glpmgr-on-your-wrist.webp": "assets/panels/09-on-your-wrist.webp"
     }
   },
-  "app_store": "https://apps.apple.com/app/glpmgr-glp-1-tracker/id6814282972"
+  "app_store": "https://apps.apple.com/app/glpmgr-glp-1-tracker/id6814282972",
+  "home": {
+    "intro": "a private GLP-1 tracker",
+    "accent": "#2C93D1",
+    "photo": "morning.webp",
+    "photo_alt": "A mug of tea in morning sunlight by a window",
+    "screen": "glpmgr-today.webp",
+    "screen_from": "home",
+    "screen_alt": "GLPMGR's Today screen with the next dose, goal, water and protein",
+    "device": "phone",
+    "log": "Your GLP-1 journey, privately",
+    "peek": {
+      "version": "1.8",
+      "url": "https://glpmgr.isafenet.app/glpmgr-1-8.html",
+      "log": "Daily check-in, Audio Graphs",
+      "photo": "morning.webp",
+      "text": "A daily check-in, charts you can hear with Audio Graphs, your smart scale from Apple Health, clearer weight trends and automatic backups."
+    }
+  }
 }

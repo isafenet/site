@@ -86,5 +86,23 @@
       "airreveal-profile.webp": "images/panel-profile.webp"
     }
   },
-  "app_store": "https://apps.apple.com/app/airreveal-flight-map-explorer/id6814283579"
+  "app_store": "https://apps.apple.com/app/airreveal-flight-map-explorer/id6814283579",
+  "home": {
+    "intro": "a window-seat companion",
+    "accent": "#4FB3EA",
+    "photo": "sky.webp",
+    "photo_alt": "An aircraft wing above the clouds at golden hour",
+    "screen": "airreveal-ipad.webp",
+    "screen_from": "apps",
+    "screen_alt": "AirReveal on iPad, flying over Lake Baikal on a live trip from London to Tokyo",
+    "device": "tablet",
+    "log": "Landmarks below your window",
+    "peek": {
+      "version": "2.0",
+      "url": "https://airreveal.isafenet.app/airreveal-2.html",
+      "log": "The sky above you, live",
+      "photo": "window.webp",
+      "text": "See every aircraft flying over you, follow any plane from your Apple Watch, and spot police and air ambulance helicopters in their own colours."
+    }
+  }
 }
