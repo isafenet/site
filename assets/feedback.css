@@ -46,7 +46,7 @@
 .fb-vote svg{width:20px;height:20px}
 .fb-vote:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
 .fb-vote:active:not(:disabled){transform:scale(.95)}
-.fb-vote.on{background:var(--grad);border-color:transparent;color:#fff}
+.fb-vote.on{background:var(--grad);border-color:transparent;color:var(--on-accent,#fff)}
 .fb-vote:disabled{cursor:default;opacity:.75}
 .fb-vote.big{min-width:68px;min-height:74px;font-size:1.2rem}
 

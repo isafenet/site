@@ -196,7 +196,7 @@ def breadcrumbs(trail):
 
 # ---------------------------------------------------------------- shell
 def head(title, desc, path, extra="", image="assets/img/og.png", css="assets/site.css",
-         preload="assets/fonts/pjs-800.woff2", theme="#0a1522"):
+         preload="assets/fonts/home/bricolage-grotesque-normal-700-latin.woff2", theme="#0B1018"):
     url = BASE + path
     title, desc = esc(title), esc(desc)
     return f'''<!doctype html>
@@ -235,13 +235,13 @@ def head(title, desc, path, extra="", image="assets/img/og.png", css="assets/sit
 
 def nav(current=None):
     links = [("Apps", "index.html#apps", None)] + [(a["name"], a["page_file"], a["key"]) for a in APPS] + \
-            [("What we build", "index.html#build", None), ("Approach", "index.html#approach", None)]
+            [("What we build", "index.html#build", None), ("How we work", "index.html#approach", None)]
     here = ' aria-current="page"'
     items = "".join(f'<a href="{h}"{here if k and current == k else ""}>{esc(t)}</a>' for t, h, k in links)
     return f'''<header class="nav" id="top"><div class="wrap">
-  <a class="brand" href="index.html" aria-label="iSafeNet home"><img src="assets/img/mark.png" srcset="assets/img/mark@2x.png 2x" width="24" height="34" alt=""><span>iSafe<span class="net">Net</span></span></a>
+  <a class="brand" href="index.html" aria-label="iSafeNet home"><img src="assets/img/mark.png" srcset="assets/img/mark@2x.png 2x" width="18" height="26" alt="">iSafeNet</a>
   <button class="menu" aria-expanded="false" aria-controls="menu">Menu</button>
-  <nav class="nav-links" id="menu" aria-label="Main">{items}<a class="cta" href="index.html#contact">Contact</a></nav>
+  <nav class="nav-links" id="menu" aria-label="Main">{items}<a class="cta" href="index.html#contact">Get in touch</a></nav>
 </div></header>
 '''
 
@@ -251,13 +251,14 @@ def footer():
     <div><h2>{esc(a["name"])}</h2><ul>
       <li><a href="{a["page_file"]}">About {esc(a["name"])}</a></li>
       <li><a href="{a["site"]}">{esc(a["name"])} website</a></li>''' +
+                   (f'\n      <li><a href="{a["home"]["peek"]["url"]}">{esc(a["home"]["peek"]["version"])} sneak peek</a></li>' if a["home"].get("peek") else "") +
                    "".join(f'\n      <li><a href="{link(a, u)}">{esc(t)}</a></li>' for t, u in a["footer"]) +
                    "\n    </ul></div>" for a in APPS)
     return f'''<footer class="footer"><div class="wrap">
   <div class="foot-grid" style="--cols:{len(APPS) + 1}">
     <div>
-      <a class="brand" href="index.html"><img src="assets/img/mark.png" srcset="assets/img/mark@2x.png 2x" width="24" height="34" alt=""><span>iSafe<span class="net">Net</span></span></a>
-      <p class="tag">An independent mobile app studio. We design, build and look after private, accessible apps for iPhone, iPad and Apple Watch.</p>
+      <a class="brand" href="index.html"><img src="assets/img/mark.png" srcset="assets/img/mark@2x.png 2x" width="18" height="26" alt="">iSafeNet</a>
+      <p class="tag">An independent app studio making calm, private apps for iPhone, iPad and Apple Watch.</p>
       <p style="margin-top:14px"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
     </div>{cols}
     <div><h2>iSafeNet</h2><ul>
@@ -557,8 +558,8 @@ def build_app(a):
     second_url, second_label = p["second_button"]
 
     body = f'''{nav(current=a["key"])}
-<main id="main">
-<section class="hero app-hero"><div class="wrap hero-grid">
+<main id="main" style="--c:{a["home"]["accent"]}">
+<section class="hero app-hero" style="--hero-img:url(/assets/img/home/{a["home"]["photo"]})"><div class="wrap hero-grid">
   <div>
     <p class="crumbs"><a href="index.html">iSafeNet</a> / <a href="index.html#apps">Apps</a> / {name}</p>
     <div class="app-id" style="margin-top:22px"><img src="{a["icon"]}" width="84" height="84" alt="{name} app icon"><div>{store_status(a)}<div class="kind" style="margin-top:8px">{esc(a["kind"])}</div></div></div>
