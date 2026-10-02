@@ -272,7 +272,7 @@ export function apnsKey(env, environment) {
  * The ES256 token Apple's push service wants, signed with the environment's .p8 key. Apple refuses tokens
  * refreshed more than every 20 minutes, so one per environment is kept in D1 and reused for 40.
  */
-async function apnsToken(env, environment, key, seconds) {
+export async function apnsToken(env, environment, key, seconds) {
   const kept = await env.DB.prepare("SELECT jwt, issued_at FROM apns_token WHERE environment = ?").bind(environment).first();
   if (kept && seconds - kept.issued_at < 40 * 60) return kept.jwt;
   const jwt = await signJWT(key.pem, key.id, env.APNS_TEAM_ID, seconds);
