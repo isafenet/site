@@ -35,11 +35,47 @@ fallback is a second SkyLink call, only when the first finds nothing; its answer
 Errors are `{ "error": code, "message": text }`: `invalid` (422), `limit` (429, the per-person daily limit),
 `paused` (503, the monthly cap is reached), `upstream` (502).
 
+## Aircraft route updates
+
+AirReveal bundles Virtual Radar Server's [standing-data](https://github.com/vradarserver/standing-data) routes
+(CC0) for the aircraft overhead. Between releases it asks this Worker for the routes that changed since its
+copy (`src/sky-routes.js`); this never reaches SkyLink.
+
+`GET /v1/sky-routes/changes?since=<unix seconds>` answers
+`{ "version": 1790912973, "routes": [["BAW117", "EGLL-KJFK"], ["XYZ1", ""]], "airports": [...], "next": null }`:
+each changed callsign's airports in ICAO codes (`""` when the route was removed), the airports those routes use,
+and the `version` to send as `since` next time. Up to 5,000 routes a page; when `next` is a callsign, ask again with
+`&after=<next>` (airports come with the first page). The app sends only that date.
+
+A daily GitHub Action (`.github/workflows/sky-routes.yml`) runs `tools/sync_sky_routes.py`: it diffs the
+standing-data commit the Worker last synced against the latest one and posts the changes to the admin endpoints
+(`/v1/admin/sky-routes…`, which need `Authorization: Bearer <SKY_ROUTES_SECRET>`). The comparing is done there
+because a free-plan Worker has far too little CPU to read the 620,000 routes. Each run sends a few hundred to a
+few thousand changes.
+
+**Setting it up (once):**
+
+1. `npm run db:remote` (adds the `sky_routes`, `sky_airports` and `sky_sync` tables), then `npm run deploy`.
+2. Make a secret (`openssl rand -hex 32`) and store it twice: `npx wrangler secret put SKY_ROUTES_SECRET`, and
+   as the repository's Actions secret `SKY_ROUTES_SECRET` (GitHub › Settings › Secrets and variables › Actions).
+3. Run the Action once by hand (Actions › Sky routes › Run workflow) with `base` set to the `commit` in
+   AirReveal's `AirReveal/Resources/sky-routes-version.json`. After that it runs daily on its own.
+
+GitHub pauses scheduled workflows in a public repository after 60 days without a commit; re-enable it under
+Actions if that happens (the next run catches up on everything since).
+
+Check the sync: `npx wrangler d1 execute airreveal-flights --remote --command "SELECT * FROM sky_sync"`
+
 ## Staying inside the trial
 
 - **Cache:** found routes are kept for 14 days, not-found for 1 day, so a repeat lookup never reaches SkyLink.
-- **Monthly cap:** `MONTHLY_CAP` (900) calls to SkyLink per calendar month (UTC), counted in the `usage` table;
-  after that it answers `paused` until the 1st. SkyLink charges $0.007 a request over the trial's 1,000.
+- **Monthly cap:** `MONTHLY_CAP` (1,000, the whole trial) calls to SkyLink per calendar month (UTC), counted in
+  the `usage` table before each call is made; after that it answers `paused` until the 1st. SkyLink charges $0.007
+  a request over the trial's 1,000, so lower the cap if anything else uses the same key.
+- **What's left:** `GET /v1/usage` answers `{ "month": "2026-10", "used": 258, "limit": 1000, "remaining": 742,
+  "resetsAt": "2026-11-01T00:00:00.000Z" }` without spending anything, and every route and status answer carries
+  `X-SkyLink-Remaining` and `X-SkyLink-Limit`. The app shows the count in Profile's tester section and switches
+  Look Up Flight and status off when none are left, until the 1st.
 - **Per person:** `DAILY_LIMIT` (40) lookups that reach SkyLink per day, keyed by an HMAC of IP + date; no IP
   address is stored. A daily cron clears old rate rows and expired cache entries.
 
@@ -52,12 +88,13 @@ Check this month's usage:
 | --- | --- |
 | `SKYLINK_API_KEY` | The SkyLink licence key (sent as `x-api-key`). Paste it at the prompt; never commit it. |
 | `HASH_SECRET` | 32+ random characters for the rate-limit hash. Already set. |
+| `SKY_ROUTES_SECRET` | Lets the GitHub Action post route changes; the same value is the repository's Actions secret. |
 
 ## Develop and deploy
 
 ```
 npm install
-npm test                                  # unit tests for callsign and response handling
+npm test                                  # unit tests for callsign, response and route-update handling
 npm run db:local && npm run dev           # local Worker on http://127.0.0.1:8788 (needs .dev.vars with the secrets)
 npm run deploy
 ```

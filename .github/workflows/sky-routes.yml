@@ -1,0 +1,32 @@
+# Keeps AirReveal's aircraft routes current between releases: sends the flight-lookup Worker the routes that
+# changed in Virtual Radar Server's standing data since its last sync (flight-api/tools/sync_sky_routes.py).
+name: Sky routes
+
+on:
+  schedule:
+    - cron: "41 5 * * *"   # daily; standing data usually updates overnight (UTC)
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "First run only: the standing-data commit AirReveal bundles (sky-routes-version.json)"
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sky-routes
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: flight-api/tools
+      - name: Send changed routes to the Worker
+        env:
+          SKY_ROUTES_SECRET: ${{ secrets.SKY_ROUTES_SECRET }}
+          BASE: ${{ inputs.base }}
+        run: python3 flight-api/tools/sync_sky_routes.py ${BASE:+--base "$BASE"}

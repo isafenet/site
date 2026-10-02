@@ -49,3 +49,11 @@ test("status without a time", () => {
   assert.deepEqual(statusParts("En Route"), { statusWord: "En Route", statusTime: null });
   assert.deepEqual(statusParts(null), { statusWord: null, statusTime: null });
 });
+
+test("the allowance counts down to nought and starts again next month", async () => {
+  const { shapeAllowance } = await import("../src/index.js");
+  assert.deepEqual(shapeAllowance("2026-10", 258, 1000),
+    { month: "2026-10", used: 258, limit: 1000, remaining: 742, resetsAt: "2026-11-01T00:00:00.000Z" });
+  assert.equal(shapeAllowance("2026-10", 1003, 1000).remaining, 0);   // refused calls are counted too
+  assert.equal(shapeAllowance("2026-12", 0, 1000).resetsAt, "2027-01-01T00:00:00.000Z");
+});

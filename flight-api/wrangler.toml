@@ -6,8 +6,9 @@ workers_dev = true
 preview_urls = false
 
 [vars]
-# SkyLink's free trial is 1,000 requests a month; stop well short so there's never overage.
-MONTHLY_CAP = "900"
+# SkyLink's free trial is 1,000 requests a month. Every call is counted before it's made, so the cap is
+# exact; the app shows what's left and turns Look Up Flight and status off when it's used up.
+MONTHLY_CAP = "1000"
 DAILY_LIMIT = "40"
 
 [[d1_databases]]

@@ -3,6 +3,9 @@
 //          GET /v1/route/:callsign     departure and arrival airports for an ICAO callsign (BAW117);
 //                                      ?flight=LS1827 also tries the flight number if the callsign isn't known
 //          GET /v1/status/:flight      today's status of a flight (BA117): gates, terminals, times, delays
+//          GET /v1/sky-routes/changes  aircraft routes changed since the app's copy (see sky-routes.js)
+//          GET /v1/usage               SkyLink calls left this month (also sent as X-SkyLink-Remaining and
+//                                      X-SkyLink-Limit on every route and status answer)
 //
 // SkyLink's terms don't allow its key in an app binary, so the key lives here as a Worker secret.
 // While AirReveal is on SkyLink's free trial (1,000 requests a month), this is for TestFlight builds only,
@@ -13,6 +16,7 @@
 // Privacy: no IP addresses or accounts are stored; the cache holds only callsigns and airports.
 
 import AIRPORT_CODES from "./airport-codes.json" with { type: "json" };
+import { handleSkyRoutes } from "./sky-routes.js";
 
 const SKYLINK = "https://data.skylinkapi.com/v3.1";
 const CACHE_DAYS = { found: 14, notFound: 1 };
@@ -50,6 +54,8 @@ export default {
 async function route(req, env) {
   const url = new URL(req.url);
   const path = url.pathname.replace(/\/+$/, "");
+  const sky = await handleSkyRoutes(req, env, path, url, fail);
+  if (sky) return json(sky);
   if (req.method !== "GET") fail(405, "method", "Only GET is supported.");
   let m = path.match(/^\/v1\/route\/([^/]+)$/);
   if (m) {
@@ -58,14 +64,17 @@ async function route(req, env) {
     const raw = url.searchParams.get("flight");
     const flight = raw ? normalizeFlightNumber(raw) : null;
     if (raw && !flight) fail(422, "invalid", "Send a flight number such as BA117.");
-    return json(await lookUpRoute(callsign, flight, req, env));
+    const result = await lookUpRoute(callsign, flight, req, env);
+    return json(result, 200, allowanceHeaders(await allowance(env)));
   }
   m = path.match(/^\/v1\/status\/([^/]+)$/);
   if (m) {
     const flight = normalizeFlightNumber(decodeURIComponent(m[1]));
     if (!flight) fail(422, "invalid", "Send a flight number such as BA117.");
-    return json(await lookUpStatus(flight, req, env));
+    const result = await lookUpStatus(flight, req, env);
+    return json(result, 200, allowanceHeaders(await allowance(env)));
   }
+  if (path === "/v1/usage") return json(await allowance(env));
   fail(404, "not_found", "No such endpoint.");
 }
 
@@ -227,9 +236,25 @@ async function lookUpRouteByCallsign(callsign, req, env) {
   return { ...result, cached: false };
 }
 
+/** This month's SkyLink allowance: calls made, the cap, what's left, and when it starts again (UTC). */
+export async function allowance(env, month = thisMonth()) {
+  const limit = Number(env.MONTHLY_CAP || 1000);
+  const row = await env.DB.prepare("SELECT calls FROM usage WHERE month = ?").bind(month).first();
+  return shapeAllowance(month, row?.calls ?? 0, limit);
+}
+
+export function shapeAllowance(month, calls, limit) {
+  const [year, m] = month.split("-").map(Number);
+  const resetsAt = new Date(Date.UTC(year, m, 1)).toISOString();   // m is 1-based, so this is next month
+  const used = Math.min(calls, limit);
+  return { month, used, limit, remaining: limit - used, resetsAt };
+}
+
+const allowanceHeaders = (a) => ({ "X-SkyLink-Remaining": String(a.remaining), "X-SkyLink-Limit": String(a.limit) });
+
 /** Counts this call against the month and refuses once MONTHLY_CAP is reached, so the trial never runs over. */
 async function spendFromMonthlyBudget(env) {
-  const cap = Number(env.MONTHLY_CAP || 900);
+  const cap = Number(env.MONTHLY_CAP || 1000);
   const row = await env.DB.prepare(
     "INSERT INTO usage (month, calls) VALUES (?, 1) ON CONFLICT(month) DO UPDATE SET calls = calls + 1 RETURNING calls",
   ).bind(thisMonth()).first();
@@ -252,8 +277,8 @@ async function hmac(secret, text) {
   return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-function json(data, status = 200) {
+function json(data, status = 200, headers = {}) {
   return new Response(JSON.stringify(data), {
-    status, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
+    status, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", ...headers },
   });
 }
