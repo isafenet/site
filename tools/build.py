@@ -27,6 +27,16 @@ ORG_ID = BASE + "#organization"
 LASTMOD = "2026-09-25"
 YEAR = 2026
 SHIP_LOG_MONTH = "Oct 2026"  # the home page's ship log heading
+# A teaser for an app not yet announced: no name, no link, no screens (commercial rule: nothing that gives it
+# away). Shown as a third sneak peek and a line in the ship log. Set to None to take it off.
+MYSTERY = {
+    "accent": "#FFC21A",
+    "flag": "Something new",
+    "big": "Soon",
+    "text": "For the people who'd drop everything to come and get you.",
+    "hint": "One tap. That's all we're saying.",
+    "log": "Something new · in the works",
+}
 FEEDBACK_API = "https://isafenet-feedback.isafenet-feedback.workers.dev"
 TURNSTILE_SITE_KEY = "0x4AAAAAAFDmH6KTeIIm11HZ"
 NUMBER_WORDS = ["No", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
@@ -360,6 +370,9 @@ def build_index():
             row = (f'<li style="--c:{h["accent"]}"><span class="dot" aria-hidden="true"></span><a href="{a["site"]}"><b>{esc(a["name"])}</b>'
                    f'<small>{esc(h["log"])}</small></a><span class="state">On the App Store</span></li>')
         log_rows.append(row)
+    if MYSTERY:
+        log_rows.append(f'<li style="--c:{MYSTERY["accent"]}"><span class="dot pulse" aria-hidden="true"></span><span><b aria-label="A new app">· · ·</b>'
+                        f'<small>{esc(MYSTERY["log"])}</small></span><span class="state">Soon</span></li>')
 
     peek_html = ""
     if peeks:
@@ -371,12 +384,23 @@ def build_index():
         <p>{esc(a["home"]["peek"]["text"])}</p>
         <span class="go">Take a look {icon("arrow")}</span>
       </a>''' for a in peeks)
+        if MYSTERY:
+            m = MYSTERY
+            rings = "".join(f'<i class="ring" style="animation-delay:{d}s"></i>' for d in (0, 1.2, 2.4))
+            cards += f'''
+      <div class="peek mystery" style="--c:{m["accent"]}">
+        <div class="signal" aria-hidden="true">{rings}<i class="core"></i></div>
+        <span class="flag">{esc(m["flag"])}</span>
+        <span class="ver">{esc(m["big"])}<em>.</em></span>
+        <p>{esc(m["text"])}</p>
+        <span class="hint">{esc(m["hint"])}</span>
+      </div>'''
         k = len(peeks)
         peek_html = f'''
 <section id="peeks">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">Sneak peeks</p><h2>{count_word(k)} big update{"" if k == 1 else "s"} {"is" if k == 1 else "are"} on the way.</h2><p class="lede">{"It's a free update" if k == 1 else "Both are free updates"}. See what's coming, and leave your email if you'd like a note on launch day.</p></div>
-    <div class="peeks{" one" if k == 1 else ""}">{cards}
+    <div class="head"><p class="eyebrow">Sneak peeks</p><h2>{count_word(k)} big update{"" if k == 1 else "s"} {"is" if k == 1 else "are"} on the way.{" And something new." if MYSTERY else ""}</h2><p class="lede">{"It's a free update" if k == 1 else "Both are free updates"}. See what's coming, and leave your email if you'd like a note on launch day.</p></div>
+    <div class="peeks{" one" if k == 1 and not MYSTERY else ""}{" three" if k + (1 if MYSTERY else 0) == 3 else ""}">{cards}
     </div>
   </div>
 </section>

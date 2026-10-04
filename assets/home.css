@@ -295,6 +295,20 @@ footer{border-top:1px solid var(--line);padding-block:56px 40px;color:var(--mute
 .brand img{width:18px;height:auto}
 .cols{grid-template-columns:1.2fr repeat(calc(var(--cols) ),1fr)}
 .peeks.one{grid-template-columns:1fr}
+.peeks.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:1100px){.peeks.three{grid-template-columns:1fr 1fr}.peeks.three .mystery{grid-column:1/-1}}
+@media(max-width:820px){.peeks.three{grid-template-columns:1fr}}
+/* The teaser for a new app: a tap rippling out, and nothing else given away. */
+.peek.mystery{background:#0E1219;border-color:#3A3220;cursor:default}
+.peek.mystery::after{display:none}
+.peek.mystery .hint{font:500 13px/1.4 var(--mono);color:var(--c);letter-spacing:.04em}
+.signal{position:absolute;left:50%;top:40%;width:0;height:0;z-index:-1}
+.signal i{position:absolute;display:block;border-radius:50%}
+.signal .ring{left:-110px;top:-110px;width:220px;height:220px;border:3px solid var(--c);animation:ripple 3.6s ease-out infinite;opacity:0}
+.signal .core{left:-22px;top:-22px;width:44px;height:44px;background:var(--c);box-shadow:0 0 40px color-mix(in srgb,var(--c) 55%,transparent);animation:breathe 3.6s ease-in-out infinite}
+@keyframes ripple{0%{transform:scale(.35);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.signal .ring,.signal .core{animation:none}.signal .ring{opacity:.35}}
 @media(max-width:900px){.cols{grid-template-columns:1fr 1fr}}
 @media(max-width:820px){.top nav a[href="#apps"]{display:inline}}
 .visual .phone,.visual .tablet{height:auto}
