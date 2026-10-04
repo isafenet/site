@@ -1,0 +1,13 @@
+{
+  "app": "airreveal",
+  "version": "1.6.1",
+  "status": "shipped",
+  "note": "Now Shipped in 1.6.1",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "Live tracking follows your whole flight",
+      "body": "In 1.6, live tracking could stop once a flight's maps had downloaded, leaving the plane at the departure airport. 1.6.1 keeps it following you all the way."
+    }
+  ]
+}

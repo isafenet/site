@@ -1,0 +1,21 @@
+{
+  "app": "glpmgr",
+  "version": "1.8.1",
+  "status": "shipped",
+  "note": "Now Shipped in 1.8.1",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "Compare photos full screen",
+      "body": "In Journey › Progress Photos › Compare, tap a photo to see it full screen. Swipe between the two, and pinch or double-tap to zoom."
+    },
+    {
+      "title": "Compare photos Above and Below",
+      "body": "A new Compare layout that stacks the two photos, made for full-length shots."
+    },
+    {
+      "title": "Compare These Two is always in reach",
+      "body": "The Compare These Two button no longer hides behind the tab bar, or off screen when your iPhone or iPad is sideways."
+    }
+  ]
+}

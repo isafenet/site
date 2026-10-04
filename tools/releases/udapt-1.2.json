@@ -1,0 +1,29 @@
+{
+  "app": "udapt",
+  "version": "1.2",
+  "status": "started",
+  "note": "Coming in Udapt 1.2.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "GLP-1 mode",
+      "body": "If you take a GLP-1 medicine, turn on one switch in Settings › You and your goal. The morning check-in gains two optional taps, Queasy today and Not hungry today: either one makes a good day's session gentler, and the food card puts protein first with a reminder to have small meals and plenty to drink. Udapt never asks for your medicine, dose or timing, and never advises on them."
+    },
+    {
+      "title": "Unwell days, and a gentle way back",
+      "body": "Tap Unwell or travelling? on Today and say whether it's a cold or a fever, chest or aching all over. Udapt makes it a rest day and keeps your food target steady; when you tap I'm better, your first sessions back are lighter for a week."
+    },
+    {
+      "title": "Travelling",
+      "body": "Shorter sessions of about 20 to 30 minutes, with exercises you can do in a hotel room where there are any, and a steady food target. Udapt offers this when your iPhone changes time zone."
+    },
+    {
+      "title": "A real lighter week",
+      "body": "After a third rough day in a row, Udapt offers a lighter week: fewer sets and easier effort for seven days, then back to normal."
+    },
+    {
+      "title": "Setup with photos, and Replay setup",
+      "body": "Setup now has photos, and Settings › Replay setup walks you through it again with your answers filled in."
+    }
+  ]
+}
