@@ -13,6 +13,7 @@
     "A readiness score from Apple Health or a morning check-in",
     "Training that eases off or progresses automatically",
     "Food targets that shift with training days, plus photo and voice logging",
+    "A GLP-1 mode, rest when you're unwell, shorter sessions when you travel, and a real lighter week",
     "Protects a joint by swapping out exercises that load it",
     "My own plan: log the exercise plan your physio or rehab team gave you, exactly as written"
   ],
@@ -194,13 +195,6 @@
     "screen_from": "apps",
     "screen_alt": "Udapt's Today screen with the morning check-in, readiness and today's workout",
     "device": "phone",
-    "log": "Training and food, adapted daily",
-    "peek": {
-      "version": "1.2",
-      "url": "https://udapt.isafenet.app/udapt-1-2.html",
-      "log": "For the days that don't go to plan",
-      "photo": "udapt-dawn.webp",
-      "text": "A GLP-1 mode, rest when you're unwell with a gentle week back, shorter sessions when you travel, and a real lighter week when you're worn down."
-    }
+    "log": "1.2: for the days that don't go to plan"
   }
 }
