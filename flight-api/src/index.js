@@ -5,6 +5,7 @@
 //          GET /v1/status/:flight      today's status of a flight (BA117): gates, terminals, times, delays
 //          GET /v1/sky-routes/changes  aircraft routes changed since the app's copy (see sky-routes.js)
 //          PUT/DELETE /v1/alerts     emergency-aircraft alerts: subscribe or stop (see alerts.js)
+//          PUT/DELETE /v1/spotter    spotter alerts (an A380 nearby): subscribe or stop (see spotter.js)
 //          GET /v1/usage               SkyLink calls left this month (also sent as X-SkyLink-Remaining and
 //                                      X-SkyLink-Limit on every route and status answer)
 //
@@ -19,6 +20,7 @@
 import AIRPORT_CODES from "./airport-codes.json" with { type: "json" };
 import { handleSkyRoutes } from "./sky-routes.js";
 import { cleanUpAlerts, handleAlerts, sendAlerts } from "./alerts.js";
+import { cleanUpSpotter, handleSpotter, sendSpotterAlerts } from "./spotter.js";
 import { checkFollows, handleFollow } from "./follows.js";
 
 const SKYLINK = "https://data.skylinkapi.com/v3.1";
@@ -48,6 +50,11 @@ export default {
   // Every minute: emergency-aircraft alerts, then landing checks for followed planes. Daily: rate-limit rows only matter for the day they were
   // made; expired cache rows, old sent alerts and stale subscriptions can go too.
   async scheduled(event, env) {
+    // Every 2 minutes, in its own run (its own request allowance): spotter alerts.
+    if (event.cron === "*/2 * * * *") {
+      await sendSpotterAlerts(env);
+      return;
+    }
     if (event.cron === "* * * * *") {
       await sendAlerts(env);
       // A second after the alerts' last request (ADSB.lol's rate limits), then the followed planes.
@@ -60,6 +67,7 @@ export default {
       env.DB.prepare("DELETE FROM cache WHERE expires < ?").bind(now().toISOString()),
     ]);
     await cleanUpAlerts(env);
+    await cleanUpSpotter(env);
   },
 };
 
@@ -72,6 +80,8 @@ async function route(req, env) {
   if (follow) return json(follow);
   const alerts = await handleAlerts(req, env, path, fail);
   if (alerts) return json(alerts);
+  const spotter = await handleSpotter(req, env, path, fail);
+  if (spotter) return json(spotter);
   if (req.method !== "GET") fail(405, "method", "Only GET is supported.");
   let m = path.match(/^\/v1\/route\/([^/]+)$/);
   if (m) {
