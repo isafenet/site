@@ -195,6 +195,13 @@
     "screen_from": "apps",
     "screen_alt": "Udapt's Today screen with the morning check-in, readiness and today's workout",
     "device": "phone",
-    "log": "1.2: for the days that don't go to plan"
+    "log": "1.2: for the days that don't go to plan",
+    "peek": {
+      "version": "1.3",
+      "url": "https://udapt.isafenet.app/udapt-1-3.html",
+      "log": "Run, ride, swim and train anywhere",
+      "photo": "udapt-swim.webp",
+      "text": "Running, cycling and swimming plans for your level, strength training wherever you are, and a new Apple Watch app, all in the one plan that adapts each morning."
+    }
   }
 }
