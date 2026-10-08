@@ -168,7 +168,7 @@ def store_status(a):
 
 
 def store_button(a, cls="btn"):
-    return f'<a class="{cls}" href="{a["app_store"]}">{icon("store")} Download on the App Store</a>' if a.get("app_store") else ""
+    return f'<a class="{cls}" href="{a["app_store"]}">Get it on the App Store</a>' if a.get("app_store") else ""
 
 
 def and_list(names):
