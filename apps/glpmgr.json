@@ -1,258 +1,258 @@
 {
- "order": 2,
- "name": "GLPMGR",
- "site": "https://glpmgr.isafenet.app/",
- "kind": "Health & Fitness · iPhone, iPad & Apple Watch",
- "category": "HealthApplication",
- "os": "iOS, iPadOS, watchOS",
- "price": "0",
- "tagline": "Your GLP-1 journey, tracked privately.",
- "summary": "A calm, private tracker for people taking GLP-1 medicines, from the first dose to maintenance, such as Mounjaro, Wegovy and Ozempic: doses and dose steps, reminders, injection sites, weight, side effects, water and protein.",
- "blurb": "Your GLP-1 journey, tracked privately. Doses, dose steps, injection sites, weight and side effects for Mounjaro, Wegovy, Ozempic and more.",
- "ticks": [
-  "Dose reminders, dose steps (titration) and low-supply alerts",
-  "Injection areas taken only from each manufacturer's own leaflet",
-  "Weight, side effects, water, protein and blood glucose, gently",
-  "No account and no tracking: everything stays on your device"
- ],
- "chips": [
-  "iPhone",
-  "iPad",
-  "Apple Watch",
-  "Widgets",
-  "Live Activities",
-  "Apple Health"
- ],
- "colors": [
-  "#0b6b62",
-  "#0a1d33"
- ],
- "card_shots": [
-  "glpmgr-at-a-glance",
-  "glpmgr-trends",
-  "glpmgr-injection-areas"
- ],
- "home_shot": "glpmgr-at-a-glance",
- "screens": {
-  "glpmgr-at-a-glance": "GLPMGR Today screen with next dose, goal, water and protein",
-  "glpmgr-trends": "GLPMGR weight trends chart with every dose marked",
-  "glpmgr-injection-areas": "GLPMGR injection body map showing the areas the manufacturer lists",
-  "glpmgr-titration": "GLPMGR dose steps in the dosing schedule",
-  "glpmgr-private-photos": "GLPMGR progress photos locked behind Face ID",
-  "glpmgr-reminders": "GLPMGR dose reminder on the lock screen",
-  "glpmgr-scan-a-label": "GLPMGR reading the protein figure from a food label",
-  "glpmgr-daily-habits": "GLPMGR daily protein totals against a goal",
-  "glpmgr-on-your-wrist": "GLPMGR on Apple Watch showing the next dose and weight trend",
-  "glpmgr-ipad": "GLPMGR on iPad showing the Today dashboard",
-  "glpmgr-watch": "GLPMGR on Apple Watch"
- },
- "framed_screens": [
-  "glpmgr-at-a-glance",
-  "glpmgr-trends",
-  "glpmgr-daily-habits",
-  "glpmgr-scan-a-label",
-  "glpmgr-private-photos",
-  "glpmgr-titration",
-  "glpmgr-injection-areas",
-  "glpmgr-reminders",
-  "glpmgr-on-your-wrist"
- ],
- "footer": [
-  [
-   "Choosing a GLP-1 app",
-   "glp-1-app.html"
+  "order": 2,
+  "name": "GLPMGR",
+  "site": "https://glpmgr.isafenet.app/",
+  "kind": "Health & Fitness · iPhone, iPad & Apple Watch",
+  "category": "HealthApplication",
+  "os": "iOS, iPadOS, watchOS",
+  "price": "0",
+  "tagline": "Your GLP-1 journey, tracked privately.",
+  "summary": "A calm, private tracker for people taking GLP-1 medicines, from the first dose to maintenance, such as Mounjaro, Wegovy and Ozempic: doses and dose steps, reminders, injection sites, weight, side effects, water and protein.",
+  "blurb": "Your GLP-1 journey, tracked privately. Doses, dose steps, injection sites, weight and side effects for Mounjaro, Wegovy, Ozempic and more.",
+  "ticks": [
+    "Dose reminders, dose steps (titration) and low-supply alerts",
+    "Injection areas taken only from each manufacturer's own leaflet",
+    "Weight, side effects, water, protein and blood glucose, gently",
+    "No account and no tracking: everything stays on your device"
   ],
-  [
-   "GLPMGR user guide",
-   "guide.html"
-  ],
-  [
-   "Injection sites by medicine",
-   "site-guidance.html"
-  ],
-  [
-   "GLP-1 words explained",
-   "glossary.html"
-  ]
- ],
- "page": {
-  "title": "GLPMGR by iSafeNet: Private GLP-1 Tracker App",
-  "description": "GLPMGR is a free, private GLP-1 tracker for weight loss jabs and shots, on iPhone, iPad and Apple Watch: doses, dose steps, injection sites and weight.",
-  "lead": "GLPMGR helps people on GLP-1 medicines keep track of their doses, dose steps, weight and how they feel, without an account and without their data leaving their device. It's written in plain English, with a gentle tone and no judgement, for Mounjaro, Wegovy, Ozempic and other GLP-1 medicines.",
-  "second_button": [
-   "glossary.html",
-   "GLP-1 words explained"
-  ],
-  "hero": [
-   "glpmgr-titration",
-   "glpmgr-at-a-glance",
-   "glpmgr-trends"
-  ],
-  "features": [
-   [
-    "bell",
-    "Doses & reminders",
-    "Log injections or tablets in a few taps. Reminders your way: a heads-up before a dose, a follow-up if it isn't logged, Log Dose and Snooze buttons, and low-supply alerts."
-   ],
-   [
-    "chart",
-    "Dose steps",
-    "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, with each medicine's own leaflet wording on dose steps and missed doses."
-   ],
-   [
-    "compass",
-    "Your whole journey",
-    "New in 2.0: set up from wherever you are, from your first dose to maintenance. Something Changed? logs a step up or down, a break or finishing in plain English, and you can bring your doses from another app."
-   ],
-   [
-    "map",
-    "Injection sites",
-    "Only the areas each manufacturer lists for your region, with a body map of where you've injected before (Premium)."
-   ],
-   [
-    "heart",
-    "Weight & side effects",
-    "A gentle view of your progress, and a diary for how you feel, ready to share with your doctor or nurse."
-   ],
-   [
-    "camera",
-    "Water, protein & food",
-    "Log water with one tap. With Premium, track protein: search thousands of foods, or scan a barcode or a nutrition label."
-   ],
-   [
-    "lock",
-    "Private by design",
-    "No account, no ads, no tracking, nothing in iCloud. Hide Medicine Names keeps your medicine off the Lock Screen, and progress photos are locked behind Face ID."
-   ]
-  ],
-  "gallery": [
-   "glpmgr-at-a-glance",
-   "glpmgr-trends",
-   "glpmgr-daily-habits",
-   "glpmgr-scan-a-label",
-   "glpmgr-private-photos",
-   "glpmgr-titration",
-   "glpmgr-injection-areas",
-   "glpmgr-reminders",
-   "glpmgr-on-your-wrist"
-  ],
-  "platforms_heading": "Native on every screen it runs on.",
-  "platforms": [
-   [
-    "iPhone & iPad",
-    "Native layouts for each, with up to three columns of tiles on a larger iPad."
-   ],
-   [
+  "chips": [
+    "iPhone",
+    "iPad",
     "Apple Watch",
-    "Your next dose, weight, water and protein, one screen each. With Premium, a dose alarm that taps your wrist until you tap Taken."
-   ],
-   [
-    "Widgets & Live Activities",
-    "Your next dose, water, protein, weight and journey on the Home Screen and Lock Screen, with a countdown when a dose is near (Premium)."
-   ],
-   [
-    "Built with",
-    "Swift 6, SwiftUI, SwiftData, HealthKit, WidgetKit, ActivityKit, Vision, CryptoKit and StoreKit 2."
-   ]
+    "Widgets",
+    "Live Activities",
+    "Apple Health"
   ],
-  "pricing": "Free to use, with no time limits: doses and dose steps, reminders, weight, side effects, water, blood glucose, the Apple Watch app and backups. Premium adds more ways to see your progress, with a 7-day free trial on the yearly plan.",
-  "good_to_know": "GLPMGR is a personal tracking tool, not a medical device, and it never suggests a dose or where to inject. Always follow the advice of your doctor, nurse or pharmacist.",
-  "art": [
-   "glpmgr-ipad",
-   "glpmgr-watch"
+  "colors": [
+    "#0b6b62",
+    "#0a1d33"
   ],
-  "learn_more": "GLPMGR has its own website, with a full user guide, support and policies.",
-  "links": [
-   [
-    "",
-    "GLPMGR website",
-    "Features, screens, privacy and pricing."
-   ],
-   [
-    "glp-1-app.html",
-    "Choosing a GLP-1 app",
-    "What a good GLP-1 tracker should do, and how GLPMGR does it."
-   ],
-   [
-    "guide.html",
-    "User guide",
-    "How to use GLPMGR, one step at a time."
-   ],
-   [
-    "glossary.html",
-    "GLP-1 words explained",
-    "Titration, half-life, mg, mmol/L and more, in plain English."
-   ],
-   [
-    "site-guidance.html",
-    "Injection sites by medicine",
-    "What each manufacturer says, for the UK, EU and US."
-   ],
-   [
-    "faq.html",
-    "Questions and answers",
-    "Everything people ask about GLPMGR."
-   ],
-   [
-    "support.html",
-    "Support",
-    "Help with subscriptions, backups and more."
-   ]
+  "card_shots": [
+    "glpmgr-at-a-glance",
+    "glpmgr-trends",
+    "glpmgr-injection-areas"
   ],
-  "links_note": {
-   "text": "Injection sites by medicine:",
-   "links": [
+  "home_shot": "glpmgr-at-a-glance",
+  "screens": {
+    "glpmgr-at-a-glance": "GLPMGR Today screen with next dose, goal, water and protein",
+    "glpmgr-trends": "GLPMGR weight trends chart with every dose marked",
+    "glpmgr-injection-areas": "GLPMGR injection body map showing the areas the manufacturer lists",
+    "glpmgr-titration": "GLPMGR dose steps in the dosing schedule",
+    "glpmgr-private-photos": "GLPMGR progress photos locked behind Face ID",
+    "glpmgr-reminders": "GLPMGR dose reminder on the lock screen",
+    "glpmgr-scan-a-label": "GLPMGR reading the protein figure from a food label",
+    "glpmgr-daily-habits": "GLPMGR daily protein totals against a goal",
+    "glpmgr-on-your-wrist": "GLPMGR on Apple Watch showing the next dose and weight trend",
+    "glpmgr-ipad": "GLPMGR on iPad showing the Today dashboard",
+    "glpmgr-watch": "GLPMGR on Apple Watch"
+  },
+  "framed_screens": [
+    "glpmgr-at-a-glance",
+    "glpmgr-trends",
+    "glpmgr-daily-habits",
+    "glpmgr-scan-a-label",
+    "glpmgr-private-photos",
+    "glpmgr-titration",
+    "glpmgr-injection-areas",
+    "glpmgr-reminders",
+    "glpmgr-on-your-wrist"
+  ],
+  "footer": [
     [
-     "mounjaro-injection-sites.html",
-     "Mounjaro"
+      "Choosing a GLP-1 app",
+      "glp-1-app.html"
     ],
     [
-     "wegovy-injection-sites.html",
-     "Wegovy"
+      "GLPMGR user guide",
+      "guide.html"
     ],
     [
-     "ozempic-injection-sites.html",
-     "Ozempic"
+      "Injection sites by medicine",
+      "site-guidance.html"
     ],
     [
-     "zepbound-injection-sites.html",
-     "Zepbound"
-    ],
-    [
-     "saxenda-injection-sites.html",
-     "Saxenda"
+      "GLP-1 words explained",
+      "glossary.html"
     ]
-   ],
-   "end": ", and more."
+  ],
+  "page": {
+    "title": "GLPMGR by iSafeNet: Private GLP-1 Tracker App",
+    "description": "GLPMGR is a free, private GLP-1 tracker for weight loss jabs and shots, on iPhone, iPad and Apple Watch: doses, dose steps, injection sites and weight.",
+    "lead": "GLPMGR helps people on GLP-1 medicines keep track of their doses, dose steps, weight and how they feel, without an account and without their data leaving their device. It's written in plain English, with a gentle tone and no judgement, for Mounjaro, Wegovy, Ozempic and other GLP-1 medicines.",
+    "second_button": [
+      "glossary.html",
+      "GLP-1 words explained"
+    ],
+    "hero": [
+      "glpmgr-titration",
+      "glpmgr-at-a-glance",
+      "glpmgr-trends"
+    ],
+    "features": [
+      [
+        "bell",
+        "Doses & reminders",
+        "Log injections or tablets in a few taps. Reminders your way: a heads-up before a dose, a follow-up if it isn't logged, Log Dose and Snooze buttons, and low-supply alerts."
+      ],
+      [
+        "chart",
+        "Dose steps",
+        "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, with each medicine's own leaflet wording on dose steps and missed doses."
+      ],
+      [
+        "compass",
+        "Your whole journey",
+        "New in 2.0: set up from wherever you are, from your first dose to maintenance. Something Changed? logs a step up or down, a break or finishing in plain English, and you can bring your doses from another app."
+      ],
+      [
+        "map",
+        "Injection sites",
+        "Only the areas each manufacturer lists for your region, with a body map of where you've injected before (Premium)."
+      ],
+      [
+        "heart",
+        "Weight & side effects",
+        "A gentle view of your progress, and a diary for how you feel, ready to share with your doctor or nurse."
+      ],
+      [
+        "camera",
+        "Water, protein & food",
+        "Log water with one tap. With Premium, track protein: search thousands of foods, or scan a barcode or a nutrition label."
+      ],
+      [
+        "lock",
+        "Private by design",
+        "No account, no ads, no tracking, nothing in iCloud. Hide Medicine Names keeps your medicine off the Lock Screen, and progress photos are locked behind Face ID."
+      ]
+    ],
+    "gallery": [
+      "glpmgr-at-a-glance",
+      "glpmgr-trends",
+      "glpmgr-daily-habits",
+      "glpmgr-scan-a-label",
+      "glpmgr-private-photos",
+      "glpmgr-titration",
+      "glpmgr-injection-areas",
+      "glpmgr-reminders",
+      "glpmgr-on-your-wrist"
+    ],
+    "platforms_heading": "Native on every screen it runs on.",
+    "platforms": [
+      [
+        "iPhone & iPad",
+        "Native layouts for each, with up to three columns of tiles on a larger iPad."
+      ],
+      [
+        "Apple Watch",
+        "Your next dose, weight, water and protein, one screen each. With Premium, a dose alarm that taps your wrist until you tap Taken."
+      ],
+      [
+        "Widgets & Live Activities",
+        "Your next dose, water, protein, weight and journey on the Home Screen and Lock Screen, with a countdown when a dose is near (Premium)."
+      ],
+      [
+        "Built with",
+        "Swift 6, SwiftUI, SwiftData, HealthKit, WidgetKit, ActivityKit, Vision, CryptoKit and StoreKit 2."
+      ]
+    ],
+    "pricing": "Free to use, with no time limits: doses and dose steps, reminders, weight, side effects, water, blood glucose, the Apple Watch app and backups. Premium adds more ways to see your progress, with a 7-day free trial on the yearly plan.",
+    "good_to_know": "GLPMGR is a personal tracking tool, not a medical device, and it never suggests a dose or where to inject. Always follow the advice of your doctor, nurse or pharmacist.",
+    "art": [
+      "glpmgr-ipad",
+      "glpmgr-watch"
+    ],
+    "learn_more": "GLPMGR has its own website, with a full user guide, support and policies.",
+    "links": [
+      [
+        "",
+        "GLPMGR website",
+        "Features, screens, privacy and pricing."
+      ],
+      [
+        "glp-1-app.html",
+        "Choosing a GLP-1 app",
+        "What a good GLP-1 tracker should do, and how GLPMGR does it."
+      ],
+      [
+        "guide.html",
+        "User guide",
+        "How to use GLPMGR, one step at a time."
+      ],
+      [
+        "glossary.html",
+        "GLP-1 words explained",
+        "Titration, half-life, mg, mmol/L and more, in plain English."
+      ],
+      [
+        "site-guidance.html",
+        "Injection sites by medicine",
+        "What each manufacturer says, for the UK, EU and US."
+      ],
+      [
+        "faq.html",
+        "Questions and answers",
+        "Everything people ask about GLPMGR."
+      ],
+      [
+        "support.html",
+        "Support",
+        "Help with subscriptions, backups and more."
+      ]
+    ],
+    "links_note": {
+      "text": "Injection sites by medicine:",
+      "links": [
+        [
+          "mounjaro-injection-sites.html",
+          "Mounjaro"
+        ],
+        [
+          "wegovy-injection-sites.html",
+          "Wegovy"
+        ],
+        [
+          "ozempic-injection-sites.html",
+          "Ozempic"
+        ],
+        [
+          "zepbound-injection-sites.html",
+          "Zepbound"
+        ],
+        [
+          "saxenda-injection-sites.html",
+          "Saxenda"
+        ]
+      ],
+      "end": ", and more."
+    }
+  },
+  "images_from": {
+    "folder": "../glpmgr-legal",
+    "files": {
+      "glpmgr-icon.png": "assets/icon-512.png",
+      "glpmgr-watch.webp": "assets/shots/watch-home.webp",
+      "glpmgr-ipad.webp": "assets/shots/ipad-today.webp",
+      "glpmgr-at-a-glance.webp": "assets/panels/01-at-a-glance.webp",
+      "glpmgr-trends.webp": "assets/panels/02-trends.webp",
+      "glpmgr-daily-habits.webp": "assets/panels/03-daily-habits.webp",
+      "glpmgr-scan-a-label.webp": "assets/panels/04-scan-a-label.webp",
+      "glpmgr-private-photos.webp": "assets/panels/05-private-photos.webp",
+      "glpmgr-titration.webp": "assets/panels/06-titration.webp",
+      "glpmgr-injection-areas.webp": "assets/panels/07-injection-areas.webp",
+      "glpmgr-reminders.webp": "assets/panels/08-reminders.webp",
+      "glpmgr-on-your-wrist.webp": "assets/panels/09-on-your-wrist.webp"
+    }
+  },
+  "app_store": "https://apps.apple.com/app/glpmgr-glp-1-tracker/id6814282972",
+  "home": {
+    "intro": "a private GLP-1 tracker",
+    "accent": "#2C93D1",
+    "photo": "morning.webp",
+    "photo_alt": "A mug of tea in morning sunlight by a window",
+    "screen": "glpmgr-today-1-8.webp",
+    "screen_from": "home",
+    "screen_alt": "GLPMGR's Today screen with the next dose, goal, water and protein",
+    "device": "phone",
+    "log": "2.0: start from wherever you are, Something Changed?"
   }
- },
- "images_from": {
-  "folder": "../glpmgr-legal",
-  "files": {
-   "glpmgr-icon.png": "assets/icon-512.png",
-   "glpmgr-watch.webp": "assets/shots/watch-home.webp",
-   "glpmgr-ipad.webp": "assets/shots/ipad-today.webp",
-   "glpmgr-at-a-glance.webp": "assets/panels/01-at-a-glance.webp",
-   "glpmgr-trends.webp": "assets/panels/02-trends.webp",
-   "glpmgr-daily-habits.webp": "assets/panels/03-daily-habits.webp",
-   "glpmgr-scan-a-label.webp": "assets/panels/04-scan-a-label.webp",
-   "glpmgr-private-photos.webp": "assets/panels/05-private-photos.webp",
-   "glpmgr-titration.webp": "assets/panels/06-titration.webp",
-   "glpmgr-injection-areas.webp": "assets/panels/07-injection-areas.webp",
-   "glpmgr-reminders.webp": "assets/panels/08-reminders.webp",
-   "glpmgr-on-your-wrist.webp": "assets/panels/09-on-your-wrist.webp"
-  }
- },
- "app_store": "https://apps.apple.com/app/glpmgr-glp-1-tracker/id6814282972",
- "home": {
-  "intro": "a private GLP-1 tracker",
-  "accent": "#2C93D1",
-  "photo": "morning.webp",
-  "photo_alt": "A mug of tea in morning sunlight by a window",
-  "screen": "glpmgr-today-1-8.webp",
-  "screen_from": "home",
-  "screen_alt": "GLPMGR's Today screen with the next dose, goal, water and protein",
-  "device": "phone",
-  "log": "2.0: start from wherever you are, Something Changed?"
- }
 }
