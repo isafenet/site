@@ -7,7 +7,7 @@
   "os": "iOS, iPadOS, watchOS",
   "price": "0",
   "tagline": "Your GLP-1 journey, tracked privately.",
-  "summary": "A calm, private tracker for people taking GLP-1 medicines such as Mounjaro, Wegovy and Ozempic: doses and dose steps, reminders, injection sites, weight, side effects, water and protein.",
+  "summary": "A calm, private tracker for people taking GLP-1 medicines, from the first dose to maintenance, such as Mounjaro, Wegovy and Ozempic: doses and dose steps, reminders, injection sites, weight, side effects, water and protein.",
   "blurb": "Your GLP-1 journey, tracked privately. Doses, dose steps, injection sites, weight and side effects for Mounjaro, Wegovy, Ozempic and more.",
   "ticks": [
     "Dose reminders, dose steps (titration) and low-supply alerts",
@@ -98,6 +98,11 @@
         "chart",
         "Dose steps",
         "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, with each medicine's own leaflet wording on dose steps and missed doses."
+      ],
+      [
+        "compass",
+        "Your whole journey",
+        "New in 2.0: set up from wherever you are, from your first dose to maintenance. Something Changed? logs a step up or down, a break or finishing in plain English, and you can bring your doses from another app."
       ],
       [
         "map",
@@ -248,6 +253,6 @@
     "screen_from": "home",
     "screen_alt": "GLPMGR's Today screen with the next dose, goal, water and protein",
     "device": "phone",
-    "log": "1.8: daily check-in, Audio Graphs"
+    "log": "2.0: start from wherever you are, Something Changed?"
   }
 }
