@@ -151,14 +151,12 @@ async function fetchStatus(flight, req, env) {
   await limitPerPerson(req, env);
   await spendFromMonthlyBudget(env);
 
-  const res = await fetch(`${SKYLINK}/flight_status/${encodeURIComponent(flight)}`, {
-    headers: { "x-api-key": env.SKYLINK_API_KEY, Accept: "application/json" },
-  });
+  const res = await askSkyLink(`/flight_status/${encodeURIComponent(flight)}`, env);
   let result;
   if (res.status === 404 || res.status === 422) {
     result = shapeStatus(flight, null);
   } else if (res.status === 429) {
-    fail(503, "paused", "Flight lookup is paused until next month.");
+    fail(502, "busy", "The flight data service is busy. Try again in a moment.");
   } else if (!res.ok) {
     console.error("SkyLink status", res.status, await res.text().catch(() => ""));
     fail(502, "upstream", "The flight data service didn't answer.");
@@ -240,14 +238,12 @@ async function lookUpRouteByCallsign(callsign, req, env) {
   await limitPerPerson(req, env);
   await spendFromMonthlyBudget(env);
 
-  const res = await fetch(`${SKYLINK}/routes/callsign/${encodeURIComponent(callsign)}`, {
-    headers: { "x-api-key": env.SKYLINK_API_KEY, Accept: "application/json" },
-  });
+  const res = await askSkyLink(`/routes/callsign/${encodeURIComponent(callsign)}`, env);
   let result;
   if (res.status === 404 || res.status === 422) {
     result = shape(callsign, null);
   } else if (res.status === 429) {
-    fail(503, "paused", "Flight lookup is paused until next month.");
+    fail(502, "busy", "The flight data service is busy. Try again in a moment.");
   } else if (!res.ok) {
     console.error("SkyLink", res.status, await res.text().catch(() => ""));
     fail(502, "upstream", "The flight data service didn't answer.");
@@ -260,6 +256,23 @@ async function lookUpRouteByCallsign(callsign, req, env) {
   await env.DB.prepare("INSERT OR REPLACE INTO cache (key, body, expires) VALUES (?, ?, ?)")
     .bind(key, JSON.stringify(result), expires).run();
   return { ...result, cached: false };
+}
+
+/**
+ * A SkyLink request, waiting and asking again when it says "too many requests". The free trial allows one request
+ * a second with no burst, and a Jet2 or easyJet lookup makes two in a row (callsign, then flight number): the second
+ * was refused, and that refusal was passed on as "paused until next month" with 990 of 1,000 left, so LS1828 took
+ * three tries (9 Oct 2026). The month's cap is our own count (`spendFromMonthlyBudget`), never a 429.
+ */
+export async function askSkyLink(path, env, { fetchImpl = fetch, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), attempts = 4 } = {}) {
+  let res;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    res = await fetchImpl(`${SKYLINK}${path}`, { headers: { "x-api-key": env.SKYLINK_API_KEY, Accept: "application/json" } });
+    if (res.status !== 429 || attempt === attempts) return res;
+    const after = Number(res.headers?.get?.("retry-after"));
+    await sleep(Number.isFinite(after) && after > 0 && after <= 5 ? after * 1000 + 100 : 1100 * attempt);
+  }
+  return res;
 }
 
 /** This month's SkyLink allowance: calls made, the cap, what's left, and when it starts again (UTC). */
