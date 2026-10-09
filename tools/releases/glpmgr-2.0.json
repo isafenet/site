@@ -1,0 +1,57 @@
+{
+ "app": "glpmgr",
+ "version": "2.0",
+ "status": "started",
+ "note": "Coming in GLPMGR 2.0.",
+ "author": "iSafeNet",
+ "ideas": [
+  {
+   "title": "Start from wherever you are",
+   "body": "Journey Setup asks a few plain questions, one at a time: about to start, going up in dose steps, on your maintenance dose, coming down or taking a break. Already partway through? Say which step you're on and how many doses you've had, and GLPMGR carries on from there."
+  },
+  {
+   "title": "Bring your doses from another app",
+   "body": "Import the spreadsheet (CSV) your old app exports and your doses come with you, read on your iPhone and never added twice. Or add earlier doses a line at a time, or fill them in from your dose steps."
+  },
+  {
+   "title": "Something Changed?",
+   "body": "Going up, coming down, reaching your maintenance dose, taking a break, starting again or finishing: log it in plain English. It's on your timeline, weight charts and doctor's report, and your schedule follows only if you say so."
+  },
+  {
+   "title": "Current and previous doses",
+   "body": "From the day your dose changes, it's your current dose and the one before is your previous dose. Each dose step shows Done, Now or Next."
+  },
+  {
+   "title": "Doses on set days",
+   "body": "Take doses on set days of the week, each with its own time, for example Monday 8:00 and Thursday 20:00."
+  },
+  {
+   "title": "Encouragement, if you'd like it",
+   "body": "Off until you turn it on: milestones for what you log (never your weight), a garden that grows with the days you log and never wilts, and streaks for logging with a rest day each week. Never for doses."
+  },
+  {
+   "title": "Maintenance Mode",
+   "body": "Maintenance Tools is now Maintenance Mode: once you reach your goal, see your recent average next to a range you choose."
+  },
+  {
+   "title": "Muscle Support",
+   "body": "Your average protein and your strength sessions this week, from Apple Health, side by side. No targets unless you set your own."
+  },
+  {
+   "title": "Appetite beside your weight",
+   "body": "Your check-in's appetite answers week by week under your weight, and each check-in compared with last time."
+  },
+  {
+   "title": "Your own range on the glucose chart",
+   "body": "Enter the range your diabetes team gave you and see it as a band on the blood glucose chart. Nothing is filled in for you."
+  },
+  {
+   "title": "Food names and +500 ml on Apple Watch and widgets",
+   "body": "See what you logged for protein by name, and add 500 ml of water in one tap, from your wrist and your Home Screen."
+  },
+  {
+   "title": "Help with pictures",
+   "body": "Help inside the app, with screenshots: tap ? on Today, Journey, Symptoms or Dosing Schedule."
+  }
+ ]
+}
