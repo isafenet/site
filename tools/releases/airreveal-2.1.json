@@ -1,0 +1,49 @@
+{
+  "app": "airreveal",
+  "version": "2.1",
+  "status": "started",
+  "note": "Coming in AirReveal 2.1.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "Pilot View: the way ahead from the flight deck",
+      "body": "The sky, the horizon on the curved Earth, your route and your destination ahead, over your downloaded map, with glass tapes for ground speed, altitude and heading, and the places coming up."
+    },
+    {
+      "title": "Forecast cloud along your route",
+      "body": "The cloud you'll fly through or over, drawn in Pilot View at its real heights, fetched while you have signal and kept for the air."
+    },
+    {
+      "title": "Live tracking that never freezes",
+      "body": "Real altitude, speed and heading from the GPS, and the aircraft carried forward between fixes, so the map, Lock Screen, Watch and Pilot View keep moving in a cabin that gives the GPS little."
+    },
+    {
+      "title": "Tracking Diary",
+      "body": "What live tracking did on each flight, every fix and estimate, kept on your phone and shareable with support."
+    },
+    {
+      "title": "An opening in the clouds",
+      "body": "Clouds part, or you fly through them, to reveal AirReveal when it starts. Choose either, or neither, in Settings."
+    },
+    {
+      "title": "Import Past Flights and Add From Calendar",
+      "body": "Bring the flights your old app exported, or add the ones in your calendar, to My Flights."
+    },
+    {
+      "title": "Spotter Alerts",
+      "body": "Hear when an aircraft you're watching for, an A380, a 747, the Beluga, comes near."
+    },
+    {
+      "title": "Photos, video and timelapse with labels",
+      "body": "Window View and Look Up save the picture with its labels, record video, or a timelapse of the whole flight."
+    },
+    {
+      "title": "Siri and Shortcuts",
+      "body": "“What's below me in AirReveal?” and “How long left on my AirReveal flight?”"
+    },
+    {
+      "title": "Your Flying",
+      "body": "Your flights, distance, countries, airlines and aircraft, on a map."
+    }
+  ]
+}

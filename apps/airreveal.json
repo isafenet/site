@@ -7,17 +7,33 @@
   "os": "iOS, iPadOS",
   "price": "0",
   "tagline": "See what you're flying over.",
-  "summary": "A window-seat companion that names the landmarks, cities and natural wonders below your plane, tells you which side to look from, and keeps a journal of every flight, even in airplane mode.",
-  "blurb": "See what you're flying over. A window-seat companion that names the landmarks, cities and natural wonders below your plane, even in airplane mode.",
+  "summary": "A window-seat companion that names the landmarks, cities and natural wonders below your plane, shows the way ahead as if from the flight deck, tells you which side to look from, and on the ground reveals every plane flying over you. Even in airplane mode.",
+  "blurb": "See what you're flying over, and what's flying over you. Landmarks named below your plane, Pilot View ahead, and every aircraft overhead on the ground.",
   "ticks": [
-    "Live flight map that works offline, using only GPS",
+    "Live flight map that works offline, using only GPS, with the aircraft carried forward between fixes",
+    "Pilot View: the way ahead as if from the flight deck, with real speed, height and heading and the forecast cloud",
     "Landmarks named as you pass, labelled on your camera in Window View, and the best side to sit",
-    "Landmark quizzes, Discovery Bingo, achievements and a country passport",
+    "Above You: every plane overhead, on your iPhone, Apple Watch and widgets, with a Spotter's Logbook",
     "A flight journal that turns your trips into a personal map of the world"
   ],
-  "chips": ["iPhone", "iPad", "Widgets", "Live Activities", "Offline maps", "6 languages"],
-  "colors": ["#0a3d7a", "#0a1522"],
-  "card_shots": ["airreveal-flight", "airreveal-discover", "airreveal-journal"],
+  "chips": [
+    "iPhone",
+    "iPad",
+    "Apple Watch",
+    "Widgets",
+    "Live Activities",
+    "Offline maps",
+    "6 languages"
+  ],
+  "colors": [
+    "#0a3d7a",
+    "#0a1522"
+  ],
+  "card_shots": [
+    "airreveal-flight",
+    "airreveal-discover",
+    "airreveal-journal"
+  ],
   "home_shot": "airreveal-flight",
   "screens": {
     "airreveal-flight": "AirReveal live flight map showing a plane over Mongolia and the landmark below",
@@ -29,47 +45,168 @@
     "airreveal-ipad": "AirReveal on iPad with a wide live flight map"
   },
   "footer": [
-    ["What am I flying over?", "what-am-i-flying-over.html"],
-    ["AirReveal user guide", "user-guide.html"],
-    ["AirReveal support", "support.html"]
+    [
+      "What am I flying over?",
+      "what-am-i-flying-over.html"
+    ],
+    [
+      "AirReveal user guide",
+      "user-guide.html"
+    ],
+    [
+      "AirReveal support",
+      "support.html"
+    ]
   ],
   "page": {
     "title": "AirReveal by iSafeNet: See What You're Flying Over",
-    "description": "AirReveal is an offline flight map for iPhone and iPad that names the landmarks below your plane, shows which side to look from, and keeps your flight journal.",
-    "lead": "Ever looked out of the window and wondered what's down there? AirReveal places your plane on a live map using your device's GPS, names the landmarks, cities and natural wonders below and ahead, labels them on your camera when you hold it up to the window, and tells you the best side to sit. It works without in-flight Wi-Fi, and keeps every trip in your flight journal.",
-    "second_button": ["user-guide.html", "Read the user guide"],
-    "hero": ["airreveal-plan", "airreveal-flight", "airreveal-journal"],
-    "features": [
-      ["map", "Live flight map", "Your position from GPS alone, with the landmarks, cities and natural wonders below named as you pass. Maps download before take-off, so it works in airplane mode."],
-      ["compass", "Best Side to Sit", "When you add a flight, AirReveal tells you which window to book, the landmarks you'll see from it and whether you'll catch the sunrise or sunset."],
-      ["camera", "Window View", "Hold your phone up to the plane window and the landmarks outside are labelled on the camera picture. It works offline."],
-      ["star", "Quizzes & Discovery Bingo", "Three quick questions about each landmark, bingo for the whole row, achievements and a passport."],
-      ["book", "Flight journal", "Save every flight, collect the places you've seen and build a personal map of your travels."],
-      ["widget", "Flight HUD & Lock Screen", "Altitude, speed and heading on the map, and on the Lock Screen and in the Dynamic Island while you fly."]
+    "description": "AirReveal is an offline flight map for iPhone, iPad and Apple Watch that names the landmarks below your plane, shows the way ahead in Pilot View, tells you which side to look from, reveals the planes flying over you, and keeps your flight journal.",
+    "lead": "Ever looked out of the window and wondered what's down there? AirReveal places your plane on a live map using your device's GPS, names the landmarks, cities and natural wonders below and ahead, shows the way ahead as if from the flight deck, labels what's outside on your camera, and tells you the best side to sit. On the ground, it reveals every plane flying over you. It works without in-flight Wi-Fi, and keeps every trip in your flight journal.",
+    "second_button": [
+      "user-guide.html",
+      "Read the user guide"
     ],
-    "gallery": ["airreveal-flight", "airreveal-discover", "airreveal-journal", "airreveal-collection", "airreveal-plan", "airreveal-profile"],
+    "hero": [
+      "airreveal-plan",
+      "airreveal-flight",
+      "airreveal-journal"
+    ],
+    "features": [
+      [
+        "map",
+        "Live flight map",
+        "Your position from GPS alone, with the landmarks, cities and natural wonders below named as you pass. Maps download before take-off, so it works in airplane mode."
+      ],
+      [
+        "compass",
+        "Pilot View",
+        "The way ahead as if from the flight deck: your downloaded map as the ground, glass tapes for real speed, altitude and heading from the GPS, the forecast cloud along your route, and the places ahead."
+      ],
+      [
+        "compass",
+        "Best Side to Sit",
+        "When you add a flight, AirReveal tells you which window to book, the landmarks you'll see from it and whether you'll catch the sunrise or sunset."
+      ],
+      [
+        "camera",
+        "Window View",
+        "Hold your phone up to the plane window and the landmarks outside are labelled on the camera picture. It works offline."
+      ],
+      [
+        "star",
+        "Quizzes & Discovery Bingo",
+        "Three quick questions about each landmark, bingo for the whole row, achievements and a passport."
+      ],
+      [
+        "book",
+        "Flight journal",
+        "Save every flight, collect the places you've seen and build a personal map of your travels."
+      ],
+      [
+        "widget",
+        "Flight HUD & Lock Screen",
+        "Altitude, speed and heading on the map, and on the Lock Screen and in the Dynamic Island while you fly."
+      ],
+      [
+        "star",
+        "Above You",
+        "On the ground, every aircraft overhead on a radar, a map and your camera, with police and air-ambulance helicopters in their colours, a Spotter's Logbook and alerts for aircraft you're watching for."
+      ]
+    ],
+    "gallery": [
+      "airreveal-flight",
+      "airreveal-discover",
+      "airreveal-journal",
+      "airreveal-collection",
+      "airreveal-plan",
+      "airreveal-profile"
+    ],
     "platforms_heading": "Native on every screen it runs on.",
     "platforms": [
-      ["iPhone & iPad", "A comfortable view on iPhone and a wide flight map on iPad."],
-      ["Live Activities & widgets", "Flight progress on the Lock Screen and Home Screen."],
-      ["Six languages", "English, Spanish, French, German, Italian and Brazilian Portuguese."],
-      ["Built with", "Swift, SwiftUI, SwiftData, CoreLocation, MapLibre, WeatherKit, CloudKit, WidgetKit, ActivityKit and StoreKit."]
+      [
+        "iPhone, iPad & Apple Watch",
+        "A comfortable view on iPhone, a wide flight map on iPad, and the planes above you on your wrist."
+      ],
+      [
+        "Live Activities & widgets",
+        "Flight progress on the Lock Screen and Home Screen."
+      ],
+      [
+        "Six languages",
+        "English, Spanish, French, German, Italian and Brazilian Portuguese."
+      ],
+      [
+        "Built with",
+        "Swift, SwiftUI, SwiftData, CoreLocation, MapLibre, WeatherKit, CloudKit, WidgetKit, ActivityKit and StoreKit."
+      ]
     ],
     "pricing": "Free to plan and preview flights and to take your first Live-tracked flight. AirReveal Pro unlocks continued Live GPS tracking and the full in-flight experience.",
     "good_to_know": "AirReveal uses your location only to place you on the map during a flight. It isn't an official flight-status or aviation-safety service, so always follow your airline and crew.",
-    "art": ["airreveal-ipad"],
+    "art": [
+      "airreveal-ipad"
+    ],
     "learn_more": "AirReveal has its own website, with a full user guide, support and policies.",
     "links": [
-      ["", "AirReveal website", "Everything about the app, with pricing and FAQ."],
-      ["what-am-i-flying-over.html", "What am I flying over?", "How to see and name what's below your plane."],
-      ["user-guide.html", "User guide", "Getting started, tips and a jargon buster."],
-      ["support.html", "Support", "Help, troubleshooting and contact."],
-      ["privacy.html", "Privacy Policy", "How AirReveal handles your data."],
-      ["terms.html", "Terms of Use", "The agreement for using AirReveal."]
+      [
+        "",
+        "AirReveal website",
+        "Everything about the app, with pricing and FAQ."
+      ],
+      [
+        "what-am-i-flying-over.html",
+        "What am I flying over?",
+        "How to see and name what's below your plane."
+      ],
+      [
+        "user-guide.html",
+        "User guide",
+        "Getting started, tips and a jargon buster."
+      ],
+      [
+        "support.html",
+        "Support",
+        "Help, troubleshooting and contact."
+      ],
+      [
+        "privacy.html",
+        "Privacy Policy",
+        "How AirReveal handles your data."
+      ],
+      [
+        "terms.html",
+        "Terms of Use",
+        "The agreement for using AirReveal."
+      ]
     ],
     "links_note": {
       "text": "AirReveal's website is also in",
-      "links": [["es/", "Español", "es"], ["fr/", "Français", "fr"], ["de/", "Deutsch", "de"], ["it/", "Italiano", "it"], ["pt-br/", "Português (Brasil)", "pt-br"]],
+      "links": [
+        [
+          "es/",
+          "Español",
+          "es"
+        ],
+        [
+          "fr/",
+          "Français",
+          "fr"
+        ],
+        [
+          "de/",
+          "Deutsch",
+          "de"
+        ],
+        [
+          "it/",
+          "Italiano",
+          "it"
+        ],
+        [
+          "pt-br/",
+          "Português (Brasil)",
+          "pt-br"
+        ]
+      ],
       "end": "."
     }
   },
@@ -98,11 +235,11 @@
     "device": "tablet",
     "log": "Landmarks below your window",
     "peek": {
-      "version": "2.0",
+      "version": "2.1",
       "url": "https://airreveal.isafenet.app/airreveal-2.html",
       "log": "The sky above you, live",
       "photo": "window.webp",
-      "text": "See every aircraft flying over you, follow any plane from your Apple Watch, and spot police and air ambulance helicopters in their own colours."
+      "text": "See every aircraft flying over you, follow any plane from your Apple Watch, and fly the way ahead in Pilot View with real speed and height. Coming in AirReveal 2.1."
     }
   }
 }
