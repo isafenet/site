@@ -7,15 +7,15 @@
   "os": "iOS, watchOS",
   "price": "6.99",
   "tagline": "The fitness plan that adapts around you.",
-  "summary": "One adaptive Daily Plan that reads Apple Health each morning and adjusts today's training and today's food targets together, explaining every change in plain English.",
-  "blurb": "The fitness plan that adapts around you. One adaptive Daily Plan that reads Apple Health each morning and adjusts today's training and food targets together.",
+  "summary": "One plan for your strength training, runs, rides, swims and food targets, checked each morning against how you've recovered, with every change explained in plain English.",
+  "blurb": "The fitness plan that adapts around you. Strength, runs, rides, swims and food targets in one plan, checked each morning against how you've recovered.",
   "ticks": [
-    "A readiness score from Apple Health or a morning check-in",
-    "Training that eases off or progresses automatically",
-    "Food targets that shift with training days, plus photo and voice logging",
-    "A GLP-1 mode, rest when you're unwell, shorter sessions when you travel, and a real lighter week",
-    "Protects a joint by swapping out exercises that load it",
-    "My own plan: log the exercise plan your physio or rehab team gave you, exactly as written"
+    "Go, Ease off or Recover each morning, from Apple Health and a four-question check-in",
+    "Strength training that progresses when you're ready and eases off when you're not",
+    "Running, cycling and swimming plans, and race goals from 5K to marathon",
+    "Train at the gym, at home, with bands, in a hotel gym or on the floor",
+    "Food targets that learn your daily burn, logged by search, barcode, photo or voice",
+    "Every change explained, with the research behind the rule"
   ],
   "chips": [
     "iPhone",
@@ -30,27 +30,35 @@
     "#0e151a"
   ],
   "framed_screens": [
-    "udapt-panel-ready-in-one-glance",
-    "udapt-panel-training-that-adapts",
-    "udapt-panel-food-that-moves-with-you",
-    "udapt-panel-log-food-your-way",
-    "udapt-panel-train-around-an-injury",
-    "udapt-panel-home-or-gym"
+    "udapt13-ready-in-one-glance",
+    "udapt13-training-that-adapts",
+    "udapt13-run-ride-or-swim",
+    "udapt13-train-for-race-day",
+    "udapt13-train-anywhere",
+    "udapt13-food-targets-for-your-goal",
+    "udapt13-every-change-explained",
+    "udapt13-see-your-progress",
+    "udapt13-log-food-your-way",
+    "udapt13-swim-too"
   ],
   "card_shots": [
-    "udapt-panel-ready-in-one-glance",
-    "udapt-panel-training-that-adapts",
-    "udapt-panel-food-that-moves-with-you"
+    "udapt13-ready-in-one-glance",
+    "udapt13-run-ride-or-swim",
+    "udapt13-train-anywhere"
   ],
   "home_shot": "udapt-today",
   "screens": {
-    "udapt-panel-ready-in-one-glance": "Ready in one glance: readiness score 7, Go, with today's Full body A session",
-    "udapt-panel-training-that-adapts": "Training that adapts: today's sets with weights worked out from your last session",
-    "udapt-panel-food-that-moves-with-you": "Food that moves with you: calories and protein, carbs and fat eaten against today's targets on a training day",
-    "udapt-panel-log-food-your-way": "Log food your way: search, scan a barcode, or just say what you ate",
-    "udapt-panel-train-around-an-injury": "Train around an injury: protect a joint and Udapt swaps out the risky exercises",
-    "udapt-panel-home-or-gym": "Home or gym, your call: full programs either way",
-    "udapt-today": "Udapt Today screen: readiness score 7, Go, and today's Full body A session with progressed weights"
+    "udapt13-ready-in-one-glance": "Ready in one glance: Go, with 2 of 2 checks in your usual range and today's Upper A session",
+    "udapt13-training-that-adapts": "Training that adapts: bench press and barbell row with weights from last time and reps to leave in the tank",
+    "udapt13-run-ride-or-swim": "Run, ride or swim: a 35-minute easy run with Stop if… safety advice and spoken cues",
+    "udapt13-train-for-race-day": "Train for race day: today's run towards a 10K in five weeks, with an estimated finish time",
+    "udapt13-train-anywhere": "Train anywhere: today's session set for a hotel gym, with the weights to use",
+    "udapt13-food-targets-for-your-goal": "Food targets for your goal: calories, protein, carbs and fat eaten against today's targets",
+    "udapt13-every-change-explained": "Every change explained: where today's readiness comes from, check by check",
+    "udapt13-see-your-progress": "See your progress: weeks on plan, this week's sets for each muscle and personal records",
+    "udapt13-log-food-your-way": "Log food your way: search foods, scan a barcode or say what you ate",
+    "udapt13-swim-too": "Swim, too: today's 300 m pool swim with water safety advice",
+    "udapt-today": "Udapt's Today screen: the morning check-in done, readiness Go, and today's Upper A session"
   },
   "footer": [
     [
@@ -68,66 +76,70 @@
   ],
   "page": {
     "title": "Udapt by iSafeNet: The Fitness Plan That Adapts Around You",
-    "description": "Udapt for iPhone and Apple Watch: one adaptive daily plan that reads Apple Health each morning and adjusts today's training and food together.",
-    "lead": "Udapt reads Apple Health (or a quick morning check-in) every day and adjusts today's training and today's food targets together, as one connected plan, with a plain-English reason for every change. No spreadsheets, no separate apps to reconcile.",
+    "description": "Udapt for iPhone and Apple Watch: strength training, runs, rides, swims and food targets in one plan that checks each morning how you've recovered.",
+    "lead": "Udapt checks each morning how you've recovered, from Apple Health and a four-question check-in, and fits today's workout, run, ride or swim and your food targets to it, as one connected plan. Every change comes with a plain-English reason and the research behind it.",
     "second_button": [
       "#features",
       "See how it works"
     ],
     "hero": [
-      "udapt-panel-training-that-adapts",
-      "udapt-panel-ready-in-one-glance",
-      "udapt-panel-food-that-moves-with-you"
+      "udapt13-training-that-adapts",
+      "udapt13-ready-in-one-glance",
+      "udapt13-run-ride-or-swim"
     ],
     "features": [
       [
         "heart",
-        "Readiness that means something",
-        "Heart rate variability, resting heart rate and sleep from Apple Health, or a 5-question morning check-in if you don't wear your Watch to bed. Either way, you get a score and a plain reason why."
+        "Go, Ease off or Recover",
+        "Your heart signals overnight and a four-question morning check-in, each compared with your own normal, never with other people's. No score out of 10, because no study gives one."
       ],
       [
         "adapt",
         "Training that eases off, not just logs",
-        "A rough night trims today's sets and caps effort automatically. A good run of days lets your program progress. You can always keep the original session, one tap."
+        "Weights go up when you're ready. A rough morning means fewer sets and a lighter effort, with the original session one tap away. Flag a shoulder, knee or lower back and exercises that load it are swapped like-for-like."
+      ],
+      [
+        "compass",
+        "Run, ride and swim",
+        "A nine-week run/walk plan, running towards a goal or a race from 5K to marathon, easy rides, and pool or open-water swims, fitted around your strength training at your level."
+      ],
+      [
+        "globe",
+        "Train anywhere",
+        "Gym, home (from dumbbells to a multi-gym), resistance bands, a hotel gym or just the floor: pick it for each session, at Beginner, Intermediate or Experienced."
       ],
       [
         "cup",
-        "Food targets that move with training",
-        "More carbs on training days, a little less on rest days, and the week's total stays the same. After a month of daily weigh-ins and food logs, your calorie target adapts to what your body actually does, not a generic formula."
+        "Food targets that learn your body",
+        "The same calorie target every day, protein first. After a month of logging, Udapt learns what your body really burns. Log by search, barcode, or a photo or your voice with on-device AI."
       ],
       [
-        "robot",
-        "Log food your way",
-        "Search thousands of foods, scan a barcode, or use on-device AI to log a meal from a photo or by describing it out loud. Nothing leaves your phone."
-      ],
-      [
-        "camera",
-        "Protect a joint",
-        "Flag a shoulder, knee or lower back you're being careful with, and Udapt automatically swaps exercises that load it for a like-for-like alternative that doesn't."
-      ],
-      [
-        "lock",
-        "Private by design",
-        "No ads, no third-party analytics. Health data stays in Apple Health; anything Udapt-only stays on your phone."
+        "book",
+        "Every change explained",
+        "Tap Why? for what changed and the research behind the rule, labelled by how directly it applies. No black box."
       ]
     ],
     "gallery": [
-      "udapt-panel-ready-in-one-glance",
-      "udapt-panel-training-that-adapts",
-      "udapt-panel-food-that-moves-with-you",
-      "udapt-panel-log-food-your-way",
-      "udapt-panel-train-around-an-injury",
-      "udapt-panel-home-or-gym"
+      "udapt13-ready-in-one-glance",
+      "udapt13-training-that-adapts",
+      "udapt13-run-ride-or-swim",
+      "udapt13-train-for-race-day",
+      "udapt13-train-anywhere",
+      "udapt13-food-targets-for-your-goal",
+      "udapt13-every-change-explained",
+      "udapt13-see-your-progress",
+      "udapt13-log-food-your-way",
+      "udapt13-swim-too"
     ],
     "platforms_heading": "One plan, not three apps.",
     "platforms": [
       [
         "iPhone",
-        "Today's readiness, training and food targets in one place, explained in plain English."
+        "Today's readiness, training, runs, rides and food targets in one place, with spoken cues on every run and ride."
       ],
       [
         "Apple Watch",
-        "A full companion app, included: today's plan at a glance, sets logged with the Digital Crown, and a rest timer on your wrist."
+        "A full companion app, included: the morning check-in, sets logged with the Digital Crown and your heart rate, and every interval of a run, ride or swim, with complications for today."
       ],
       [
         "Widgets & Live Activities",
@@ -139,14 +151,14 @@
       ],
       [
         "Built with",
-        "Swift 6, SwiftUI, HealthKit, WidgetKit, ActivityKit, App Intents, Foundation Models (on-device AI), Speech and StoreKit 2."
+        "Swift 6, SwiftUI, HealthKit, Core Location, WidgetKit, ActivityKit, App Intents, Foundation Models (on-device AI), Speech, WatchConnectivity and StoreKit 2."
       ]
     ],
     "pricing": "Udapt is a subscription: £6.99/month or £39.99/year, with a 7-day free trial on both plans.",
     "good_to_know": "Udapt is a wellness tool, not a medical device, and doesn't diagnose or treat anything. Always talk to your doctor about what's safe for you, especially around injuries.",
     "art": [
-      "udapt-panel-train-around-an-injury",
-      "udapt-panel-home-or-gym"
+      "udapt13-swim-too",
+      "udapt13-train-anywhere"
     ],
     "learn_more": "Udapt has its own website, with full pricing, privacy and support information.",
     "links": [
@@ -176,13 +188,17 @@
     "folder": "../udapt-web",
     "files": {
       "udapt-icon.png": "images/app-icon.png",
-      "udapt-today.webp": "images/flat-today.webp",
-      "udapt-panel-ready-in-one-glance.webp": "images/01-ready-in-one-glance.webp",
-      "udapt-panel-training-that-adapts.webp": "images/02-training-that-adapts.webp",
-      "udapt-panel-food-that-moves-with-you.webp": "images/03-food-that-moves-with-you.webp",
-      "udapt-panel-log-food-your-way.webp": "images/04-log-food-your-way.webp",
-      "udapt-panel-train-around-an-injury.webp": "images/05-train-around-an-injury.webp",
-      "udapt-panel-home-or-gym.webp": "images/06-home-or-gym.webp"
+      "udapt-today.webp": "images/flat13-today.webp",
+      "udapt13-ready-in-one-glance.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/ready-in-one-glance (660 wide, cwebp -q 80)",
+      "udapt13-training-that-adapts.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/training-that-adapts (660 wide, cwebp -q 80)",
+      "udapt13-run-ride-or-swim.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/run-ride-or-swim (660 wide, cwebp -q 80)",
+      "udapt13-train-for-race-day.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/train-for-race-day (660 wide, cwebp -q 80)",
+      "udapt13-train-anywhere.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/train-anywhere (660 wide, cwebp -q 80)",
+      "udapt13-food-targets-for-your-goal.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/food-targets-for-your-goal (660 wide, cwebp -q 80)",
+      "udapt13-every-change-explained.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/every-change-explained (660 wide, cwebp -q 80)",
+      "udapt13-see-your-progress.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/see-your-progress (660 wide, cwebp -q 80)",
+      "udapt13-log-food-your-way.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/log-food-your-way (660 wide, cwebp -q 80)",
+      "udapt13-swim-too.webp": "../Udapt/AppStore/iPhone-6.9in-1320x2868/swim-too (660 wide, cwebp -q 80)"
     }
   },
   "app_store": "https://apps.apple.com/app/udapt-workout-food-planner/id6815828206",
