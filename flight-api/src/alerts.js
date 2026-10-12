@@ -73,10 +73,11 @@ export function parseSubscription(b) {
 export const cellOf = (lat, lon) => `${Math.floor(lat)}:${Math.floor(lon)}`;
 
 /** The cells within MAX_RADIUS_KM of a point (more of them east and west nearer the poles). */
-export function cellsAround(lat, lon) {
-  const lonSpan = Math.min(4, Math.ceil(MAX_RADIUS_KM / (111 * Math.max(Math.cos((lat * Math.PI) / 180), 0.2))));
+export function cellsAround(lat, lon, radiusKm = MAX_RADIUS_KM) {
+  const lonSpan = Math.min(radiusKm > MAX_RADIUS_KM ? 8 : 4, Math.ceil(radiusKm / (111 * Math.max(Math.cos((lat * Math.PI) / 180), 0.2))));
+  const latSpan = Math.max(1, Math.ceil(radiusKm / 111));
   const cells = [];
-  for (let dLat = -1; dLat <= 1; dLat++) {
+  for (let dLat = -latSpan; dLat <= latSpan; dLat++) {
     for (let dLon = -lonSpan; dLon <= lonSpan; dLon++) {
       const cellLon = ((Math.floor(lon) + dLon + 540) % 360) - 180;
       cells.push(`${Math.floor(lat) + dLat}:${cellLon}`);
@@ -108,13 +109,13 @@ export function classify(a) {
   return { hex, service, name: a.t ? `${label} (${a.t})` : label, lat: a.lat, lon: a.lon };
 }
 
-function distanceKm(lat1, lon1, lat2, lon2) {
+export function distanceKm(lat1, lon1, lat2, lon2) {
   const r = (d) => (d * Math.PI) / 180;
   const h = Math.sin(r(lat2 - lat1) / 2) ** 2 + Math.cos(r(lat1)) * Math.cos(r(lat2)) * Math.sin(r(lon2 - lon1) / 2) ** 2;
   return 2 * 6371.0088 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
 }
 
-function bearing(lat1, lon1, lat2, lon2) {
+export function bearing(lat1, lon1, lat2, lon2) {
   const r = (d) => (d * Math.PI) / 180;
   const y = Math.sin(r(lon2 - lon1)) * Math.cos(r(lat2));
   const x = Math.cos(r(lat1)) * Math.sin(r(lat2)) - Math.sin(r(lat1)) * Math.cos(r(lat2)) * Math.cos(r(lon2 - lon1));

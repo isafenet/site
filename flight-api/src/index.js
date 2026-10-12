@@ -5,6 +5,7 @@
 //          GET /v1/status/:flight      today's status of a flight (BA117): gates, terminals, times, delays
 //          GET /v1/sky-routes/changes  aircraft routes changed since the app's copy (see sky-routes.js)
 //          PUT/DELETE /v1/alerts     emergency-aircraft alerts: subscribe or stop (see alerts.js)
+//          PUT/DELETE /v1/spotter    spotter alerts (an A380 nearby): subscribe or stop (see spotter.js)
 //          GET /v1/usage               SkyLink calls left this month (also sent as X-SkyLink-Remaining and
 //                                      X-SkyLink-Limit on every route and status answer)
 //
@@ -19,6 +20,7 @@
 import AIRPORT_CODES from "./airport-codes.json" with { type: "json" };
 import { handleSkyRoutes } from "./sky-routes.js";
 import { cleanUpAlerts, handleAlerts, sendAlerts } from "./alerts.js";
+import { cleanUpSpotter, handleSpotter, sendSpotterAlerts } from "./spotter.js";
 import { checkFollows, handleFollow } from "./follows.js";
 
 const SKYLINK = "https://data.skylinkapi.com/v3.1";
@@ -48,6 +50,11 @@ export default {
   // Every minute: emergency-aircraft alerts, then landing checks for followed planes. Daily: rate-limit rows only matter for the day they were
   // made; expired cache rows, old sent alerts and stale subscriptions can go too.
   async scheduled(event, env) {
+    // Every 2 minutes, in its own run (its own request allowance): spotter alerts.
+    if (event.cron === "*/2 * * * *") {
+      await sendSpotterAlerts(env);
+      return;
+    }
     if (event.cron === "* * * * *") {
       await sendAlerts(env);
       // A second after the alerts' last request (ADSB.lol's rate limits), then the followed planes.
@@ -60,6 +67,7 @@ export default {
       env.DB.prepare("DELETE FROM cache WHERE expires < ?").bind(now().toISOString()),
     ]);
     await cleanUpAlerts(env);
+    await cleanUpSpotter(env);
   },
 };
 
@@ -72,6 +80,8 @@ async function route(req, env) {
   if (follow) return json(follow);
   const alerts = await handleAlerts(req, env, path, fail);
   if (alerts) return json(alerts);
+  const spotter = await handleSpotter(req, env, path, fail);
+  if (spotter) return json(spotter);
   if (req.method !== "GET") fail(405, "method", "Only GET is supported.");
   let m = path.match(/^\/v1\/route\/([^/]+)$/);
   if (m) {
@@ -141,14 +151,12 @@ async function fetchStatus(flight, req, env) {
   await limitPerPerson(req, env);
   await spendFromMonthlyBudget(env);
 
-  const res = await fetch(`${SKYLINK}/flight_status/${encodeURIComponent(flight)}`, {
-    headers: { "x-api-key": env.SKYLINK_API_KEY, Accept: "application/json" },
-  });
+  const res = await askSkyLink(`/flight_status/${encodeURIComponent(flight)}`, env);
   let result;
   if (res.status === 404 || res.status === 422) {
     result = shapeStatus(flight, null);
   } else if (res.status === 429) {
-    fail(503, "paused", "Flight lookup is paused until next month.");
+    fail(502, "busy", "The flight data service is busy. Try again in a moment.");
   } else if (!res.ok) {
     console.error("SkyLink status", res.status, await res.text().catch(() => ""));
     fail(502, "upstream", "The flight data service didn't answer.");
@@ -230,14 +238,12 @@ async function lookUpRouteByCallsign(callsign, req, env) {
   await limitPerPerson(req, env);
   await spendFromMonthlyBudget(env);
 
-  const res = await fetch(`${SKYLINK}/routes/callsign/${encodeURIComponent(callsign)}`, {
-    headers: { "x-api-key": env.SKYLINK_API_KEY, Accept: "application/json" },
-  });
+  const res = await askSkyLink(`/routes/callsign/${encodeURIComponent(callsign)}`, env);
   let result;
   if (res.status === 404 || res.status === 422) {
     result = shape(callsign, null);
   } else if (res.status === 429) {
-    fail(503, "paused", "Flight lookup is paused until next month.");
+    fail(502, "busy", "The flight data service is busy. Try again in a moment.");
   } else if (!res.ok) {
     console.error("SkyLink", res.status, await res.text().catch(() => ""));
     fail(502, "upstream", "The flight data service didn't answer.");
@@ -250,6 +256,23 @@ async function lookUpRouteByCallsign(callsign, req, env) {
   await env.DB.prepare("INSERT OR REPLACE INTO cache (key, body, expires) VALUES (?, ?, ?)")
     .bind(key, JSON.stringify(result), expires).run();
   return { ...result, cached: false };
+}
+
+/**
+ * A SkyLink request, waiting and asking again when it says "too many requests". The free trial allows one request
+ * a second with no burst, and a Jet2 or easyJet lookup makes two in a row (callsign, then flight number): the second
+ * was refused, and that refusal was passed on as "paused until next month" with 990 of 1,000 left, so LS1828 took
+ * three tries (9 Oct 2026). The month's cap is our own count (`spendFromMonthlyBudget`), never a 429.
+ */
+export async function askSkyLink(path, env, { fetchImpl = fetch, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), attempts = 4 } = {}) {
+  let res;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    res = await fetchImpl(`${SKYLINK}${path}`, { headers: { "x-api-key": env.SKYLINK_API_KEY, Accept: "application/json" } });
+    if (res.status !== 429 || attempt === attempts) return res;
+    const after = Number(res.headers?.get?.("retry-after"));
+    await sleep(Number.isFinite(after) && after > 0 && after <= 5 ? after * 1000 + 100 : 1100 * attempt);
+  }
+  return res;
 }
 
 /** This month's SkyLink allowance: calls made, the cap, what's left, and when it starts again (UTC). */
