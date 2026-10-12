@@ -31,18 +31,20 @@
   ],
   "card_shots": [
     "airreveal-flight",
-    "airreveal-discover",
+    "airreveal-above",
     "airreveal-journal"
   ],
-  "home_shot": "airreveal-flight",
+  "home_shot": "airreveal-home",
   "screens": {
-    "airreveal-flight": "AirReveal live flight map showing a plane over Mongolia and the landmark below",
-    "airreveal-discover": "AirReveal Discover screen listing landmarks overhead now and coming up",
-    "airreveal-journal": "AirReveal flight journal with a live trip from London to Tokyo",
-    "airreveal-collection": "AirReveal collection of landmarks discovered on past flights",
-    "airreveal-plan": "AirReveal planning a flight from London Heathrow to Barcelona",
-    "airreveal-profile": "AirReveal profile with achievements, passport and flights",
-    "airreveal-ipad": "AirReveal on iPad with a wide live flight map"
+    "airreveal-home": "AirReveal home screen: your flight tracking live and the aircraft above you now",
+    "airreveal-flight": "AirReveal live flight map over Lake Baikal, with heading, altitude and speed from the GPS",
+    "airreveal-discover": "AirReveal landmark card for Lake Baikal, the landmark below your window",
+    "airreveal-above": "Above You: the aircraft around London on a live radar map",
+    "airreveal-lookup": "Look Up: pointing the phone at the sky to name the planes overhead",
+    "airreveal-follow": "Following a plane across the map with its recorded track",
+    "airreveal-journal": "AirReveal Journal with live and completed trips and passport stamps",
+    "airreveal-logbook": "The Spotter's Logbook with today's challenges and Sky Bingo",
+    "airreveal-board": "AirReveal in the Split-Flap departures board skin"
   },
   "footer": [
     [
@@ -67,9 +69,9 @@
       "Read the user guide"
     ],
     "hero": [
-      "airreveal-plan",
+      "airreveal-home",
       "airreveal-flight",
-      "airreveal-journal"
+      "airreveal-above"
     ],
     "features": [
       [
@@ -116,10 +118,12 @@
     "gallery": [
       "airreveal-flight",
       "airreveal-discover",
+      "airreveal-above",
+      "airreveal-lookup",
+      "airreveal-follow",
       "airreveal-journal",
-      "airreveal-collection",
-      "airreveal-plan",
-      "airreveal-profile"
+      "airreveal-logbook",
+      "airreveal-board"
     ],
     "platforms_heading": "Native on every screen it runs on.",
     "platforms": [
@@ -143,7 +147,8 @@
     "pricing": "Free to plan and preview flights and to take your first Live-tracked flight. AirReveal Pro unlocks continued Live GPS tracking and the full in-flight experience.",
     "good_to_know": "AirReveal uses your location only to place you on the map during a flight. It isn't an official flight-status or aviation-safety service, so always follow your airline and crew.",
     "art": [
-      "airreveal-ipad"
+      "airreveal-above",
+      "airreveal-board"
     ],
     "learn_more": "AirReveal has its own website, with a full user guide, support and policies.",
     "links": [
@@ -214,13 +219,15 @@
     "folder": "../airreveal-legal",
     "files": {
       "airreveal-icon.png": "images/app-icon.png",
-      "airreveal-ipad.webp": "images/ipad-flight.webp",
-      "airreveal-flight.webp": "images/panel-flight.webp",
-      "airreveal-discover.webp": "images/panel-discover.webp",
-      "airreveal-journal.webp": "images/panel-journal.webp",
-      "airreveal-collection.webp": "images/panel-collection.webp",
-      "airreveal-plan.webp": "images/panel-plan.webp",
-      "airreveal-profile.webp": "images/panel-profile.webp"
+      "airreveal-home.webp": "images/v2/screen-01.webp",
+      "airreveal-flight.webp": "images/v2/screen-02.webp",
+      "airreveal-discover.webp": "images/v2/screen-03.webp",
+      "airreveal-above.webp": "images/v2/screen-04.webp",
+      "airreveal-lookup.webp": "images/v2/screen-05.webp",
+      "airreveal-follow.webp": "images/v2/screen-06.webp",
+      "airreveal-journal.webp": "images/v2/screen-07.webp",
+      "airreveal-logbook.webp": "images/v2/screen-08.webp",
+      "airreveal-board.webp": "images/v2/screen-09.webp"
     }
   },
   "app_store": "https://apps.apple.com/app/airreveal-flight-map-explorer/id6814283579",
@@ -229,10 +236,10 @@
     "accent": "#4FB3EA",
     "photo": "sky.webp",
     "photo_alt": "An aircraft wing above the clouds at golden hour",
-    "screen": "airreveal-ipad.webp",
+    "screen": "airreveal-home.webp",
     "screen_from": "apps",
-    "screen_alt": "AirReveal on iPad, flying over Lake Baikal on a live trip from London to Tokyo",
-    "device": "tablet",
+    "screen_alt": "AirReveal home screen: your flight tracking live and the aircraft above you now",
+    "device": "phone",
     "log": "2.1: the sky above you, live, and the way ahead in Pilot View"
   }
 }
