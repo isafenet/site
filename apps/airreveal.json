@@ -12,6 +12,7 @@
   "ticks": [
     "Live flight map that works offline, using only GPS, with the aircraft carried forward between fixes",
     "Pilot View: the way ahead as if from the flight deck, with real speed, height and heading and the forecast cloud",
+    "Runway View: your plane at the airport in 3D as it taxis, takes off and lands, on the real runways",
     "Landmarks named as you pass, labelled on your camera in Window View, and the best side to sit",
     "Above You: every plane overhead, on your iPhone, Apple Watch and widgets, with a Spotter's Logbook",
     "A flight journal that turns your trips into a personal map of the world"
@@ -240,6 +241,6 @@
     "screen_from": "apps",
     "screen_alt": "AirReveal home screen: your flight tracking live and the aircraft above you now",
     "device": "phone",
-    "log": "2.1: the sky above you, live, and the way ahead in Pilot View"
+    "log": "2.2: Runway View, your plane at the airport in 3D"
   }
 }

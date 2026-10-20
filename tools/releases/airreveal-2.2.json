@@ -1,0 +1,33 @@
+{
+  "app": "airreveal",
+  "version": "2.2",
+  "status": "started",
+  "note": "Coming in AirReveal 2.2.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "Runway View",
+      "body": "Watch your own plane at the airport in 3D as it taxis, takes off and lands, on the real runways with their markings, among the airport's buildings where OpenStreetMap has them. Open it from the Live map near either end of your flight; it works in airplane mode once the flight is downloaded."
+    },
+    {
+      "title": "Three cameras at the airport",
+      "body": "In Runway View, watch from the spotters' fence beside the runway, from behind the plane, or from the control tower. Drag to look around and pinch to zoom."
+    },
+    {
+      "title": "Runways ahead in Pilot View",
+      "body": "On take-off and approach, Pilot View draws the runways with their markings and numbers, and the altitude tape shows your height above the airport."
+    },
+    {
+      "title": "Turns you can see",
+      "body": "Pilot View's horizon banks as your plane turns, with the angle on a scale at the top, and the heading follows the track you're really flying."
+    },
+    {
+      "title": "Clouds that look real",
+      "body": "Lit clouds in Pilot View and the opening, tinted for the time of day."
+    },
+    {
+      "title": "Pilot View in six languages",
+      "body": "Pilot View and the opening now read in Spanish, French, German, Italian and Brazilian Portuguese as well as English."
+    }
+  ]
+}
