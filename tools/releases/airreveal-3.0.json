@@ -1,0 +1,41 @@
+{
+  "app": "airreveal",
+  "version": "3.0",
+  "status": "started",
+  "note": "Coming in AirReveal 3.0.",
+  "author": "iSafeNet",
+  "ideas": [
+    {
+      "title": "One map for above and below",
+      "body": "AirReveal opens on one map: the planes in the sky around you and the landmarks below, even with no signal. Tap a plane for its card and pull it up for its photo, route and aircraft; your flights glow gold on their airports with a countdown."
+    },
+    {
+      "title": "Every airport in the world",
+      "body": "Every airport on the map: the big hubs from anywhere, every airfield as you zoom in. Quiet sky where you are? Tap a busy airport and Look Around Here to see its planes and places."
+    },
+    {
+      "title": "Planes drawn as what they are",
+      "body": "Airliners, turboprops, business jets, light aircraft, fast jets and helicopters each have their own icon on the map."
+    },
+    {
+      "title": "Sit in its cockpit",
+      "body": "Tap a plane above you, then Sit in Its Cockpit: its flight deck, its route ahead and its own instruments. Choose Cockpit, Cockpit and HUD, HUD Only or Instruments, and drag to look around."
+    },
+    {
+      "title": "Watch It Fly",
+      "body": "The plane you tapped in 3D, in its shape and its airline's colours."
+    },
+    {
+      "title": "Landmark photos and stories",
+      "body": "Landmarks come with photos and their story from Wikipedia, kept on your phone for the air."
+    },
+    {
+      "title": "Made for iPad and iPhone Duo",
+      "body": "A fresh night-sky look, and on iPad and an open iPhone Duo your flight's details stay beside the map."
+    },
+    {
+      "title": "A new Help with pictures",
+      "body": "The in-app Help is rewritten as a guide for new users, in the order of a trip, with a picture for every step in six languages."
+    }
+  ]
+}
