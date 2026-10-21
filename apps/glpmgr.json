@@ -2,7 +2,7 @@
   "order": 2,
   "name": "GLPMGR",
   "site": "https://glpmgr.isafenet.app/",
-  "kind": "Health & Fitness · iPhone, iPad & Apple Watch",
+  "kind": "Health & Fitness · iPhone, iPhone Duo, iPad & Apple Watch",
   "category": "HealthApplication",
   "os": "iOS, iPadOS, watchOS",
   "price": "0",
@@ -13,10 +13,11 @@
     "Dose reminders, dose steps (titration) and low-supply alerts",
     "Injection areas taken only from each manufacturer's own leaflet",
     "Weight, side effects, water, protein and blood glucose, gently",
-    "No account and no tracking: everything stays on your device"
+    "No account and no tracking: everything stays on your own devices"
   ],
   "chips": [
     "iPhone",
+    "iPhone Duo",
     "iPad",
     "Apple Watch",
     "Widgets",
@@ -29,30 +30,32 @@
   ],
   "card_shots": [
     "glpmgr-at-a-glance",
-    "glpmgr-trends",
+    "glpmgr-one-tap",
     "glpmgr-injection-areas"
   ],
   "home_shot": "glpmgr-at-a-glance",
   "screens": {
-    "glpmgr-at-a-glance": "GLPMGR Today screen with next dose, goal, water and protein",
+    "glpmgr-at-a-glance": "GLPMGR Today screen with the next dose, Log Injection, one-tap logging and your journey",
+    "glpmgr-one-tap": "GLPMGR Quick Log adding a glass of water in one tap, with Undo",
+    "glpmgr-log-a-dose": "GLPMGR Record Injection on one screen, with the injection areas",
+    "glpmgr-start-anywhere": "GLPMGR Journey Setup, starting from wherever you are",
     "glpmgr-trends": "GLPMGR weight trends chart with every dose marked",
-    "glpmgr-injection-areas": "GLPMGR injection body map showing the areas the manufacturer lists",
-    "glpmgr-titration": "GLPMGR dose steps in the dosing schedule",
-    "glpmgr-private-photos": "GLPMGR progress photos locked behind Face ID",
-    "glpmgr-reminders": "GLPMGR dose reminder on the lock screen",
-    "glpmgr-scan-a-label": "GLPMGR reading the protein figure from a food label",
     "glpmgr-daily-habits": "GLPMGR daily protein totals against a goal",
+    "glpmgr-private": "GLPMGR progress photos locked behind Face ID",
+    "glpmgr-injection-areas": "GLPMGR 3D injection body map showing the areas the manufacturer lists",
+    "glpmgr-reminders": "GLPMGR dose reminder on the lock screen",
     "glpmgr-on-your-wrist": "GLPMGR on Apple Watch showing the next dose and weight trend",
-    "glpmgr-ipad": "GLPMGR on iPad showing the Today dashboard",
+    "glpmgr-ipad": "GLPMGR on iPad showing the Today screen",
     "glpmgr-watch": "GLPMGR on Apple Watch"
   },
   "framed_screens": [
     "glpmgr-at-a-glance",
+    "glpmgr-one-tap",
+    "glpmgr-log-a-dose",
+    "glpmgr-start-anywhere",
     "glpmgr-trends",
     "glpmgr-daily-habits",
-    "glpmgr-scan-a-label",
-    "glpmgr-private-photos",
-    "glpmgr-titration",
+    "glpmgr-private",
     "glpmgr-injection-areas",
     "glpmgr-reminders",
     "glpmgr-on-your-wrist"
@@ -84,7 +87,7 @@
       "GLP-1 words explained"
     ],
     "hero": [
-      "glpmgr-titration",
+      "glpmgr-one-tap",
       "glpmgr-at-a-glance",
       "glpmgr-trends"
     ],
@@ -95,6 +98,11 @@
         "Log injections or tablets in a few taps. Reminders your way: a heads-up before a dose, a follow-up if it isn't logged, Log Dose and Snooze buttons, and low-supply alerts."
       ],
       [
+        "plus",
+        "Quick to log",
+        "New in 2.2: Quick Log adds a glass of water or protein in one tap, Log Injection sits on Next Dose, and a dose fits on one screen. Made for iPhone Duo too."
+      ],
+      [
         "chart",
         "Dose steps",
         "Enter the steps your prescriber gave you and GLPMGR fills in the right dose each time, with each medicine's own leaflet wording on dose steps and missed doses."
@@ -102,7 +110,7 @@
       [
         "compass",
         "Your whole journey",
-        "New in 2.0: set up from wherever you are, from your first dose to maintenance. Something Changed? logs a step up or down, a break or finishing in plain English, and you can bring your doses from another app."
+        "Set up from wherever you are, from your first dose to maintenance. Something Changed? logs a step up or down, a break or finishing in plain English, and you can bring your doses from another app."
       ],
       [
         "map",
@@ -127,11 +135,12 @@
     ],
     "gallery": [
       "glpmgr-at-a-glance",
+      "glpmgr-one-tap",
+      "glpmgr-log-a-dose",
+      "glpmgr-start-anywhere",
       "glpmgr-trends",
       "glpmgr-daily-habits",
-      "glpmgr-scan-a-label",
-      "glpmgr-private-photos",
-      "glpmgr-titration",
+      "glpmgr-private",
       "glpmgr-injection-areas",
       "glpmgr-reminders",
       "glpmgr-on-your-wrist"
@@ -139,8 +148,8 @@
     "platforms_heading": "Native on every screen it runs on.",
     "platforms": [
       [
-        "iPhone & iPad",
-        "Native layouts for each, with up to three columns of tiles on a larger iPad."
+        "iPhone, iPhone Duo & iPad",
+        "Native layouts for each. On iPad in landscape, Today fits on one screen, and iPhone Duo gets its own layouts open, half open and closed."
       ],
       [
         "Apple Watch",
@@ -232,15 +241,16 @@
       "glpmgr-icon.png": "assets/icon-512.png",
       "glpmgr-watch.webp": "assets/shots/watch-home.webp",
       "glpmgr-ipad.webp": "assets/shots/ipad-today.webp",
-      "glpmgr-at-a-glance.webp": "assets/panels/01-at-a-glance.webp",
-      "glpmgr-trends.webp": "assets/panels/02-trends.webp",
-      "glpmgr-daily-habits.webp": "assets/panels/03-daily-habits.webp",
-      "glpmgr-scan-a-label.webp": "assets/panels/04-scan-a-label.webp",
-      "glpmgr-private-photos.webp": "assets/panels/05-private-photos.webp",
-      "glpmgr-titration.webp": "assets/panels/06-titration.webp",
-      "glpmgr-injection-areas.webp": "assets/panels/07-injection-areas.webp",
-      "glpmgr-reminders.webp": "assets/panels/08-reminders.webp",
-      "glpmgr-on-your-wrist.webp": "assets/panels/09-on-your-wrist.webp"
+      "glpmgr-at-a-glance.webp": "assets/v18/panel-01.webp",
+      "glpmgr-one-tap.webp": "assets/v18/panel-02.webp",
+      "glpmgr-log-a-dose.webp": "assets/v18/panel-03.webp",
+      "glpmgr-start-anywhere.webp": "assets/v18/panel-04.webp",
+      "glpmgr-trends.webp": "assets/v18/panel-05.webp",
+      "glpmgr-daily-habits.webp": "assets/v18/panel-06.webp",
+      "glpmgr-private.webp": "assets/v18/panel-07.webp",
+      "glpmgr-injection-areas.webp": "assets/v18/panel-08.webp",
+      "glpmgr-reminders.webp": "assets/v18/panel-09.webp",
+      "glpmgr-on-your-wrist.webp": "assets/v18/panel-10.webp"
     }
   },
   "app_store": "https://apps.apple.com/app/glpmgr-glp-1-tracker/id6814282972",
@@ -249,10 +259,10 @@
     "accent": "#2C93D1",
     "photo": "morning.webp",
     "photo_alt": "A mug of tea in morning sunlight by a window",
-    "screen": "glpmgr-today-1-8.webp",
+    "screen": "glpmgr-today-2-2.webp",
     "screen_from": "home",
-    "screen_alt": "GLPMGR's Today screen with the next dose, goal, water and protein",
+    "screen_alt": "GLPMGR's Today screen with the next dose, Log Injection, one-tap logging and your journey",
     "device": "phone",
-    "log": "2.0: your whole journey, from wherever you are"
+    "log": "2.2: made for iPhone Duo, quicker every day"
   }
 }

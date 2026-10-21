@@ -1,0 +1,57 @@
+{
+ "app": "glpmgr",
+ "version": "2.2",
+ "status": "started",
+ "note": "Coming in GLPMGR 2.2.",
+ "author": "iSafeNet",
+ "ideas": [
+  {
+   "title": "Made for iPhone Duo",
+   "body": "Open, Today is laid out like an iPad, on one wide screen: your next dose beside your journey, with one-tap logging underneath. Stood half open on a table, your next dose, goal and water are on the top half and Log Injection and Quick Log on the bottom. Closed, the outer screen works like any iPhone."
+  },
+  {
+   "title": "Log a dose with your iPhone Duo half open",
+   "body": "Record Injection on a half-open Duo shows where you've injected before on the top half, and the buttons for each site on the bottom."
+  },
+  {
+   "title": "Progress photos with the Duo's main camera",
+   "body": "With the Duo open, the outer screen shows you the picture, your last photo of the pose to line up with, and the self-timer counting down."
+  },
+  {
+   "title": "Quick Log",
+   "body": "A row of one-tap buttons on Today: a glass of water or a serving of protein (Premium) is added straight away, with Undo, and your weight or today's check-in is a tap away."
+  },
+  {
+   "title": "Log Injection on Next Dose",
+   "body": "Next Dose always has Log Injection, and shows where and when you injected last time."
+  },
+  {
+   "title": "Record Injection on one screen",
+   "body": "Choose where you injected, then Save. Everything fits on one screen."
+  },
+  {
+   "title": "Your Journey on Today",
+   "body": "How your weight has moved, with each dose marked, right on Today, with Goal and Water side by side."
+  },
+  {
+   "title": "iPad: Today on one screen",
+   "body": "In landscape, Today shows it all at once: Next Dose beside Your Journey, Quick Log, your goal, water and week, when each injection site was last used, and your recent entries."
+  },
+  {
+   "title": "A new camera for progress photos",
+   "body": "A self-timer, flash and an outline to step into, so each photo lines up with the last."
+  },
+  {
+   "title": "3D injection body map",
+   "body": "The body map (Premium) as a 3D figure you can turn, showing only the areas your medicine's manufacturer lists and where you've injected before. The flat map is still there if you prefer it."
+  },
+  {
+   "title": "A shorter welcome",
+   "body": "Getting started takes four steps, and Premium shows its plans first."
+  },
+  {
+   "title": "Widgets for StandBy",
+   "body": "Next Dose and Water widgets made for StandBy."
+  }
+ ]
+}
